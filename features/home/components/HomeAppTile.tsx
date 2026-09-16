@@ -55,28 +55,27 @@ export const HomeAppTile: React.FC<HomeAppTileProps> = ({
       onClick={() => onClick?.(app)}
       className="group relative flex flex-col items-center justify-center size-24 sm:size-28 rounded-2xl bg-white p-2.5 shadow-[0_4px_18px_-2px_rgba(0,0,0,0.06)] border border-neutral-100/90 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_-4px_rgba(0,0,0,0.1)] cursor-pointer select-none"
     >
-      {/* Star Indicator on top right */}
-      {app.isMarked && (
-        <button
-          type="button"
-          onClick={(e) => onToggleMark?.(app.id, e)}
-          title="Unmark app"
-          className="absolute top-2 right-2 text-neutral-800 hover:text-neutral-950 transition-colors p-0.5"
-        >
-          <Star className="size-3 fill-neutral-800 stroke-neutral-800" />
-        </button>
-      )}
-
-      {app.hasStarOutline && !app.isMarked && (
-        <button
-          type="button"
-          onClick={(e) => onToggleMark?.(app.id, e)}
-          title="Mark app"
-          className="absolute top-2 right-2 text-neutral-400 hover:text-neutral-700 transition-colors p-0.5"
-        >
-          <Star className="size-3 stroke-neutral-400 fill-none" />
-        </button>
-      )}
+      {/* Star Action Button for Marked and Unmarked */}
+      <button
+        type="button"
+        onClick={(e) => onToggleMark?.(app.id, e)}
+        title={app.isMarked ? "Remove from Marked" : "Add to Marked"}
+        className={cn(
+          "absolute top-1.5 right-1.5 z-10 flex size-6 items-center justify-center rounded-full transition-all duration-150 cursor-pointer",
+          app.isMarked
+            ? "text-neutral-800 hover:bg-amber-50 hover:text-amber-500 hover:scale-110 active:scale-95"
+            : "text-neutral-300 opacity-60 group-hover:opacity-100 hover:opacity-100! hover:bg-amber-50 hover:text-amber-500 hover:scale-110 active:scale-95"
+        )}
+      >
+        <Star
+          className={cn(
+            "size-3.5 transition-colors",
+            app.isMarked
+              ? "fill-current stroke-current"
+              : "fill-none stroke-current hover:fill-amber-400"
+          )}
+        />
+      </button>
 
       {/* App Icon Square */}
       <div
