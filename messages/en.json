@@ -1,0 +1,39 @@
+{
+  "Sidebar": {
+    "dashboard": "Dashboard",
+    "clientsJobs": "Clients & jobs",
+    "ordersCo": "Orders & Co.",
+    "formatProducts": "Format & Products",
+    "evaluations": "Evaluations",
+    "tools": "Tools",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "Submenu": {
+    "onlineOrders": "Online orders",
+    "checkPayments": "Check payments",
+    "directLabOrder": "Direct lab order",
+    "manualInvoices": "Manual invoices",
+    "manualOffers": "Manual offers",
+    "pricelists": "Pricelists",
+    "formatsPackages": "Formats & Packages",
+    "productsGiftVouchers": "Products & Gift vouchers",
+    "charts": "Charts",
+    "ratings": "Ratings",
+    "clientStatistics": "Client statistics",
+    "monthlyStatistics": "Monthly statistics",
+    "liveStatistics": "Live statistics",
+    "emailHistory": "Email history",
+    "accessCards": "Access cards",
+    "homepage": "Homepage",
+    "dataTransfer": "Data transfer",
+    "emailProfiles": "Email profiles",
+    "generalPromotion": "General promotion",
+    "newsletter": "Newsletter"
+  },
+  "Topbar": {
+    "searchPlaceholder": "Find clients, orders, settings ...",
+    "myAccount": "My account",
+    "logout": "Logout"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "Sidebar": {
+    "dashboard": "ড্যাশবোর্ড",
+    "clientsJobs": "ক্লায়েন্ট ও কাজ",
+    "ordersCo": "অর্ডার ও অন্যান্য",
+    "formatProducts": "ফরম্যাট ও প্রোডাক্ট",
+    "evaluations": "মূল্যায়ন",
+    "tools": "টুলস",
+    "settings": "সেটিংস",
+    "logout": "লগআউট"
+  },
+  "Submenu": {
+    "onlineOrders": "অনলাইন অর্ডার",
+    "checkPayments": "পেমেন্ট চেক",
+    "directLabOrder": "সরাসরি ল্যাব অর্ডার",
+    "manualInvoices": "ম্যানুয়াল ইনভয়েস",
+    "manualOffers": "ম্যানুয়াল অফার",
+    "pricelists": "মূল্য তালিকা",
+    "formatsPackages": "ফরম্যাট ও প্যাকেজ",
+    "productsGiftVouchers": "প্রোডাক্ট ও গিফট ভাউচার",
+    "charts": "চার্টস",
+    "ratings": "রেটিং",
+    "clientStatistics": "ক্লায়েন্ট পরিসংখ্যান",
+    "monthlyStatistics": "মাসিক পরিসংখ্যান",
+    "liveStatistics": "লাইভ পরিসংখ্যান",
+    "emailHistory": "ইমেইল হিস্ট্রি",
+    "accessCards": "অ্যাক্সেস কার্ড",
+    "homepage": "হোমপেজ",
+    "dataTransfer": "ডাটা ট্রান্সফার",
+    "emailProfiles": "ইমেইল প্রোফাইল",
+    "generalPromotion": "প্রমোশন",
+    "newsletter": "নিউজলেটার"
+  },
+  "Topbar": {
+    "searchPlaceholder": "ক্লায়েন্ট, অর্ডার, সেটিংস খুঁজুন...",
+    "myAccount": "আমার একাউন্ট",
+    "logout": "লগআউট"
+  }
+}
