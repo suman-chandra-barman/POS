@@ -14,6 +14,8 @@ This document outlines the strict engineering standards, architectural patterns,
 
 ## 1. Architecture & General Principles
 - **Senior Persona:** Write clean, modular, self-documenting, type-safe, and production-ready code.
+- **Single Responsibility Principle (SRP):** Every file MUST have exactly ONE distinct responsibility and reason to change. Separate presentation, business logic, state management, and data definitions.
+- **One Component Per File:** Every component file MUST export exactly ONE React component. Never declare multiple sub-components, helper UI components, dialogs, or multi-role layouts in the same `.tsx` file. Always extract child elements (sidebars, dialogs, headers, items, cards) into dedicated component files.
 - **No Quick Hacks:** Avoid inline mock data, hardcoded fallbacks, or superficial patches. Always connect to real APIs.
 - **Clean Syntax:** Keep comments and code strings strictly ASCII (avoid non-standard Unicode characters like `───` or `—` that cause `□` rendering boxes in editors).
 - **Component Reusability:** Extract reusable UI elements into `@/components/common/` or `@/components/ui/` rather than duplicating markup.

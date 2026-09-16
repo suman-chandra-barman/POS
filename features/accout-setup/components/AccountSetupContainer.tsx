@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
 import { toast } from "sonner";
 import { CheckCircle2, RotateCcw, Building2, Layers } from "lucide-react";
 import { AccountSetupLayout } from "./AccountSetupLayout";
@@ -24,6 +26,8 @@ import { INITIAL_STEP1_VALUES, INITIAL_STEP2_VALUES } from "../data/demoData";
 import { Button } from "@/components/ui/button";
 
 export const AccountSetupContainer: React.FC = () => {
+  const router = useRouter();
+  const locale = useLocale();
   const [currentStep, setCurrentStep] = useState<AccountSetupStep>("empty");
   const [formData, setFormData] = useState<AccountSetupFormData>({
     ...INITIAL_STEP1_VALUES,
@@ -56,8 +60,8 @@ export const AccountSetupContainer: React.FC = () => {
   };
 
   const handleDatabaseCreated = () => {
-    toast.success("Database and workspace setup completed!");
-    setCurrentStep("completed");
+    toast.success("Workspace setup completed! Welcome to POS.");
+    router.push(`/${locale}`);
   };
 
   const handleReset = () => {

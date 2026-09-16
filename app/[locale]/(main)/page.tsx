@@ -1,5 +1,5 @@
-const DashboardPage = () => {
-  return <div>Dashboard Page</div>;
-};
+import { HomePageView } from "@/features/home/components/HomePageView";
 
-export default DashboardPage;
+export default function HomePage() {
+  return <HomePageView />;
+}
