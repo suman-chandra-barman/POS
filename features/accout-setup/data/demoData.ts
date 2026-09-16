@@ -119,7 +119,7 @@ export const INITIAL_STEP1_VALUES = {
 };
 
 export const INITIAL_STEP2_VALUES = {
-  email: "hello@pos.com",
+  email: "", // Default empty so placeholder is visible
   phone: "", // Default empty so placeholder is visible
   country: "Bangladesh", // Default Bangladesh
   language: "English", // Default English

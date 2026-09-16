@@ -6,7 +6,6 @@ import { ChevronDown, Search, Check } from "lucide-react";
 import {
   getCountryCallingCode,
   getCountries,
-  parsePhoneNumber,
   type Country,
 } from "react-phone-number-input";
 import { cn } from "@/lib/utils";
@@ -28,37 +27,31 @@ export const PhoneInputCustom: React.FC<PhoneInputCustomProps> = ({
   className,
   defaultCountry = "BD",
 }) => {
-  const [userSelectedCountry, setUserSelectedCountry] = useState<Country | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<Country>(defaultCountry);
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Derive country and national number from value and selection
-  const parsed = useMemo(() => {
-    if (!value) return null;
-    try {
-      return parsePhoneNumber(value);
-    } catch {
-      return null;
-    }
-  }, [value]);
-
-  const activeCountry: Country =
-    userSelectedCountry ?? parsed?.country ?? defaultCountry;
-
   const callingCode = useMemo(() => {
     try {
-      return getCountryCallingCode(activeCountry);
+      return getCountryCallingCode(selectedCountry);
     } catch {
-      return "1";
+      return "880";
     }
-  }, [activeCountry]);
+  }, [selectedCountry]);
 
-  const displayNationalNumber = useMemo(() => {
+  // Extract national digits from value if value starts with `+${callingCode}`
+  const nationalDigits = useMemo(() => {
     if (!value) return "";
-    if (parsed) return parsed.nationalNumber;
-    return value.replace(/^\+\d+/, "");
-  }, [value, parsed]);
+    const prefix = `+${callingCode}`;
+    if (value.startsWith(prefix)) {
+      return value.slice(prefix.length);
+    }
+    if (value.startsWith("+")) {
+      return value.replace(/^\+\d{1,4}/, "");
+    }
+    return value;
+  }, [value, callingCode]);
 
   // Click outside listener for dropdown
   useEffect(() => {
@@ -79,30 +72,35 @@ export const PhoneInputCustom: React.FC<PhoneInputCustomProps> = ({
   }, [isOpen]);
 
   const handleCountrySelect = (c: Country) => {
-    setUserSelectedCountry(c);
+    setSelectedCountry(c);
     setIsOpen(false);
     setSearchQuery("");
     const newCallingCode = getCountryCallingCode(c);
-    const digits = displayNationalNumber.replace(/\D/g, "");
+    const digits = nationalDigits.replace(/\D/g, "");
     const full = digits ? `+${newCallingCode}${digits}` : "";
     onChange?.(full);
   };
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputVal = e.target.value;
-    const digits = inputVal.replace(/\D/g, "");
+    const rawVal = e.target.value;
+    const digits = rawVal.replace(/\D/g, "");
     const full = digits ? `+${callingCode}${digits}` : "";
     onChange?.(full);
   };
 
-  const FlagComponent = Flags[activeCountry as keyof typeof Flags];
+  const FlagComponent = Flags[selectedCountry as keyof typeof Flags];
 
   const allCountries = useMemo(() => getCountries(), []);
   const filteredCountries = useMemo(() => {
-    const q = searchQuery.toLowerCase();
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return allCountries;
     return allCountries.filter((c) => {
-      const code = getCountryCallingCode(c);
-      return c.toLowerCase().includes(q) || code.includes(q);
+      try {
+        const code = getCountryCallingCode(c);
+        return c.toLowerCase().includes(q) || code.includes(q);
+      } catch {
+        return c.toLowerCase().includes(q);
+      }
     });
   }, [allCountries, searchQuery]);
 
@@ -121,7 +119,7 @@ export const PhoneInputCustom: React.FC<PhoneInputCustomProps> = ({
         )}
       >
         {/* Country Selector Trigger */}
-        <div ref={dropdownRef} className="relative">
+        <div ref={dropdownRef} className="relative shrink-0">
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
@@ -131,7 +129,7 @@ export const PhoneInputCustom: React.FC<PhoneInputCustomProps> = ({
               {FlagComponent ? (
                 <FlagComponent className="size-full object-cover" />
               ) : (
-                <span className="text-[10px] font-bold">{activeCountry}</span>
+                <span className="text-[10px] font-bold">{selectedCountry}</span>
               )}
             </div>
             <span className="text-xs font-medium text-neutral-900">
@@ -162,8 +160,13 @@ export const PhoneInputCustom: React.FC<PhoneInputCustomProps> = ({
               <div className="max-h-48 overflow-y-auto py-1">
                 {filteredCountries.map((c) => {
                   const Flag = Flags[c as keyof typeof Flags];
-                  const code = getCountryCallingCode(c);
-                  const isSelected = activeCountry === c;
+                  let code = "";
+                  try {
+                    code = getCountryCallingCode(c);
+                  } catch {
+                    code = "";
+                  }
+                  const isSelected = selectedCountry === c;
                   return (
                     <button
                       key={c}
@@ -185,9 +188,11 @@ export const PhoneInputCustom: React.FC<PhoneInputCustomProps> = ({
                         <span className="truncate max-w-32.5">{c}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <span className="text-neutral-400 text-[11px]">
-                          +{code}
-                        </span>
+                        {code && (
+                          <span className="text-neutral-400 text-[11px]">
+                            +{code}
+                          </span>
+                        )}
                         {isSelected && (
                           <Check className="size-3 text-neutral-900" />
                         )}
@@ -206,7 +211,7 @@ export const PhoneInputCustom: React.FC<PhoneInputCustomProps> = ({
         {/* Phone Input */}
         <input
           type="tel"
-          value={displayNationalNumber}
+          value={nationalDigits}
           onChange={handleNumberChange}
           placeholder={placeholder}
           className="h-full w-full bg-transparent px-2 text-sm text-neutral-900 placeholder:text-neutral-400 outline-none"
