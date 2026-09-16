@@ -107,7 +107,7 @@ export const BusinessWorkspaceSetupStep1: React.FC<BusinessWorkspaceSetupStep1Pr
           </label>
           <Input
             {...register("businessName")}
-            placeholder="Enter your mail"
+            placeholder="Enter business name"
             className={cn(
               "h-10 rounded-xl border-neutral-200 px-3.5 text-sm placeholder:text-neutral-400 focus-visible:border-neutral-400 focus-visible:ring-neutral-200/70",
               errors.businessName && "border-destructive focus-visible:border-destructive focus-visible:ring-destructive/20"

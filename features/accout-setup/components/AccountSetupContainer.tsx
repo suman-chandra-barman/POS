@@ -2,17 +2,24 @@
 
 import React, { useState } from "react";
 import { toast } from "sonner";
-import { CheckCircle2, RotateCcw, Building2 } from "lucide-react";
+import { CheckCircle2, RotateCcw, Building2, Layers } from "lucide-react";
 import { AccountSetupLayout } from "./AccountSetupLayout";
 import { NoWorkspaceConnected } from "./NoWorkspaceConnected";
 import { BusinessWorkspaceSetupStep1 } from "./BusinessWorkspaceSetupStep1";
 import { BusinessWorkspaceSetupStep2 } from "./BusinessWorkspaceSetupStep2";
+import { AppSelectionStep } from "./AppSelectionStep";
+import { DatabaseCreatingStep } from "./DatabaseCreatingStep";
 import {
   type AccountSetupStep,
   type Step1FormData,
   type Step2FormData,
   type AccountSetupFormData,
 } from "../types/accountSetup.types";
+import {
+  BUSINESS_APPS,
+  DEFAULT_SELECTED_APP_IDS,
+  type BusinessApp,
+} from "../data/appsData";
 import { INITIAL_STEP1_VALUES, INITIAL_STEP2_VALUES } from "../data/demoData";
 import { Button } from "@/components/ui/button";
 
@@ -22,6 +29,9 @@ export const AccountSetupContainer: React.FC = () => {
     ...INITIAL_STEP1_VALUES,
     ...INITIAL_STEP2_VALUES,
   });
+  const [selectedApps, setSelectedApps] = useState<BusinessApp[]>(() =>
+    BUSINESS_APPS.filter((a) => DEFAULT_SELECTED_APP_IDS.includes(a.id)),
+  );
 
   const handleCreateCompany = () => {
     setCurrentStep("step1");
@@ -34,9 +44,19 @@ export const AccountSetupContainer: React.FC = () => {
   };
 
   const handleStep2Submit = (step2Data: Step2FormData) => {
-    const finalData = { ...formData, ...step2Data };
-    setFormData(finalData);
-    toast.success("Business workspace created successfully!");
+    setFormData((prev) => ({ ...prev, ...step2Data }));
+    toast.success("Contact details confirmed");
+    setCurrentStep("app-selection");
+  };
+
+  const handleAppsConfirm = (apps: BusinessApp[]) => {
+    setSelectedApps(apps);
+    toast.success(`${apps.length} apps selected`);
+    setCurrentStep("creating");
+  };
+
+  const handleDatabaseCreated = () => {
+    toast.success("Database and workspace setup completed!");
     setCurrentStep("completed");
   };
 
@@ -46,17 +66,23 @@ export const AccountSetupContainer: React.FC = () => {
       ...INITIAL_STEP1_VALUES,
       ...INITIAL_STEP2_VALUES,
     });
+    setSelectedApps(
+      BUSINESS_APPS.filter((a) => DEFAULT_SELECTED_APP_IDS.includes(a.id)),
+    );
   };
+
+  const freeApps = selectedApps.filter((a) => a.isDefaultFree);
+  const paidApps = selectedApps.filter((a) => !a.isDefaultFree);
 
   return (
     <AccountSetupLayout>
       <div className="flex flex-col items-center w-full">
-        {/* Component 1: Empty State */}
+        {/* Step 1: Empty State */}
         {currentStep === "empty" && (
           <NoWorkspaceConnected onCreateCompany={handleCreateCompany} />
         )}
 
-        {/* Component 2: Step 1 (Business Info) */}
+        {/* Step 2: Setup Step 1 (Business Info) */}
         {currentStep === "step1" && (
           <BusinessWorkspaceSetupStep1
             initialValues={formData}
@@ -65,13 +91,27 @@ export const AccountSetupContainer: React.FC = () => {
           />
         )}
 
-        {/* Component 3: Step 2 (Contact & Localization) */}
+        {/* Step 3: Setup Step 2 (Contact & Localization) */}
         {currentStep === "step2" && (
           <BusinessWorkspaceSetupStep2
             initialValues={formData}
             onSubmit={handleStep2Submit}
             onBack={() => setCurrentStep("step1")}
           />
+        )}
+
+        {/* Step 4: App Selection */}
+        {currentStep === "app-selection" && (
+          <AppSelectionStep
+            initialSelectedIds={selectedApps.map((a) => a.id)}
+            onConfirm={handleAppsConfirm}
+            onBack={() => setCurrentStep("step2")}
+          />
+        )}
+
+        {/* Step 5: Database Creating Progress */}
+        {currentStep === "creating" && (
+          <DatabaseCreatingStep onComplete={handleDatabaseCreated} />
         )}
 
         {/* Success / Completed Confirmation */}
@@ -82,17 +122,18 @@ export const AccountSetupContainer: React.FC = () => {
             </div>
 
             <h2 className="mt-3.5 text-lg font-bold text-neutral-900">
-              Workspace Connected!
+              Workspace & Database Ready!
             </h2>
             <p className="mt-1 text-xs text-neutral-500 leading-relaxed">
               Your business workspace{" "}
               <span className="font-semibold text-neutral-800">
                 {formData.businessName || "AlignUI"}
               </span>{" "}
-              has been created.
+              has been created with all selected apps.
             </p>
 
-            <div className="mt-4 rounded-xl bg-neutral-50 p-3 text-left text-xs space-y-1.5 border border-neutral-100">
+            {/* Configured Summary */}
+            <div className="mt-4 rounded-xl bg-neutral-50 p-3 text-left text-xs space-y-2 border border-neutral-100">
               <div className="flex justify-between">
                 <span className="text-neutral-400">Email:</span>
                 <span className="font-medium text-neutral-800">
@@ -117,6 +158,16 @@ export const AccountSetupContainer: React.FC = () => {
                   {formData.language}
                 </span>
               </div>
+              <div className="pt-2 border-t border-neutral-200/60 flex items-center justify-between">
+                <span className="text-neutral-500 font-medium flex items-center gap-1">
+                  <Layers className="size-3 text-neutral-400" />
+                  Installed Apps:
+                </span>
+                <span className="font-semibold text-neutral-800">
+                  {freeApps.length} Free{" "}
+                  {paidApps.length > 0 && `+ ${paidApps.length} Paid`}
+                </span>
+              </div>
             </div>
 
             <div className="mt-5 flex gap-2">
@@ -131,7 +182,7 @@ export const AccountSetupContainer: React.FC = () => {
               </Button>
               <Button
                 type="button"
-                onClick={() => toast.info("Redirecting to ERP dashboard...")}
+                onClick={() => toast.info("Redirecting to POS dashboard...")}
                 className="flex-1 h-10 rounded-xl bg-[#232323] hover:bg-neutral-800 text-white text-xs gap-1.5 cursor-pointer"
               >
                 <Building2 className="size-3.5" />
