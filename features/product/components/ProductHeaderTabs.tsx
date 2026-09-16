@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
-import { Search, SlidersHorizontal } from "lucide-react";
+import Link from "next/link";
+import { useLocale } from "next-intl";
+import { Search, SlidersHorizontal, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { type ProductTab, type ProductColumnVisibility } from "../types/product.types";
 import { ProductColumnVisibilityDropdown } from "./ProductColumnVisibilityDropdown";
@@ -35,6 +37,8 @@ export const ProductHeaderTabs: React.FC<ProductHeaderTabsProps> = ({
   columns,
   onToggleColumn,
 }) => {
+  const locale = useLocale();
+
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
       {/* Left Tabs */}
@@ -59,9 +63,17 @@ export const ProductHeaderTabs: React.FC<ProductHeaderTabsProps> = ({
         })}
       </div>
 
-      {/* Right Search Bar & Column Visibility Button */}
+      {/* Right Actions: Add Product, Search Bar & Column Visibility Button */}
       <div className="flex items-center gap-2 w-full sm:w-auto">
-        <div className="relative flex-1 sm:w-56">
+        <Link
+          href={`/${locale}/product/add`}
+          className="inline-flex items-center gap-1.5 h-8 rounded-lg bg-[#232323] hover:bg-neutral-800 text-white px-3 text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+        >
+          <Plus className="size-3.5" />
+          <span>Add Product</span>
+        </Link>
+
+        <div className="relative flex-1 sm:w-52">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-neutral-400" />
           <input
             type="text"
