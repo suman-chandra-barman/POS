@@ -8,6 +8,7 @@ export * from "./components/SelectedAppsSidebar";
 export * from "./components/AppCard";
 export * from "./components/AppIcon";
 export * from "./components/DatabaseCreatingStep";
+export * from "./components/SetupSubmitButton";
 export * from "./components/PhoneInputCustom";
 export * from "./components/SetupHeaderBox";
 export * from "./components/LogoUpload";

@@ -4,7 +4,7 @@ import React from "react";
 import { CircleDollarSign } from "lucide-react";
 import { type BusinessApp } from "../data/appsData";
 import { AppIcon } from "./AppIcon";
-import { Button } from "@/components/ui/button";
+import { SetupSubmitButton } from "./SetupSubmitButton";
 import { cn } from "@/lib/utils";
 
 interface SelectedAppsSidebarProps {
@@ -104,13 +104,9 @@ export const SelectedAppsSidebar: React.FC<SelectedAppsSidebarProps> = ({
       </div>
 
       {/* Confirm Button */}
-      <Button
-        type="button"
-        onClick={onConfirm}
-        className="mt-6 h-10 w-full rounded-xl bg-[#232323] hover:bg-neutral-800 text-white text-xs font-semibold uppercase tracking-wider shadow-sm transition-all active:scale-[0.99] cursor-pointer"
-      >
+      <SetupSubmitButton onClick={onConfirm} type="button">
         CONFIRM
-      </Button>
+      </SetupSubmitButton>
     </div>
   );
 };

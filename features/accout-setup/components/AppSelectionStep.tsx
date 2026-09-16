@@ -9,6 +9,7 @@ import {
 } from "../data/appsData";
 import { AppCard } from "./AppCard";
 import { SelectedAppsSidebar } from "./SelectedAppsSidebar";
+import { BackNavigation } from "@/components/common/BackNavigation";
 import { cn } from "@/lib/utils";
 
 interface AppSelectionStepProps {
@@ -88,13 +89,7 @@ export const AppSelectionStep: React.FC<AppSelectionStepProps> = ({
 
           {onBack && (
             <div className="pt-2 border-t border-neutral-100">
-              <button
-                type="button"
-                onClick={onBack}
-                className="text-xs text-neutral-400 hover:text-neutral-700 transition-colors cursor-pointer"
-              >
-                ← Back to Step 2
-              </button>
+              <BackNavigation onClick={onBack} label="← Back to Step 2" />
             </div>
           )}
         </div>

@@ -12,7 +12,8 @@ import {
 import { SetupHeaderBox } from "./SetupHeaderBox";
 import { LogoUpload } from "./LogoUpload";
 import { FormSelect } from "./FormSelect";
-import { Button } from "@/components/ui/button";
+import { SetupSubmitButton } from "./SetupSubmitButton";
+import { BackNavigation } from "@/components/common/BackNavigation";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
@@ -172,23 +173,12 @@ export const BusinessWorkspaceSetupStep1: React.FC<BusinessWorkspaceSetupStep1Pr
         />
 
         {/* Submit Button */}
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="mt-5 h-11 w-full rounded-xl bg-[#232323] hover:bg-neutral-800 text-white text-xs font-semibold tracking-wider uppercase shadow-sm transition-all active:scale-[0.99] cursor-pointer"
-        >
+        <SetupSubmitButton disabled={isSubmitting}>
           NEXT
-        </Button>
+        </SetupSubmitButton>
 
-        {onBack && (
-          <button
-            type="button"
-            onClick={onBack}
-            className="w-full text-center text-xs text-neutral-400 hover:text-neutral-700 transition-colors pt-1 cursor-pointer"
-          >
-            ← Back
-          </button>
-        )}
+        {/* Back Button */}
+        <BackNavigation onClick={onBack} label="← Back" />
       </form>
     </div>
   );
