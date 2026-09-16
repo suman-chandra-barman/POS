@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
+import { useRouter, useParams } from "next/navigation";
 import { toast } from "sonner";
 import { CheckCircle2, RotateCcw, Building2, Layers } from "lucide-react";
 import { AccountSetupLayout } from "./AccountSetupLayout";
@@ -27,7 +26,8 @@ import { Button } from "@/components/ui/button";
 
 export const AccountSetupContainer: React.FC = () => {
   const router = useRouter();
-  const locale = useLocale();
+  const params = useParams();
+  const locale = (params?.locale as string) || "en";
   const [currentStep, setCurrentStep] = useState<AccountSetupStep>("empty");
   const [formData, setFormData] = useState<AccountSetupFormData>({
     ...INITIAL_STEP1_VALUES,
