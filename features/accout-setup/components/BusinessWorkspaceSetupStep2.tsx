@@ -76,7 +76,7 @@ export const BusinessWorkspaceSetupStep2: React.FC<BusinessWorkspaceSetupStep2Pr
           <Input
             type="email"
             {...register("email")}
-            placeholder="hello@alignui.com"
+            placeholder="hello@pos.com"
             className={cn(
               "h-10 rounded-xl border-neutral-200 px-3.5 text-sm placeholder:text-neutral-400 focus-visible:border-neutral-400 focus-visible:ring-neutral-200/70",
               errors.email && "border-destructive focus-visible:border-destructive focus-visible:ring-destructive/20"

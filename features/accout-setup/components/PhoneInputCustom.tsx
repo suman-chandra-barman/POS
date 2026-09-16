@@ -15,28 +15,18 @@ interface PhoneInputCustomProps {
   value?: string;
   onChange?: (val: string) => void;
   error?: string;
+  placeholder?: string;
   className?: string;
   defaultCountry?: Country;
 }
-
-const POPULAR_COUNTRIES: Country[] = [
-  "US",
-  "BD",
-  "GB",
-  "CA",
-  "AU",
-  "DE",
-  "AE",
-  "IN",
-  "SG",
-];
 
 export const PhoneInputCustom: React.FC<PhoneInputCustomProps> = ({
   value = "",
   onChange,
   error,
+  placeholder = "(555) 000-0000",
   className,
-  defaultCountry = "US",
+  defaultCountry = "BD",
 }) => {
   const [userSelectedCountry, setUserSelectedCountry] = useState<Country | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -170,13 +160,7 @@ export const PhoneInputCustom: React.FC<PhoneInputCustomProps> = ({
 
               {/* Country List */}
               <div className="max-h-48 overflow-y-auto py-1">
-                {/* Popular section */}
-                {!searchQuery && (
-                  <div className="px-3 py-1 text-[10px] font-semibold text-neutral-400 uppercase tracking-wider">
-                    Popular
-                  </div>
-                )}
-                {(!searchQuery ? POPULAR_COUNTRIES : filteredCountries).map((c) => {
+                {filteredCountries.map((c) => {
                   const Flag = Flags[c as keyof typeof Flags];
                   const code = getCountryCallingCode(c);
                   const isSelected = activeCountry === c;
@@ -224,7 +208,7 @@ export const PhoneInputCustom: React.FC<PhoneInputCustomProps> = ({
           type="tel"
           value={displayNationalNumber}
           onChange={handleNumberChange}
-          placeholder="(555) 000-0000"
+          placeholder={placeholder}
           className="h-full w-full bg-transparent px-2 text-sm text-neutral-900 placeholder:text-neutral-400 outline-none"
         />
       </div>

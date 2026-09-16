@@ -1,3 +1,6 @@
+import { countries } from "countries-list";
+import ISO6391 from "iso-639-1";
+
 export interface CategoryOption {
   id: string;
   label: string;
@@ -77,29 +80,35 @@ export const DEMO_EMPLOY_OPTIONS: OptionItem[] = [
 export interface CountryOption {
   code: string;
   name: string;
+  label: string;
+  value: string;
   callingCode: string;
 }
 
-export const DEMO_COUNTRIES: CountryOption[] = [
-  { code: "BD", name: "Bangladesh", callingCode: "+880" },
-  { code: "US", name: "United States", callingCode: "+1" },
-  { code: "GB", name: "United Kingdom", callingCode: "+44" },
-  { code: "CA", name: "Canada", callingCode: "+1" },
-  { code: "AU", name: "Australia", callingCode: "+61" },
-  { code: "DE", name: "Germany", callingCode: "+49" },
-  { code: "AE", name: "United Arab Emirates", callingCode: "+971" },
-  { code: "IN", name: "India", callingCode: "+91" },
-  { code: "SG", name: "Singapore", callingCode: "+65" },
-];
+// Generate full list of countries from npm package `countries-list`
+export const DEMO_COUNTRIES: CountryOption[] = Object.entries(countries)
+  .map(([code, data]) => ({
+    code,
+    name: data.name,
+    label: data.name,
+    value: data.name,
+    callingCode: data.phone && data.phone[0] ? `+${data.phone[0]}` : "",
+  }))
+  .sort((a, b) => a.name.localeCompare(b.name));
 
-export const DEMO_LANGUAGES: OptionItem[] = [
-  { value: "en", label: "English" },
-  { value: "bn", label: "Bengali" },
-  { value: "es", label: "Spanish" },
-  { value: "fr", label: "French" },
-  { value: "de", label: "German" },
-  { value: "ar", label: "Arabic" },
-];
+// Generate full list of languages from npm package `iso-639-1`
+export const DEMO_LANGUAGES: OptionItem[] = ISO6391.getAllCodes()
+  .map((code) => {
+    const englishName = ISO6391.getName(code);
+    const nativeName = ISO6391.getNativeName(code);
+    return {
+      value: englishName,
+      label: nativeName && nativeName !== englishName
+        ? `${englishName} (${nativeName})`
+        : englishName,
+    };
+  })
+  .sort((a, b) => a.value.localeCompare(b.value));
 
 export const INITIAL_STEP1_VALUES = {
   logo: "",
@@ -110,8 +119,8 @@ export const INITIAL_STEP1_VALUES = {
 };
 
 export const INITIAL_STEP2_VALUES = {
-  email: "hello@alignui.com",
-  phone: "+15550000000",
-  country: "Bangladesh",
-  language: "English",
+  email: "hello@pos.com",
+  phone: "", // Default empty so placeholder is visible
+  country: "Bangladesh", // Default Bangladesh
+  language: "English", // Default English
 };
