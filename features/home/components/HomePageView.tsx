@@ -54,7 +54,7 @@ export const HomePageView: React.FC = () => {
 
   return (
     <div className="min-h-[calc(100vh-4rem)] w-full flex flex-col items-center justify-start px-4 pt-6 sm:pt-10 pb-40">
-      <div className="w-full max-w-3xl mx-auto flex flex-col items-start">
+      <div className="w-full max-w-5xl mx-auto flex flex-col items-start">
         {/* Section 1: Marked Apps */}
         <HomeMarkedSection
           apps={markedList}

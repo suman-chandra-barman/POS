@@ -62,7 +62,7 @@ export const AppsDirectoryView: React.FC = () => {
 
   return (
     <div className="w-full min-h-[calc(100vh-5rem)] px-4 py-6 sm:py-8 pb-28">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-5 items-start">
+      <div className="flex flex-col md:flex-row gap-5 items-start">
         {/* Left Sidebar */}
         <AppsDirectorySidebar
           activeTab={activeTab}
