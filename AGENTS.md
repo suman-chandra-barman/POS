@@ -101,3 +101,20 @@ Organize code by feature under `@/features/<feature-name>/`:
 ## 11. Error Handling & Resilience
 - **Error Boundaries:** Implement `error.tsx` and `not-found.tsx` at route segment levels.
 - **Normalized Errors:** Extract and display API error messages standardly through RTK Query error payload helpers before displaying with `sonner`.
+
+---
+
+## 12. TypeScript & Constant Object Standards (No Enums)
+- **No TypeScript `enum`s:** NEVER use native TypeScript `enum` keywords. Enums add unnecessary runtime artifacts and lack flexibility.
+- **Use `as const` Objects:** Always define enum-like sets, tabs, action keys, and status values as frozen constant objects using `as const`.
+- **Derive Types Dynamically:** Always derive TypeScript union types using `(typeof OBJ)[keyof typeof OBJ]`:
+  ```typescript
+  export const INVENTORY_TABS = {
+    ALL: "all",
+    INACTIVE: "inactive",
+    ARCHIVED: "archived",
+  } as const;
+
+  export type InventoryTab = (typeof INVENTORY_TABS)[keyof typeof INVENTORY_TABS];
+  ```
+- **Consistent Consumption:** Reference object properties (e.g. `INVENTORY_TABS.ALL`, `INVENTORY_STATUS.ACTIVE`) across components, filters, and state logic rather than using raw string literals.
