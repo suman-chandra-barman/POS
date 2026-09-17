@@ -3,3 +3,4 @@ import { AddProductContainer } from "@/features/product/components/add-product/A
 export default function AddProductPage() {
   return <AddProductContainer />;
 }
+ 
