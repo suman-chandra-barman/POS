@@ -118,3 +118,8 @@ Organize code by feature under `@/features/<feature-name>/`:
   export type InventoryTab = (typeof INVENTORY_TABS)[keyof typeof INVENTORY_TABS];
   ```
 - **Consistent Consumption:** Reference object properties (e.g. `INVENTORY_TABS.ALL`, `INVENTORY_STATUS.ACTIVE`) across components, filters, and state logic rather than using raw string literals.
+
+---
+
+## 13. Mandatory Git Commit Message on Every Response
+- **Always Provide Git Commit Command:** At the end of every response where code, configurations, or documents are created/modified, the AI assistant MUST always provide a clean, conventional, copy-pasteable Git commit snippet (e.g., `feat(...)`, `refactor(...)`, `fix(...)`, `docs(...)`).
