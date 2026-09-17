@@ -44,4 +44,11 @@ export type AddProductFormData = z.infer<typeof AddProductFormSchema>;
 export type VariantAttribute = z.infer<typeof VariantAttributeSchema>;
 export type VariantTag = z.infer<typeof VariantTagSchema>;
 
-export type AddProductActiveTab = "product" | "price-tax" | "variants";
+export const ADD_PRODUCT_TABS = {
+  PRODUCT: "product",
+  PRICE_TAX: "price-tax",
+  VARIANTS: "variants",
+} as const;
+
+export type AddProductActiveTab =
+  (typeof ADD_PRODUCT_TABS)[keyof typeof ADD_PRODUCT_TABS];

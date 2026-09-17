@@ -3,6 +3,9 @@
 import React, { useState, useMemo } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import {
+  PRODUCT_TABS,
+  PRODUCT_VIEW_MODES,
+  PRODUCT_STATUS,
   type ProductTab,
   type ProductViewMode,
   type ProductColumnVisibility,
@@ -24,8 +27,10 @@ export const ProductContainer: React.FC = () => {
   const searchParams = useSearchParams();
 
   // Read URL query params
-  const tabParam = (searchParams.get("tab") as ProductTab) || "all";
-  const viewParam = (searchParams.get("view") as ProductViewMode) || "list";
+  const tabParam =
+    (searchParams.get("tab") as ProductTab) || PRODUCT_TABS.ALL;
+  const viewParam =
+    (searchParams.get("view") as ProductViewMode) || PRODUCT_VIEW_MODES.LIST;
   const selectedProductId = searchParams.get("productId") || undefined;
 
   const [activeTab, setActiveTab] = useState<ProductTab>(tabParam);
@@ -37,8 +42,8 @@ export const ProductContainer: React.FC = () => {
 
   const updateUrl = (tab: ProductTab, view: ProductViewMode, prodId?: string) => {
     const params = new URLSearchParams();
-    if (tab !== "all") params.set("tab", tab);
-    if (view !== "list") params.set("view", view);
+    if (tab !== PRODUCT_TABS.ALL) params.set("tab", tab);
+    if (view !== PRODUCT_VIEW_MODES.LIST) params.set("view", view);
     if (prodId) params.set("productId", prodId);
     const qs = params.toString();
     router.push(`${pathname}${qs ? `?${qs}` : ""}`);
@@ -50,18 +55,18 @@ export const ProductContainer: React.FC = () => {
   };
 
   const handleViewHistory = (productId: string) => {
-    setActiveView("history");
-    updateUrl(activeTab, "history", productId);
+    setActiveView(PRODUCT_VIEW_MODES.HISTORY);
+    updateUrl(activeTab, PRODUCT_VIEW_MODES.HISTORY, productId);
   };
 
   const handleViewLocation = (productId: string) => {
-    setActiveView("location");
-    updateUrl(activeTab, "location", productId);
+    setActiveView(PRODUCT_VIEW_MODES.LOCATION);
+    updateUrl(activeTab, PRODUCT_VIEW_MODES.LOCATION, productId);
   };
 
   const handleBackToList = () => {
-    setActiveView("list");
-    updateUrl(activeTab, "list");
+    setActiveView(PRODUCT_VIEW_MODES.LIST);
+    updateUrl(activeTab, PRODUCT_VIEW_MODES.LIST);
   };
 
   const handleToggleColumn = (key: keyof ProductColumnVisibility) => {
@@ -71,8 +76,13 @@ export const ProductContainer: React.FC = () => {
   // Filtered products based on active tab & search query
   const filteredProducts = useMemo(() => {
     return INITIAL_PRODUCTS.filter((product) => {
-      if (activeTab === "draft" && product.status !== "draft") return false;
-      if (activeTab === "archived" && product.status !== "archived") return false;
+      if (activeTab === PRODUCT_TABS.DRAFT && product.status !== PRODUCT_STATUS.DRAFT)
+        return false;
+      if (
+        activeTab === PRODUCT_TABS.ARCHIVED &&
+        product.status !== PRODUCT_STATUS.ARCHIVED
+      )
+        return false;
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
         const matchesName = product.name.toLowerCase().includes(query);

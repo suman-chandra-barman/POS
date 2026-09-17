@@ -5,7 +5,11 @@ import Link from "next/link";
 import { useLocale } from "next-intl";
 import { Search, SlidersHorizontal, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { type ProductTab, type ProductColumnVisibility } from "../types/product.types";
+import {
+  PRODUCT_TABS,
+  type ProductTab,
+  type ProductColumnVisibility,
+} from "../types/product.types";
 import { ProductColumnVisibilityDropdown } from "./ProductColumnVisibilityDropdown";
 
 interface ProductHeaderTabsProps {
@@ -21,9 +25,9 @@ interface ProductHeaderTabsProps {
 }
 
 const TABS: { key: ProductTab; label: string }[] = [
-  { key: "all", label: "All" },
-  { key: "draft", label: "Draft" },
-  { key: "archived", label: "Archived" },
+  { key: PRODUCT_TABS.ALL, label: "All" },
+  { key: PRODUCT_TABS.DRAFT, label: "Draft" },
+  { key: PRODUCT_TABS.ARCHIVED, label: "Archived" },
 ];
 
 export const ProductHeaderTabs: React.FC<ProductHeaderTabsProps> = ({

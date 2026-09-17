@@ -21,11 +21,14 @@ export type Step1FormData = z.infer<typeof step1Schema>;
 export type Step2FormData = z.infer<typeof step2Schema>;
 export type AccountSetupFormData = z.infer<typeof accountSetupSchema>;
 
-export type AccountSetupStep =
-  | "empty"
-  | "step1"
-  | "step2"
-  | "app-selection"
-  | "creating"
-  | "completed";
+export const ACCOUNT_SETUP_STEPS = {
+  EMPTY: "empty",
+  STEP1: "step1",
+  STEP2: "step2",
+  APP_SELECTION: "app-selection",
+  CREATING: "creating",
+  COMPLETED: "completed",
+} as const;
 
+export type AccountSetupStep =
+  (typeof ACCOUNT_SETUP_STEPS)[keyof typeof ACCOUNT_SETUP_STEPS];

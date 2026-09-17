@@ -1,6 +1,37 @@
-export type ProductTab = "all" | "draft" | "archived";
+export const PRODUCT_TABS = {
+  ALL: "all",
+  DRAFT: "draft",
+  ARCHIVED: "archived",
+} as const;
 
-export type ProductViewMode = "list" | "history" | "location";
+export type ProductTab = (typeof PRODUCT_TABS)[keyof typeof PRODUCT_TABS];
+
+export const PRODUCT_VIEW_MODES = {
+  LIST: "list",
+  HISTORY: "history",
+  LOCATION: "location",
+} as const;
+
+export type ProductViewMode =
+  (typeof PRODUCT_VIEW_MODES)[keyof typeof PRODUCT_VIEW_MODES];
+
+export const PRODUCT_STATUS = {
+  ACTIVE: "active",
+  DRAFT: "draft",
+  ARCHIVED: "archived",
+} as const;
+
+export type ProductStatus =
+  (typeof PRODUCT_STATUS)[keyof typeof PRODUCT_STATUS];
+
+export const HISTORY_STATUS = {
+  DONE: "Done",
+  PENDING: "Pending",
+  CANCELLED: "Cancelled",
+} as const;
+
+export type HistoryStatus =
+  (typeof HISTORY_STATUS)[keyof typeof HISTORY_STATUS];
 
 export interface ProductItem {
   id: string;
@@ -12,7 +43,7 @@ export interface ProductItem {
   subcategory?: string;
   inventory: number;
   cost: number;
-  status: "active" | "draft" | "archived";
+  status: ProductStatus;
 }
 
 export interface ProductHistoryItem {
@@ -27,7 +58,7 @@ export interface ProductHistoryItem {
   to: string;
   doneBy: string;
   quantity: number;
-  status: "Done" | "Pending" | "Cancelled";
+  status: HistoryStatus;
 }
 
 export interface ProductLocationItem {

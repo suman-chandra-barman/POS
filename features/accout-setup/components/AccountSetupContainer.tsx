@@ -11,6 +11,7 @@ import { BusinessWorkspaceSetupStep2 } from "./BusinessWorkspaceSetupStep2";
 import { AppSelectionStep } from "./AppSelectionStep";
 import { DatabaseCreatingStep } from "./DatabaseCreatingStep";
 import {
+  ACCOUNT_SETUP_STEPS,
   type AccountSetupStep,
   type Step1FormData,
   type Step2FormData,
@@ -28,7 +29,9 @@ export const AccountSetupContainer: React.FC = () => {
   const router = useRouter();
   const params = useParams();
   const locale = (params?.locale as string) || "en";
-  const [currentStep, setCurrentStep] = useState<AccountSetupStep>("empty");
+  const [currentStep, setCurrentStep] = useState<AccountSetupStep>(
+    ACCOUNT_SETUP_STEPS.EMPTY
+  );
   const [formData, setFormData] = useState<AccountSetupFormData>({
     ...INITIAL_STEP1_VALUES,
     ...INITIAL_STEP2_VALUES,
@@ -38,25 +41,25 @@ export const AccountSetupContainer: React.FC = () => {
   );
 
   const handleCreateCompany = () => {
-    setCurrentStep("step1");
+    setCurrentStep(ACCOUNT_SETUP_STEPS.STEP1);
   };
 
   const handleStep1Next = (step1Data: Step1FormData) => {
     setFormData((prev) => ({ ...prev, ...step1Data }));
     toast.success("Business information saved");
-    setCurrentStep("step2");
+    setCurrentStep(ACCOUNT_SETUP_STEPS.STEP2);
   };
 
   const handleStep2Submit = (step2Data: Step2FormData) => {
     setFormData((prev) => ({ ...prev, ...step2Data }));
     toast.success("Contact details confirmed");
-    setCurrentStep("app-selection");
+    setCurrentStep(ACCOUNT_SETUP_STEPS.APP_SELECTION);
   };
 
   const handleAppsConfirm = (apps: BusinessApp[]) => {
     setSelectedApps(apps);
     toast.success(`${apps.length} apps selected`);
-    setCurrentStep("creating");
+    setCurrentStep(ACCOUNT_SETUP_STEPS.CREATING);
   };
 
   const handleDatabaseCreated = () => {
@@ -65,7 +68,7 @@ export const AccountSetupContainer: React.FC = () => {
   };
 
   const handleReset = () => {
-    setCurrentStep("empty");
+    setCurrentStep(ACCOUNT_SETUP_STEPS.EMPTY);
     setFormData({
       ...INITIAL_STEP1_VALUES,
       ...INITIAL_STEP2_VALUES,
@@ -82,44 +85,44 @@ export const AccountSetupContainer: React.FC = () => {
     <AccountSetupLayout>
       <div className="flex flex-col items-center w-full">
         {/* Step 1: Empty State */}
-        {currentStep === "empty" && (
+        {currentStep === ACCOUNT_SETUP_STEPS.EMPTY && (
           <NoWorkspaceConnected onCreateCompany={handleCreateCompany} />
         )}
 
         {/* Step 2: Setup Step 1 (Business Info) */}
-        {currentStep === "step1" && (
+        {currentStep === ACCOUNT_SETUP_STEPS.STEP1 && (
           <BusinessWorkspaceSetupStep1
             initialValues={formData}
             onNext={handleStep1Next}
-            onBack={() => setCurrentStep("empty")}
+            onBack={() => setCurrentStep(ACCOUNT_SETUP_STEPS.EMPTY)}
           />
         )}
 
         {/* Step 3: Setup Step 2 (Contact & Localization) */}
-        {currentStep === "step2" && (
+        {currentStep === ACCOUNT_SETUP_STEPS.STEP2 && (
           <BusinessWorkspaceSetupStep2
             initialValues={formData}
             onSubmit={handleStep2Submit}
-            onBack={() => setCurrentStep("step1")}
+            onBack={() => setCurrentStep(ACCOUNT_SETUP_STEPS.STEP1)}
           />
         )}
 
         {/* Step 4: App Selection */}
-        {currentStep === "app-selection" && (
+        {currentStep === ACCOUNT_SETUP_STEPS.APP_SELECTION && (
           <AppSelectionStep
             initialSelectedIds={selectedApps.map((a) => a.id)}
             onConfirm={handleAppsConfirm}
-            onBack={() => setCurrentStep("step2")}
+            onBack={() => setCurrentStep(ACCOUNT_SETUP_STEPS.STEP2)}
           />
         )}
 
         {/* Step 5: Database Creating Progress */}
-        {currentStep === "creating" && (
+        {currentStep === ACCOUNT_SETUP_STEPS.CREATING && (
           <DatabaseCreatingStep onComplete={handleDatabaseCreated} />
         )}
 
         {/* Success / Completed Confirmation */}
-        {currentStep === "completed" && (
+        {currentStep === ACCOUNT_SETUP_STEPS.COMPLETED && (
           <div className="w-full max-w-107.5 rounded-2xl sm:rounded-3xl border border-neutral-100/80 bg-white p-6 shadow-[0_10px_35px_-5px_rgba(0,0,0,0.06)] text-center animate-in fade-in-0 zoom-in-95 duration-200">
             <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
               <CheckCircle2 className="size-6" />

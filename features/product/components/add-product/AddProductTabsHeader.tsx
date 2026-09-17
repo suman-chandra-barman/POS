@@ -2,7 +2,10 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import { type AddProductActiveTab } from "../../types/addProduct.types";
+import {
+  ADD_PRODUCT_TABS,
+  type AddProductActiveTab,
+} from "../../types/addProduct.types";
 
 interface AddProductTabsHeaderProps {
   activeTab: AddProductActiveTab;
@@ -10,9 +13,9 @@ interface AddProductTabsHeaderProps {
 }
 
 const TABS: { key: AddProductActiveTab; label: string }[] = [
-  { key: "product", label: "Product" },
-  { key: "price-tax", label: "Price & Tax" },
-  { key: "variants", label: "Variants" },
+  { key: ADD_PRODUCT_TABS.PRODUCT, label: "Product" },
+  { key: ADD_PRODUCT_TABS.PRICE_TAX, label: "Price & Tax" },
+  { key: ADD_PRODUCT_TABS.VARIANTS, label: "Variants" },
 ];
 
 export const AddProductTabsHeader: React.FC<AddProductTabsHeaderProps> = ({

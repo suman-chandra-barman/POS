@@ -10,6 +10,7 @@ import { ArrowLeft, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   AddProductFormSchema,
+  ADD_PRODUCT_TABS,
   type AddProductFormData,
   type AddProductActiveTab,
 } from "../../types/addProduct.types";
@@ -50,7 +51,9 @@ const INITIAL_VARIANT_DATA = [
 export const AddProductContainer: React.FC = () => {
   const router = useRouter();
   const locale = useLocale();
-  const [activeTab, setActiveTab] = useState<AddProductActiveTab>("product");
+  const [activeTab, setActiveTab] = useState<AddProductActiveTab>(
+    ADD_PRODUCT_TABS.PRODUCT
+  );
 
   const form = useForm<AddProductFormData>({
     resolver: zodResolver(AddProductFormSchema),
@@ -101,9 +104,9 @@ export const AddProductContainer: React.FC = () => {
 
         {/* Form Form Body */}
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-          {activeTab === "product" && <ProductInfoTab form={form} />}
-          {activeTab === "price-tax" && <PriceTaxTab form={form} />}
-          {activeTab === "variants" && <VariantsTab form={form} />}
+          {activeTab === ADD_PRODUCT_TABS.PRODUCT && <ProductInfoTab form={form} />}
+          {activeTab === ADD_PRODUCT_TABS.PRICE_TAX && <PriceTaxTab form={form} />}
+          {activeTab === ADD_PRODUCT_TABS.VARIANTS && <VariantsTab form={form} />}
 
           {/* Action Buttons */}
           <div className="flex items-center justify-end gap-3 pt-4">

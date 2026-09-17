@@ -1,4 +1,6 @@
 import {
+  PRODUCT_STATUS,
+  HISTORY_STATUS,
   type ProductItem,
   type ProductHistoryItem,
   type ProductLocationItem,
@@ -17,7 +19,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     category: "Men's Pant",
     inventory: 120,
     cost: 320.0,
-    status: "active",
+    status: PRODUCT_STATUS.ACTIVE,
   },
   {
     id: "prod-2",
@@ -28,7 +30,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     category: "Boy's Shirt",
     inventory: 85,
     cost: 1500.0,
-    status: "active",
+    status: PRODUCT_STATUS.ACTIVE,
   },
   {
     id: "prod-3",
@@ -39,7 +41,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     category: "Kid's Pant",
     inventory: 65,
     cost: 750.0,
-    status: "active",
+    status: PRODUCT_STATUS.ACTIVE,
   },
   {
     id: "prod-4",
@@ -50,7 +52,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     category: "Ladies T-shirt",
     inventory: 150,
     cost: 1200.0,
-    status: "draft",
+    status: PRODUCT_STATUS.DRAFT,
   },
   {
     id: "prod-5",
@@ -61,7 +63,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     category: "Plazo",
     inventory: 210,
     cost: 2200.0,
-    status: "archived",
+    status: PRODUCT_STATUS.ARCHIVED,
   },
 ];
 
@@ -78,7 +80,7 @@ export const INITIAL_HISTORY_ITEMS: ProductHistoryItem[] = [
     to: "Customer",
     doneBy: "Joy Chodu",
     quantity: 320,
-    status: "Done",
+    status: HISTORY_STATUS.DONE,
   },
   {
     id: "hist-2",
@@ -92,7 +94,7 @@ export const INITIAL_HISTORY_ITEMS: ProductHistoryItem[] = [
     to: "Banani - 12",
     doneBy: "Emon",
     quantity: 1500,
-    status: "Done",
+    status: HISTORY_STATUS.DONE,
   },
   {
     id: "hist-3",
@@ -106,7 +108,7 @@ export const INITIAL_HISTORY_ITEMS: ProductHistoryItem[] = [
     to: "Wearhouse",
     doneBy: "Seles 01",
     quantity: 750,
-    status: "Done",
+    status: HISTORY_STATUS.DONE,
   },
   {
     id: "hist-4",
@@ -120,7 +122,7 @@ export const INITIAL_HISTORY_ITEMS: ProductHistoryItem[] = [
     to: "Customer",
     doneBy: "Izaz Sels",
     quantity: 1200,
-    status: "Done",
+    status: HISTORY_STATUS.DONE,
   },
   {
     id: "hist-5",
@@ -134,7 +136,7 @@ export const INITIAL_HISTORY_ITEMS: ProductHistoryItem[] = [
     to: "Mirpur - 1",
     doneBy: "Joy Chodu",
     quantity: 2200,
-    status: "Done",
+    status: HISTORY_STATUS.DONE,
   },
 ];
 
