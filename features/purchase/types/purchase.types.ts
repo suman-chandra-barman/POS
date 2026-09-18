@@ -3,6 +3,7 @@ export const PURCHASE_VIEWS = {
   GRID: "grid",
   DETAILS: "details",
   NEW: "new",
+  RECEIVING: "receiving",
 } as const;
 
 export type PurchaseView = (typeof PURCHASE_VIEWS)[keyof typeof PURCHASE_VIEWS];
@@ -20,9 +21,18 @@ export const PURCHASE_STATUS = {
   PENDING: "Pending",
   CANCEL: "Cancel",
   DRAFT: "Draft",
+  REJECTED: "Rejected",
 } as const;
 
 export type PurchaseStatus = (typeof PURCHASE_STATUS)[keyof typeof PURCHASE_STATUS];
+
+export interface ProductVariant {
+  id: string;
+  name: string; // e.g., "Black / M / Jeans"
+  price: number;
+  stock: number;
+  isSelected?: boolean;
+}
 
 export interface PurchaseOrderItem {
   id: string;
@@ -37,6 +47,7 @@ export interface PurchaseOrderItem {
   difference?: number;
   category?: string;
   subcategory?: string;
+  variantName?: string;
 }
 
 export interface PurchaseOrder {
@@ -54,6 +65,7 @@ export interface PurchaseOrder {
   destination?: string;
   taxPercent?: number;
   items?: PurchaseOrderItem[];
+  isRejected?: boolean;
 }
 
 export interface CatalogProduct {
@@ -67,4 +79,6 @@ export interface CatalogProduct {
   category: string;
   subcategory: string;
   isStarred?: boolean;
+  stockUnit?: string; // e.g. "524/pcs"
+  variants?: ProductVariant[];
 }

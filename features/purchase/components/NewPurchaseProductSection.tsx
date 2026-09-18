@@ -8,6 +8,7 @@ import {
   type CatalogProduct,
 } from "../types/purchase.types";
 import { NewPurchaseProductSelectorModal } from "./NewPurchaseProductSelectorModal";
+import { CategoryFilterDrawer } from "./CategoryFilterDrawer";
 
 interface NewPurchaseProductSectionProps {
   items: PurchaseOrderItem[];
@@ -20,10 +21,15 @@ export const NewPurchaseProductSection: React.FC<
   NewPurchaseProductSectionProps
 > = ({ items, onAddProducts, onUpdateQuantity, onRemoveItem }) => {
   const [isSelectorOpen, setIsSelectorOpen] = useState(false);
+  const [isCategoryDrawerOpen, setIsCategoryDrawerOpen] = useState(false);
   const [searchInputValue, setSearchInputValue] = useState("");
 
   const handleOpenSelector = () => {
     setIsSelectorOpen(true);
+  };
+
+  const handleOpenCategoryDrawer = () => {
+    setIsCategoryDrawerOpen(true);
   };
 
   return (
@@ -45,7 +51,7 @@ export const NewPurchaseProductSection: React.FC<
 
           <button
             type="button"
-            onClick={handleOpenSelector}
+            onClick={handleOpenCategoryDrawer}
             className="h-10 px-4 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-700 text-xs font-semibold flex items-center gap-1.5 cursor-pointer shadow-2xs transition-colors shrink-0"
           >
             <Layers className="size-3.5 text-neutral-500" />
@@ -64,6 +70,16 @@ export const NewPurchaseProductSection: React.FC<
           initialQuery="Zara"
         />
       )}
+
+      {/* Category Filter Drawer (Images 1 & 2) */}
+      <CategoryFilterDrawer
+        isOpen={isCategoryDrawerOpen}
+        onClose={() => setIsCategoryDrawerOpen(false)}
+        onAddProducts={(prods) => {
+          onAddProducts(prods);
+          setIsCategoryDrawerOpen(false);
+        }}
+      />
 
       {/* Added Products Table (Empty dashes state in Image 4, filled in Step 2) */}
       <div className="overflow-x-auto pt-2">

@@ -103,13 +103,25 @@ export const PurchaseContainer: React.FC = () => {
     return found || orders[0];
   }, [orders, selectedOrderId]);
 
+  const handleCreateBackorderAndOrder = (
+    completedOrder: PurchaseOrder,
+    backorder: PurchaseOrder
+  ) => {
+    setOrders((prev) => [
+      completedOrder,
+      backorder,
+      ...prev.filter((o) => o.orderId !== completedOrder.orderId),
+    ]);
+    handleViewOrderDetails(completedOrder.orderId);
+  };
+
   return (
     <div className="w-full min-h-screen bg-[#f8f9fb] flex flex-col">
       {/* Dedicated Purchase Topbar */}
       <PurchaseTopbar onBack={handleBackNavigation} />
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-4 pb-36">
+      <main className="flex-1 w-full px-4 sm:px-6 py-4 pb-36">
         {/* 1. Purchase List Table View (Image 1) */}
         {activeView === PURCHASE_VIEWS.LIST && (
           <div className="space-y-4">
@@ -156,6 +168,7 @@ export const PurchaseContainer: React.FC = () => {
             onOrderCreated={(newId) => {
               handleViewOrderDetails(newId);
             }}
+            onCreateBackorderAndOrder={handleCreateBackorderAndOrder}
             onCancel={handleBackNavigation}
           />
         )}
