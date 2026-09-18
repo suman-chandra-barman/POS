@@ -19,6 +19,7 @@ interface PurchaseTableCardProps {
   onViewOrder: (id: string) => void;
   activeTab: PurchaseTab;
   onTabChange: (tab: PurchaseTab) => void;
+  searchQuery?: string;
 }
 
 const TABS: { id: PurchaseTab; label: string }[] = [
@@ -35,9 +36,8 @@ export const PurchaseTableCard: React.FC<PurchaseTableCardProps> = ({
   onViewOrder,
   activeTab,
   onTabChange,
+  searchQuery = "",
 }) => {
-  const [tableSearchQuery, setTableSearchQuery] = useState("");
-
   const filteredOrders = orders.filter((order) => {
     if (activeTab === PURCHASE_TABS.PENDING && order.status !== "Pending") {
       return false;
@@ -45,8 +45,8 @@ export const PurchaseTableCard: React.FC<PurchaseTableCardProps> = ({
     if (activeTab === PURCHASE_TABS.DRAFT && order.status !== "Draft") {
       return false;
     }
-    if (tableSearchQuery.trim()) {
-      const q = tableSearchQuery.toLowerCase();
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
       const matchId = order.orderId.toLowerCase().includes(q);
       const matchVendor = order.vendorName.toLowerCase().includes(q);
       const matchBuyer = order.buyerName.toLowerCase().includes(q);
@@ -60,8 +60,8 @@ export const PurchaseTableCard: React.FC<PurchaseTableCardProps> = ({
 
   return (
     <div className="w-full bg-white rounded-2xl border border-neutral-200/80 shadow-xs overflow-hidden">
-      {/* Card Header: Tabs & Table Search */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-3.5 border-b border-neutral-100">
+      {/* Card Header: Tabs */}
+      <div className="flex items-center px-5 py-3.5 border-b border-neutral-100">
         {/* Filter Tabs */}
         <div className="inline-flex items-center p-1 bg-neutral-100 rounded-xl">
           {TABS.map((tab) => {
@@ -82,27 +82,6 @@ export const PurchaseTableCard: React.FC<PurchaseTableCardProps> = ({
               </button>
             );
           })}
-        </div>
-
-        {/* Table Search & Filter Icon */}
-        <div className="flex items-center gap-2">
-          <div className="relative w-full sm:w-56">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-neutral-400 pointer-events-none" />
-            <input
-              type="text"
-              value={tableSearchQuery}
-              onChange={(e) => setTableSearchQuery(e.target.value)}
-              placeholder="Search"
-              className="w-full h-8 pl-8.5 pr-3 rounded-lg bg-neutral-100/70 border-none text-xs text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-300 transition-all"
-            />
-          </div>
-          <button
-            type="button"
-            aria-label="Filter columns"
-            className="p-1.5 rounded-lg border border-neutral-200 text-neutral-500 hover:bg-neutral-100 transition-colors cursor-pointer"
-          >
-            <SlidersHorizontal className="size-3.5" />
-          </button>
         </div>
       </div>
 

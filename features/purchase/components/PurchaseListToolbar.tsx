@@ -41,7 +41,7 @@ export const PurchaseListToolbar: React.FC<PurchaseListToolbarProps> = ({
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Placeholder text..."
+            placeholder="Search..."
             className="w-full h-9 pl-9.5 pr-8 rounded-full bg-neutral-100/70 border border-neutral-200/60 text-xs text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-neutral-300 transition-all"
           />
           <kbd className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-neutral-400 bg-neutral-200/60 px-1.5 py-0.5 rounded-sm pointer-events-none">

@@ -141,6 +141,7 @@ export const PurchaseContainer: React.FC = () => {
               onViewOrder={handleViewOrderDetails}
               activeTab={activeTab}
               onTabChange={handleTabChange}
+              searchQuery={globalSearch}
             />
           </div>
         )}
