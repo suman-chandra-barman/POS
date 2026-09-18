@@ -108,6 +108,11 @@ export default function Topbar() {
     });
   }, []);
 
+  // Routes with their own dedicated topbar (e.g. Purchase route)
+  if (pathname.includes('/purchase')) {
+    return null;
+  }
+
   return (
     <header className="h-16 border-b border-border bg-card text-card-foreground flex items-center justify-end px-4 md:px-6 z-20 sticky top-0">
 
