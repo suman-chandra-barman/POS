@@ -10,6 +10,10 @@ export const BottomNavDock: React.FC = () => {
   const pathname = usePathname();
   const locale = useLocale();
 
+  if (pathname.includes('/pos')) {
+    return null;
+  }
+
   return (
     <nav
       aria-label="Main floating navigation"
