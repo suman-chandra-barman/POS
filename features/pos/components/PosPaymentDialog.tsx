@@ -130,30 +130,30 @@ export const PosPaymentDialog: React.FC<PosPaymentDialogProps> = ({
 
                 <button
                   type="button"
-                  onClick={() => setMethod(POS_PAYMENT_METHODS.CARD)}
+                  onClick={() => setMethod(POS_PAYMENT_METHODS.PUBALI_BANK)}
                   className={cn(
                     "flex flex-col items-center justify-center p-3 rounded-xl border text-xs font-semibold transition-all cursor-pointer",
-                    method === POS_PAYMENT_METHODS.CARD
+                    method === POS_PAYMENT_METHODS.PUBALI_BANK
                       ? "border-[#0284c7] bg-[#f0f9ff] text-[#0284c7] shadow-2xs"
                       : "border-neutral-200 hover:bg-neutral-50 text-neutral-700"
                   )}
                 >
                   <CreditCard className="size-5 mb-1.5" />
-                  <span>Credit / Debit</span>
+                  <span>Pubali Bank</span>
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => setMethod(POS_PAYMENT_METHODS.MOBILE_BANKING)}
+                  onClick={() => setMethod(POS_PAYMENT_METHODS.BKASH)}
                   className={cn(
                     "flex flex-col items-center justify-center p-3 rounded-xl border text-xs font-semibold transition-all cursor-pointer",
-                    method === POS_PAYMENT_METHODS.MOBILE_BANKING
+                    method === POS_PAYMENT_METHODS.BKASH
                       ? "border-[#0284c7] bg-[#f0f9ff] text-[#0284c7] shadow-2xs"
                       : "border-neutral-200 hover:bg-neutral-50 text-neutral-700"
                   )}
                 >
                   <Smartphone className="size-5 mb-1.5" />
-                  <span>bKash / Nagad</span>
+                  <span>bKash</span>
                 </button>
               </div>
             </div>

@@ -7,34 +7,45 @@ import { PosUser, PosBranch } from "../types/pos.types";
 interface PosTerminalHeaderProps {
   currentBranch?: PosBranch | null;
   currentUser?: PosUser | null;
-  orderNumber: string;
+  orderTabs: string[];
+  activeOrder: string;
+  onSelectOrder: (orderNum: string) => void;
+  activeTab?: "sale" | "report";
+  onTabChange?: (tab: "sale" | "report") => void;
   searchQuery: string;
   onSearchChange: (q: string) => void;
   onLock: () => void;
   onNewTicket?: () => void;
   onOpenMenu?: () => void;
-  onOpenReport?: () => void;
 }
 
 export const PosTerminalHeader: React.FC<PosTerminalHeaderProps> = ({
   currentBranch,
   currentUser,
-  orderNumber,
+  orderTabs,
+  activeOrder,
+  onSelectOrder,
+  activeTab = "sale",
+  onTabChange,
   searchQuery,
   onSearchChange,
   onLock,
   onNewTicket,
   onOpenMenu,
-  onOpenReport,
 }) => {
   return (
     <header className="h-14 w-full bg-white border-b border-neutral-200/80 px-4 flex items-center justify-between gap-4 select-none shrink-0">
-      {/* Left side: Tabs and Order Pill */}
+      {/* Left side: Tabs and Order Pills */}
       <div className="flex items-center gap-2">
-        {/* Sale Pill (Active) */}
+        {/* Sale Pill */}
         <button
           type="button"
-          className="px-4 py-1.5 rounded-lg bg-neutral-900 text-white text-xs font-semibold shadow-2xs cursor-pointer"
+          onClick={() => onTabChange?.("sale")}
+          className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+            activeTab === "sale"
+              ? "bg-neutral-900 text-white shadow-2xs"
+              : "bg-neutral-100 hover:bg-neutral-200 text-neutral-700"
+          }`}
         >
           Sale
         </button>
@@ -42,8 +53,12 @@ export const PosTerminalHeader: React.FC<PosTerminalHeaderProps> = ({
         {/* Report Pill */}
         <button
           type="button"
-          onClick={onOpenReport}
-          className="px-3.5 py-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-600 hover:text-neutral-900 text-xs font-medium transition-colors cursor-pointer"
+          onClick={() => onTabChange?.("report")}
+          className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+            activeTab === "report"
+              ? "bg-neutral-900 text-white shadow-2xs"
+              : "bg-neutral-100 hover:bg-neutral-200 text-neutral-700"
+          }`}
         >
           Report
         </button>
@@ -58,10 +73,24 @@ export const PosTerminalHeader: React.FC<PosTerminalHeaderProps> = ({
           <Plus className="size-4" />
         </button>
 
-        {/* Order ID Pill */}
-        <div className="px-3 py-1.5 rounded-lg bg-neutral-100 text-neutral-800 text-xs font-mono font-medium">
-          {orderNumber}
-        </div>
+        {/* Order Tabs Pills (e.g. 60001, 60002) */}
+        {orderTabs.map((orderNum) => {
+          const isActive = orderNum === activeOrder;
+          return (
+            <button
+              key={orderNum}
+              type="button"
+              onClick={() => onSelectOrder(orderNum)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-colors cursor-pointer ${
+                isActive
+                  ? "bg-neutral-200 text-neutral-900 font-bold"
+                  : "bg-neutral-100 hover:bg-neutral-200 text-neutral-700"
+              }`}
+            >
+              {orderNum}
+            </button>
+          );
+        })}
 
         {currentBranch && (
           <span className="hidden xl:inline-block text-[11px] font-medium text-neutral-400 ml-2">

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Search, ChevronLeft, ChevronRight, SlidersHorizontal, Rows3 } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, Rows3 } from "lucide-react";
 
 interface PosSecondaryToolbarProps {
   searchQuery: string;
@@ -57,14 +57,7 @@ export const PosSecondaryToolbar: React.FC<PosSecondaryToolbarProps> = ({
           </div>
         </div>
 
-        {/* Filter Sliders icon */}
-        <button
-          type="button"
-          aria-label="Filter options"
-          className="p-1.5 text-neutral-700 hover:text-neutral-900 hover:bg-neutral-200/70 rounded-lg transition-colors cursor-pointer"
-        >
-          <SlidersHorizontal className="size-4" />
-        </button>
+
 
         {/* List / Row view toggle icon */}
         <button

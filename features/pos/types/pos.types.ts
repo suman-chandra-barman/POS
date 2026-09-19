@@ -15,10 +15,18 @@ export const POS_KEYPAD_MODES = {
 
 export type PosKeypadMode = (typeof POS_KEYPAD_MODES)[keyof typeof POS_KEYPAD_MODES];
 
+export const POS_TERMINAL_VIEWS = {
+  CATALOG: "catalog",
+  PAYMENT: "payment",
+} as const;
+
+export type PosTerminalViewMode = (typeof POS_TERMINAL_VIEWS)[keyof typeof POS_TERMINAL_VIEWS];
+
 export const POS_PAYMENT_METHODS = {
+  CUSTOMER_ACCOUNT: "customer_account",
   CASH: "cash",
-  CARD: "card",
-  MOBILE_BANKING: "mobile_banking",
+  PUBALI_BANK: "pubali_bank",
+  BKASH: "bkash",
 } as const;
 
 export type PosPaymentMethod = (typeof POS_PAYMENT_METHODS)[keyof typeof POS_PAYMENT_METHODS];

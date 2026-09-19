@@ -11,34 +11,39 @@ import {
 import { PosCartTable } from "./PosCartTable";
 import { PosKeypad } from "./PosKeypad";
 import { PosCustomerModal } from "./PosCustomerModal";
-import { PosPaymentDialog } from "./PosPaymentDialog";
 
 interface PosCartSectionProps {
-  orderNumber: string;
   items: PosCartItem[];
   customer: PosCustomer;
   note: string;
+  terminalMode?: "catalog" | "payment";
   onCustomerChange: (c: PosCustomer) => void;
   onNoteChange: (note: string) => void;
   onUpdateItemQuantity: (id: string, qty: number) => void;
   onUpdateItemDiscount: (id: string, discountPercent: number) => void;
   onUpdateItemPrice: (id: string, price: number) => void;
   onClearCart: () => void;
-  onCompleteSale: () => void;
+  onOpenPayment?: () => void;
+  onBackToCatalog?: () => void;
+  onValidatePayment?: () => void;
+  onAddQuickCash?: (amount: number) => void;
 }
 
 export const PosCartSection: React.FC<PosCartSectionProps> = ({
-  orderNumber,
   items,
   customer,
   note,
+  terminalMode = "catalog",
   onCustomerChange,
   onNoteChange,
   onUpdateItemQuantity,
   onUpdateItemDiscount,
   onUpdateItemPrice,
   onClearCart,
-  onCompleteSale,
+  onOpenPayment,
+  onBackToCatalog,
+  onValidatePayment,
+  onAddQuickCash,
 }) => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(
     items[0]?.id || null
@@ -48,7 +53,6 @@ export const PosCartSection: React.FC<PosCartSectionProps> = ({
   );
   const [keypadInput, setKeypadInput] = useState<string>("");
   const [customerModalOpen, setCustomerModalOpen] = useState(false);
-  const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
 
   // Calculations
@@ -113,6 +117,7 @@ export const PosCartSection: React.FC<PosCartSectionProps> = ({
       <PosCartTable
         items={items}
         selectedItemId={activeItem?.id || null}
+        discountAmount={totalDiscount}
         onSelectItem={(id) => {
           setSelectedItemId(id);
           setKeypadInput("");
@@ -188,27 +193,49 @@ export const PosCartSection: React.FC<PosCartSectionProps> = ({
       {/* 3. Lower Section: 4x4 Keypad */}
       <PosKeypad
         currentMode={keypadMode}
+        keypadType={terminalMode === "payment" ? "payment" : "sales"}
         onModeChange={handleModeChange}
         onDigitPress={handleDigitPress}
+        onAddQuickCash={onAddQuickCash}
         onToggleSign={handleToggleSign}
         onBackspace={handleBackspace}
       />
 
-      {/* 4. Bottom Payment Button (Image 5) */}
+      {/* 4. Bottom Action Buttons (Matching Images 1, 3 & 4) */}
       <div className="p-2 bg-neutral-50/80 border-t border-neutral-200">
-        <button
-          type="button"
-          onClick={() => setPaymentDialogOpen(true)}
-          disabled={items.length === 0}
-          className="w-full h-12 rounded-xl bg-[#0284c7] hover:bg-[#0369a1] active:bg-[#075985] text-white text-base font-bold flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <span>Payment</span>
-          {total > 0 && (
-            <span className="text-sm font-semibold opacity-90">
-              ({total.toLocaleString("en-US")} ৳)
-            </span>
-          )}
-        </button>
+        {terminalMode === "catalog" ? (
+          <button
+            type="button"
+            onClick={onOpenPayment}
+            disabled={items.length === 0}
+            className="w-full h-12 rounded-xl bg-[#0284c7] hover:bg-[#0369a1] active:bg-[#075985] text-white text-base font-bold flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <span>Payment</span>
+            {total > 0 && (
+              <span className="text-sm font-semibold opacity-90">
+                ({total.toLocaleString("en-US")} ৳)
+              </span>
+            )}
+          </button>
+        ) : (
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={onBackToCatalog}
+              className="flex-1 h-12 rounded-xl bg-neutral-300 hover:bg-neutral-400 active:bg-neutral-500 text-neutral-900 text-sm font-bold flex items-center justify-center transition-colors cursor-pointer"
+            >
+              Back
+            </button>
+            <button
+              type="button"
+              onClick={onValidatePayment}
+              disabled={items.length === 0}
+              className="flex-1 h-12 rounded-xl bg-[#0284c7] hover:bg-[#0369a1] active:bg-[#075985] text-white text-sm font-bold flex items-center justify-center transition-colors cursor-pointer disabled:opacity-50"
+            >
+              Validate
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Modals */}
@@ -217,22 +244,6 @@ export const PosCartSection: React.FC<PosCartSectionProps> = ({
           selectedCustomer={customer}
           onSelectCustomer={onCustomerChange}
           onClose={() => setCustomerModalOpen(false)}
-        />
-      )}
-
-      {paymentDialogOpen && (
-        <PosPaymentDialog
-          orderNumber={orderNumber}
-          items={items}
-          customer={customer}
-          subtotal={subtotal}
-          discount={totalDiscount}
-          total={total}
-          onCompleteSale={() => {
-            setPaymentDialogOpen(false);
-            onCompleteSale();
-          }}
-          onClose={() => setPaymentDialogOpen(false)}
         />
       )}
     </div>
