@@ -73,6 +73,20 @@ export interface PosCustomer {
   phone: string;
   email?: string;
   points?: number;
+  type?: "Customer" | "Supplier";
+  discountPercent?: number;
+  initials?: string;
+  avatarColor?: string;
+}
+
+export interface PosSalesEmployee {
+  id: string;
+  name: string;
+  role: string;
+  todayOrders: number;
+  amount: string;
+  avatarUrl: string;
+  bannerGradient: string;
 }
 
 export interface PosOrder {

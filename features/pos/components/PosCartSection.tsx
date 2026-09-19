@@ -1,21 +1,30 @@
 "use client";
 
 import React, { useState } from "react";
-import { User, FileText, UserCheck, MoreHorizontal, Trash2 } from "lucide-react";
+import { User, FileText, UserCheck, MoreHorizontal } from "lucide-react";
+import { toast } from "sonner";
 import {
   PosCartItem,
   PosCustomer,
   PosKeypadMode,
   POS_KEYPAD_MODES,
+  PosSalesEmployee,
 } from "../types/pos.types";
 import { PosCartTable } from "./PosCartTable";
 import { PosKeypad } from "./PosKeypad";
-import { PosCustomerModal } from "./PosCustomerModal";
+import { PosCustomerSelectModal } from "./PosCustomerSelectModal";
+import { PosNoteDialog } from "./PosNoteDialog";
+import { PosSalesEmployeeModal } from "./PosSalesEmployeeModal";
+import { PosActionsModal } from "./PosActionsModal";
+import { PosCouponDialog } from "./PosCouponDialog";
+import { PosInfoDialog } from "./PosInfoDialog";
 
 interface PosCartSectionProps {
   items: PosCartItem[];
   customer: PosCustomer;
   note: string;
+  orderNumber?: string;
+  cashierName?: string;
   terminalMode?: "catalog" | "payment";
   onCustomerChange: (c: PosCustomer) => void;
   onNoteChange: (note: string) => void;
@@ -33,6 +42,8 @@ export const PosCartSection: React.FC<PosCartSectionProps> = ({
   items,
   customer,
   note,
+  orderNumber = "60001",
+  cashierName = "Aminul Huq",
   terminalMode = "catalog",
   onCustomerChange,
   onNoteChange,
@@ -52,8 +63,16 @@ export const PosCartSection: React.FC<PosCartSectionProps> = ({
     POS_KEYPAD_MODES.QTY
   );
   const [keypadInput, setKeypadInput] = useState<string>("");
+
+  // Modals state
   const [customerModalOpen, setCustomerModalOpen] = useState(false);
-  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [noteDialogOpen, setNoteDialogOpen] = useState(false);
+  const [salesModalOpen, setSalesModalOpen] = useState(false);
+  const [actionsModalOpen, setActionsModalOpen] = useState(false);
+  const [couponDialogOpen, setCouponDialogOpen] = useState(false);
+  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
+  const [selectedSalesperson, setSelectedSalesperson] =
+    useState<PosSalesEmployee | null>(null);
 
   // Calculations
   const subtotal = items.reduce((acc, i) => acc + i.price * i.quantity, 0);
@@ -103,12 +122,37 @@ export const PosCartSection: React.FC<PosCartSectionProps> = ({
     setKeypadInput("");
   };
 
-  const handlePromptNote = () => {
-    const current = note || "";
-    const res = window.prompt("Add Order Note:", current);
-    if (res !== null) {
-      onNoteChange(res);
+  const handleCustomerSelected = (newCustomer: PosCustomer) => {
+    onCustomerChange(newCustomer);
+    // Apply customer discount if customer has discount and items exist
+    if ((newCustomer.discountPercent || 0) > 0 && items.length > 0) {
+      items.forEach((it) => {
+        onUpdateItemDiscount(it.id, newCustomer.discountPercent || 0);
+      });
+      toast.info(
+        `Applied customer's ${newCustomer.discountPercent}% discount to cart items.`
+      );
     }
+  };
+
+  const handleApplyCoupon = (code: string, discountPercent: number) => {
+    if (items.length === 0) {
+      toast.error("Add items to cart before applying coupon.");
+      return;
+    }
+    items.forEach((it) => {
+      onUpdateItemDiscount(it.id, discountPercent);
+    });
+  };
+
+  const handleCancelOrder = () => {
+    if (items.length === 0) {
+      toast.info("Cart is already empty.");
+      return;
+    }
+    onClearCart();
+    onNoteChange("");
+    toast.success("Order has been cancelled and cart cleared.");
   };
 
   return (
@@ -126,68 +170,67 @@ export const PosCartSection: React.FC<PosCartSectionProps> = ({
 
       {/* 2. Middle Row: Quick Action Buttons (Customer, Note, Sales, ...) */}
       <div className="flex items-center gap-1.5 p-2 border-t border-neutral-200/80 bg-neutral-50/60 select-none">
-        {/* Customer Button */}
+        {/* Customer Button (Matching requested "Customer" label and Image 1 modal) */}
         <button
           type="button"
           onClick={() => setCustomerModalOpen(true)}
+          title={customer?.name ? `Customer: ${customer.name}` : "Customer"}
           className="flex-1 h-9 px-2.5 rounded-lg border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer truncate shadow-2xs"
         >
           <User className="size-3.5 text-neutral-500 shrink-0" />
-          <span className="truncate">{customer.name}</span>
+          <span className="truncate">Customer</span>
         </button>
 
-        {/* Note Button */}
+        {/* Note Button (Matching requested Shadcn dialog with textarea) */}
         <button
           type="button"
-          onClick={handlePromptNote}
-          className="h-9 px-3 rounded-lg border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-2xs"
+          onClick={() => setNoteDialogOpen(true)}
+          className={`h-9 px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-2xs relative ${
+            note
+              ? "border-amber-300 bg-amber-50/70 text-amber-900"
+              : "border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-800"
+          }`}
         >
-          <FileText className="size-3.5 text-neutral-500" />
+          <FileText
+            className={`size-3.5 ${
+              note ? "text-amber-600" : "text-neutral-500"
+            }`}
+          />
           <span>Note</span>
+          {note && (
+            <span className="size-1.5 rounded-full bg-amber-500 absolute top-1.5 right-1.5" />
+          )}
         </button>
 
-        {/* Sales Button */}
+        {/* Sales Button (Matching Image 2 modal) */}
         <button
           type="button"
-          className="h-9 px-3 rounded-lg border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-2xs"
+          onClick={() => setSalesModalOpen(true)}
+          className={`h-9 px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-2xs ${
+            selectedSalesperson
+              ? "border-blue-300 bg-blue-50/70 text-blue-900"
+              : "border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-800"
+          }`}
         >
-          <UserCheck className="size-3.5 text-neutral-500" />
-          <span>Sales</span>
+          <UserCheck
+            className={`size-3.5 ${
+              selectedSalesperson ? "text-blue-600" : "text-neutral-500"
+            }`}
+          />
+          <span className="truncate">
+            {selectedSalesperson ? selectedSalesperson.name.split(" ")[0] : "Sales"}
+          </span>
         </button>
 
-        {/* More Actions Dropdown */}
-        <div className="relative">
-          <button
-            type="button"
-            onClick={() => setMoreMenuOpen((v) => !v)}
-            aria-label="More actions"
-            className="size-9 rounded-lg border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-600 flex items-center justify-center transition-colors cursor-pointer shadow-2xs"
-          >
-            <MoreHorizontal className="size-4" />
-          </button>
-
-          {moreMenuOpen && (
-            <>
-              <div
-                className="fixed inset-0 z-30"
-                onClick={() => setMoreMenuOpen(false)}
-              />
-              <div className="absolute right-0 bottom-full mb-1 w-36 bg-white rounded-xl shadow-lg border border-neutral-200 py-1 z-40 animate-in fade-in duration-100">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMoreMenuOpen(false);
-                    onClearCart();
-                  }}
-                  className="w-full flex items-center gap-2 px-3 py-2 text-xs text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
-                >
-                  <Trash2 className="size-3.5" />
-                  <span>Clear Cart</span>
-                </button>
-              </div>
-            </>
-          )}
-        </div>
+        {/* Three-Dot Actions Button (Matching Image 3 modal) */}
+        <button
+          type="button"
+          onClick={() => setActionsModalOpen(true)}
+          aria-label="More actions"
+          className="size-9 rounded-lg border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-600 flex items-center justify-center transition-colors cursor-pointer shadow-2xs"
+        >
+          <MoreHorizontal className="size-4" />
+        </button>
       </div>
 
       {/* 3. Lower Section: 4x4 Keypad */}
@@ -201,7 +244,7 @@ export const PosCartSection: React.FC<PosCartSectionProps> = ({
         onBackspace={handleBackspace}
       />
 
-      {/* 4. Bottom Action Buttons (Matching Images 1, 3 & 4) */}
+      {/* 4. Bottom Action Buttons */}
       <div className="p-2 bg-neutral-50/80 border-t border-neutral-200">
         {terminalMode === "catalog" ? (
           <button
@@ -238,14 +281,65 @@ export const PosCartSection: React.FC<PosCartSectionProps> = ({
         )}
       </div>
 
-      {/* Modals */}
+      {/* 1st Image Modal: Customer Select Modal */}
       {customerModalOpen && (
-        <PosCustomerModal
+        <PosCustomerSelectModal
           selectedCustomer={customer}
-          onSelectCustomer={onCustomerChange}
+          onSelectCustomer={handleCustomerSelected}
           onClose={() => setCustomerModalOpen(false)}
         />
       )}
+
+      {/* Note Shadcn Dialog */}
+      <PosNoteDialog
+        isOpen={noteDialogOpen}
+        initialNote={note}
+        onSaveNote={onNoteChange}
+        onClose={() => setNoteDialogOpen(false)}
+      />
+
+      {/* 2nd Image Modal: Sales Employee Modal */}
+      {salesModalOpen && (
+        <PosSalesEmployeeModal
+          selectedSalesperson={selectedSalesperson}
+          onSelectSalesperson={setSelectedSalesperson}
+          onClose={() => setSalesModalOpen(false)}
+        />
+      )}
+
+      {/* 3rd Image Modal: Actions Modal */}
+      {actionsModalOpen && (
+        <PosActionsModal
+          onClose={() => setActionsModalOpen(false)}
+          onOpenCustomerNote={() => setNoteDialogOpen(true)}
+          onOpenDiscount={() => {
+            setKeypadMode(POS_KEYPAD_MODES.DISCOUNT);
+            toast.info("Switched to Discount mode. Enter percent on the keypad.");
+          }}
+          onOpenCoupon={() => setCouponDialogOpen(true)}
+          onOpenInfo={() => setInfoDialogOpen(true)}
+          onCancelOrder={handleCancelOrder}
+        />
+      )}
+
+      {/* Feature Dialog: Coupon Modal */}
+      <PosCouponDialog
+        isOpen={couponDialogOpen}
+        onApplyCoupon={handleApplyCoupon}
+        onClose={() => setCouponDialogOpen(false)}
+      />
+
+      {/* Feature Dialog: Order & Register Info Modal */}
+      <PosInfoDialog
+        isOpen={infoDialogOpen}
+        orderNumber={orderNumber}
+        itemCount={items.length}
+        totalAmount={total}
+        cashierName={cashierName}
+        onClose={() => setInfoDialogOpen(false)}
+      />
     </div>
   );
 };
+
+export default PosCartSection;

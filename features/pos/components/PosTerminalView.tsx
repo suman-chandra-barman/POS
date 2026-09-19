@@ -340,6 +340,8 @@ export const PosTerminalView: React.FC<PosTerminalViewProps> = ({
           items={currentOrder.items}
           customer={currentOrder.customer}
           note={currentOrder.note}
+          orderNumber={activeOrder}
+          cashierName={cashier?.name}
           terminalMode={terminalMode}
           onCustomerChange={(cust) =>
             updateCurrentOrder((ord) => ({ ...ord, customer: cust }))
