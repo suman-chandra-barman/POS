@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { User, FileText, UserCheck, MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import {
   PosCartItem,
@@ -57,10 +57,10 @@ export const PosCartSection: React.FC<PosCartSectionProps> = ({
   onAddQuickCash,
 }) => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(
-    items[0]?.id || null
+    items[0]?.id || null,
   );
   const [keypadMode, setKeypadMode] = useState<PosKeypadMode>(
-    POS_KEYPAD_MODES.QTY
+    POS_KEYPAD_MODES.QTY,
   );
   const [keypadInput, setKeypadInput] = useState<string>("");
 
@@ -130,7 +130,7 @@ export const PosCartSection: React.FC<PosCartSectionProps> = ({
         onUpdateItemDiscount(it.id, newCustomer.discountPercent || 0);
       });
       toast.info(
-        `Applied customer's ${newCustomer.discountPercent}% discount to cart items.`
+        `Applied customer's ${newCustomer.discountPercent}% discount to cart items.`,
       );
     }
   };
@@ -169,58 +169,51 @@ export const PosCartSection: React.FC<PosCartSectionProps> = ({
       />
 
       {/* 2. Middle Row: Quick Action Buttons (Customer, Note, Sales, ...) */}
-      <div className="flex items-center gap-1.5 p-2 border-t border-neutral-200/80 bg-neutral-50/60 select-none">
-        {/* Customer Button (Matching requested "Customer" label and Image 1 modal) */}
-        <button
-          type="button"
-          onClick={() => setCustomerModalOpen(true)}
-          title={customer?.name ? `Customer: ${customer.name}` : "Customer"}
-          className="flex-1 h-9 px-2.5 rounded-lg border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer truncate shadow-2xs"
-        >
-          <User className="size-3.5 text-neutral-500 shrink-0" />
-          <span className="truncate">Customer</span>
-        </button>
+      <div className="flex items-center justify-between gap-1.5 p-2 border-t border-neutral-200/80 bg-neutral-50/60 select-none">
+        <div className="flex items-center gap-1.5">
+          {/* Customer Button (Matching requested "Customer" label and Image 1 modal) */}
+          <button
+            type="button"
+            onClick={() => setCustomerModalOpen(true)}
+            title={customer?.name ? `Customer: ${customer.name}` : "Customer"}
+            className="h-9 px-2.5 rounded-lg border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer truncate shadow-2xs"
+          >
+            <span className="truncate">Customer</span>
+          </button>
 
-        {/* Note Button (Matching requested Shadcn dialog with textarea) */}
-        <button
-          type="button"
-          onClick={() => setNoteDialogOpen(true)}
-          className={`h-9 px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-2xs relative ${
-            note
-              ? "border-amber-300 bg-amber-50/70 text-amber-900"
-              : "border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-800"
-          }`}
-        >
-          <FileText
-            className={`size-3.5 ${
-              note ? "text-amber-600" : "text-neutral-500"
+          {/* Note Button (Matching requested Shadcn dialog with textarea) */}
+          <button
+            type="button"
+            onClick={() => setNoteDialogOpen(true)}
+            className={`h-9 px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-2xs relative ${
+              note
+                ? "border-amber-300 bg-amber-50/70 text-amber-900"
+                : "border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-800"
             }`}
-          />
-          <span>Note</span>
-          {note && (
-            <span className="size-1.5 rounded-full bg-amber-500 absolute top-1.5 right-1.5" />
-          )}
-        </button>
+          >
+            <span>Note</span>
+            {note && (
+              <span className="size-1.5 rounded-full bg-amber-500 absolute top-1.5 right-1.5" />
+            )}
+          </button>
 
-        {/* Sales Button (Matching Image 2 modal) */}
-        <button
-          type="button"
-          onClick={() => setSalesModalOpen(true)}
-          className={`h-9 px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-2xs ${
-            selectedSalesperson
-              ? "border-blue-300 bg-blue-50/70 text-blue-900"
-              : "border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-800"
-          }`}
-        >
-          <UserCheck
-            className={`size-3.5 ${
-              selectedSalesperson ? "text-blue-600" : "text-neutral-500"
+          {/* Sales Button (Matching Image 2 modal) */}
+          <button
+            type="button"
+            onClick={() => setSalesModalOpen(true)}
+            className={`h-9 px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-2xs ${
+              selectedSalesperson
+                ? "border-blue-300 bg-blue-50/70 text-blue-900"
+                : "border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-800"
             }`}
-          />
-          <span className="truncate">
-            {selectedSalesperson ? selectedSalesperson.name.split(" ")[0] : "Sales"}
-          </span>
-        </button>
+          >
+            <span className="truncate">
+              {selectedSalesperson
+                ? selectedSalesperson.name.split(" ")[0]
+                : "Sales"}
+            </span>
+          </button>
+        </div>
 
         {/* Three-Dot Actions Button (Matching Image 3 modal) */}
         <button
@@ -314,7 +307,9 @@ export const PosCartSection: React.FC<PosCartSectionProps> = ({
           onOpenCustomerNote={() => setNoteDialogOpen(true)}
           onOpenDiscount={() => {
             setKeypadMode(POS_KEYPAD_MODES.DISCOUNT);
-            toast.info("Switched to Discount mode. Enter percent on the keypad.");
+            toast.info(
+              "Switched to Discount mode. Enter percent on the keypad.",
+            );
           }}
           onOpenCoupon={() => setCouponDialogOpen(true)}
           onOpenInfo={() => setInfoDialogOpen(true)}
