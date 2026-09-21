@@ -20,6 +20,7 @@ import { PosNoteDialog } from "./PosNoteDialog";
 import { PosSalesEmployeeModal } from "./PosSalesEmployeeModal";
 import { PosActionsModal } from "./PosActionsModal";
 import { PosCouponDialog } from "./PosCouponDialog";
+import { PosDiscountDialog } from "./PosDiscountDialog";
 import { PosInfoDialog } from "./PosInfoDialog";
 
 interface PosCartSectionProps {
@@ -86,6 +87,7 @@ export const PosCartSection: React.FC<PosCartSectionProps> = ({
   // Modals state
   const [customerModalOpen, setCustomerModalOpen] = useState(false);
   const [noteDialogOpen, setNoteDialogOpen] = useState(false);
+  const [discountDialogOpen, setDiscountDialogOpen] = useState(false);
   const [salesModalOpen, setSalesModalOpen] = useState(false);
   const [actionsModalOpen, setActionsModalOpen] = useState(false);
   const [couponDialogOpen, setCouponDialogOpen] = useState(false);
@@ -381,15 +383,32 @@ export const PosCartSection: React.FC<PosCartSectionProps> = ({
         <PosActionsModal
           onClose={() => setActionsModalOpen(false)}
           onOpenCustomerNote={() => setNoteDialogOpen(true)}
-          onOpenDiscount={() => {
-            setKeypadMode(POS_KEYPAD_MODES.DISCOUNT);
-            toast.info(
-              "Switched to Discount mode. Enter percent on the keypad.",
-            );
-          }}
+          onOpenDiscount={() => setDiscountDialogOpen(true)}
           onOpenCoupon={() => setCouponDialogOpen(true)}
           onOpenInfo={() => setInfoDialogOpen(true)}
           onCancelOrder={handleCancelOrder}
+        />
+      )}
+
+      {/* Discount Modal (Matching Image 3) */}
+      {discountDialogOpen && (
+        <PosDiscountDialog
+          isOpen={discountDialogOpen}
+          initialDiscount={activeItem?.discountPercent || 10}
+          onApplyDiscount={(percent) => {
+            if (activeItem) {
+              onUpdateItemDiscount(activeItem.id, percent);
+              toast.success(
+                `Applied ${percent}% discount to ${activeItem.name}.`,
+              );
+            } else if (items.length > 0) {
+              items.forEach((it) => onUpdateItemDiscount(it.id, percent));
+              toast.success(`Applied ${percent}% discount to all cart items.`);
+            } else {
+              toast.info("No items in cart to discount.");
+            }
+          }}
+          onClose={() => setDiscountDialogOpen(false)}
         />
       )}
 
