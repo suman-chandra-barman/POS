@@ -2,7 +2,6 @@
 
 import React, { useRef } from "react";
 import Image from "next/image";
-import { ImagePlus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   EmployeeFormData,
@@ -55,7 +54,68 @@ export const EmployeeDetailsCard: React.FC<EmployeeDetailsCardProps> = ({
 
       {/* Top Common Form Section */}
       <div className="flex flex-col sm:flex-row items-start gap-6">
-        {/* Left Side Inputs */}
+        {/* Left Side Avatar upload Section */}
+        <div className="shrink-0 flex flex-col justify-between w-full sm:w-44 gap-3.5">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="hidden"
+          />
+
+          <div
+            onClick={() => fileInputRef.current?.click()}
+            className="w-full h-36 sm:h-38 rounded-3xl bg-[#f8f9fb] hover:bg-[#f1f3f6] border border-dashed border-neutral-300 flex items-center justify-center overflow-hidden relative cursor-pointer group transition-colors shadow-2xs"
+          >
+            {formData.avatarUrl ? (
+              <Image
+                src={formData.avatarUrl}
+                alt="Uploaded avatar"
+                fill
+                sizes="176px"
+                className="object-cover"
+              />
+            ) : (
+              <div className="flex flex-col items-center justify-center text-neutral-400 group-hover:text-neutral-500 transition-transform group-hover:scale-105 duration-200">
+                <svg
+                  className="size-16 sm:size-18"
+                  viewBox="0 0 64 64"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M34 14H20C15.5817 14 12 17.5817 12 22V42C12 46.4183 15.5817 50 20 50H44C48.4183 50 52 46.4183 52 42V32"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M48 10V24M41 17H55"
+                    stroke="currentColor"
+                    strokeWidth="4.5"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M13 42.5C18.5 35 25 32 34 34.5C40 36 45 32 49 28V42C49 46.4183 45.4183 50 41 50H20.5C16.3579 50 13 46.6421 13 42.5Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="w-full h-11 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-700 text-xs font-semibold shadow-2xs transition-colors cursor-pointer flex items-center justify-center"
+          >
+            Upload Image
+          </button>
+        </div>
+
+        {/* Right Side inputs*/}
         <div className="flex-1 w-full space-y-3.5">
           {/* Name */}
           <div>
@@ -65,9 +125,7 @@ export const EmployeeDetailsCard: React.FC<EmployeeDetailsCardProps> = ({
             <input
               type="text"
               value={formData.name}
-              onChange={(e) =>
-                onChange({ ...formData, name: e.target.value })
-              }
+              onChange={(e) => onChange({ ...formData, name: e.target.value })}
               placeholder="Enter employ name"
               className="w-full px-3.5 py-2.5 bg-white border border-neutral-200/90 rounded-xl text-xs text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all"
             />
@@ -108,44 +166,6 @@ export const EmployeeDetailsCard: React.FC<EmployeeDetailsCardProps> = ({
             placeholder="e. g. Sales man, Team Lead"
           />
         </div>
-
-        {/* Right Side Avatar Upload */}
-        <div className="shrink-0 flex flex-col items-center gap-2.5 w-full sm:w-auto">
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className="hidden"
-          />
-
-          <div
-            onClick={() => fileInputRef.current?.click()}
-            className="size-28 sm:size-32 rounded-3xl bg-neutral-100 hover:bg-neutral-200/80 border border-neutral-200 flex items-center justify-center overflow-hidden relative cursor-pointer group transition-colors shadow-2xs"
-          >
-            {formData.avatarUrl ? (
-              <Image
-                src={formData.avatarUrl}
-                alt="Uploaded avatar"
-                fill
-                sizes="128px"
-                className="object-cover"
-              />
-            ) : (
-              <div className="flex flex-col items-center justify-center text-neutral-400 group-hover:text-neutral-600 transition-colors">
-                <ImagePlus className="size-10 stroke-[1.5]" />
-              </div>
-            )}
-          </div>
-
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="px-4 py-1.5 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-700 text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
-          >
-            Upload Image
-          </button>
-        </div>
       </div>
 
       {/* Tabs Navigation Bar */}
@@ -159,7 +179,7 @@ export const EmployeeDetailsCard: React.FC<EmployeeDetailsCardProps> = ({
               "flex-1 py-2 text-xs font-medium rounded-xl transition-all cursor-pointer text-center",
               activeTab === tab.key
                 ? "bg-white text-neutral-900 font-bold shadow-xs"
-                : "text-neutral-500 hover:text-neutral-800"
+                : "text-neutral-500 hover:text-neutral-800",
             )}
           >
             {tab.label}
@@ -172,9 +192,7 @@ export const EmployeeDetailsCard: React.FC<EmployeeDetailsCardProps> = ({
         {activeTab === EMPLOYEE_TABS.WORK && (
           <WorkTabContent
             data={formData.work}
-            onChange={(workData) =>
-              onChange({ ...formData, work: workData })
-            }
+            onChange={(workData) => onChange({ ...formData, work: workData })}
           />
         )}
 
