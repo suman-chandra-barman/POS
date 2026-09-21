@@ -22,11 +22,20 @@ export const POS_TERMINAL_VIEWS = {
 
 export type PosTerminalViewMode = (typeof POS_TERMINAL_VIEWS)[keyof typeof POS_TERMINAL_VIEWS];
 
+export const POS_PAYMENT_STEPS = {
+  SELECT: 1,
+  VALIDATE: 2,
+} as const;
+
+export type PosPaymentStep = (typeof POS_PAYMENT_STEPS)[keyof typeof POS_PAYMENT_STEPS];
+
 export const POS_PAYMENT_METHODS = {
   CUSTOMER_ACCOUNT: "customer_account",
   CASH: "cash",
-  PUBALI_BANK: "pubali_bank",
+  BRAC_BANK: "brac_bank",
   BKASH: "bkash",
+  CITY_BANK: "city_bank",
+  PUBALI_BANK: "pubali_bank",
 } as const;
 
 export type PosPaymentMethod = (typeof POS_PAYMENT_METHODS)[keyof typeof POS_PAYMENT_METHODS];

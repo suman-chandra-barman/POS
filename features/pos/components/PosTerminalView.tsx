@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { toast } from "sonner";
 import {
   PosBranch,
   PosUser,
@@ -8,7 +9,9 @@ import {
   PosCartItem,
   PosCustomer,
   PosPaymentMethod,
+  PosPaymentStep,
   POS_PAYMENT_METHODS,
+  POS_PAYMENT_STEPS,
   POS_TERMINAL_VIEWS,
   PosTerminalViewMode,
 } from "../types/pos.types";
@@ -82,9 +85,14 @@ export const PosTerminalView: React.FC<PosTerminalViewProps> = ({
   const [activeOrder, setActiveOrder] = useState<string>("60001");
   const [activeHeaderTab, setActiveHeaderTab] = useState<"sale" | "report">("sale");
 
-  // Terminal View Mode: catalog vs payment (Image 1 vs Image 3 & 4)
+  // Terminal View Mode: catalog vs payment (Image 1 vs Image 2 & 3)
   const [terminalMode, setTerminalMode] = useState<PosTerminalViewMode>(
     POS_TERMINAL_VIEWS.CATALOG
+  );
+
+  // Payment Step: 1 = Payment method select, 2 = Payment validate & change (Images 2 & 3)
+  const [paymentStep, setPaymentStep] = useState<PosPaymentStep>(
+    POS_PAYMENT_STEPS.SELECT
   );
 
   // Search Query
@@ -111,10 +119,11 @@ export const PosTerminalView: React.FC<PosTerminalViewProps> = ({
     note: "",
   };
 
-  // Payment Mode State (Images 3 & 4)
+  // Payment Mode State (Images 2 & 3)
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
     useState<PosPaymentMethod>(POS_PAYMENT_METHODS.CUSTOMER_ACCOUNT);
-  const [tenderedAmount, setTenderedAmount] = useState<number>(2000.0);
+  const [tenderedAmount, setTenderedAmount] = useState<number>(0);
+  const [, setTenderedInput] = useState<string>("");
 
   // Helpers to update current order state
   const updateCurrentOrder = (updater: (prev: OrderState) => OrderState) => {
@@ -271,6 +280,7 @@ export const PosTerminalView: React.FC<PosTerminalViewProps> = ({
     }));
     setActiveOrder(newNum);
     setTerminalMode(POS_TERMINAL_VIEWS.CATALOG);
+    setPaymentStep(POS_PAYMENT_STEPS.SELECT);
   };
 
   // Calculate current totals
@@ -284,32 +294,103 @@ export const PosTerminalView: React.FC<PosTerminalViewProps> = ({
   );
   const payableAmount = Math.max(0, subtotal - discountTotal);
 
-  // Mode switching: Open payment
+  // Mode switching: Open payment (Transition from Image 1 to Image 2)
   const handleOpenPayment = () => {
     setTerminalMode(POS_TERMINAL_VIEWS.PAYMENT);
-    setTenderedAmount(
-      payableAmount > 0 ? Math.ceil(payableAmount / 100) * 100 : 0
-    );
+    setPaymentStep(POS_PAYMENT_STEPS.SELECT);
+    setTenderedAmount(payableAmount);
+    setTenderedInput(payableAmount.toString());
+  };
+
+  // Transition from Image 2 to Image 3
+  const handleProceedToStep2 = () => {
+    setPaymentStep(POS_PAYMENT_STEPS.VALIDATE);
+    if (tenderedAmount === 0 && payableAmount > 0) {
+      setTenderedAmount(payableAmount);
+      setTenderedInput(payableAmount.toString());
+    }
+  };
+
+  const handleSelectPaymentMethod = (method: PosPaymentMethod) => {
+    setSelectedPaymentMethod(method);
+    if (paymentStep === POS_PAYMENT_STEPS.SELECT) {
+      setPaymentStep(POS_PAYMENT_STEPS.VALIDATE);
+      setTenderedAmount(payableAmount);
+      setTenderedInput(payableAmount.toString());
+    }
+  };
+
+  // Back step: in step 2 goes back to step 1; in step 1 goes back to catalog
+  const handleBackStep = () => {
+    if (paymentStep === POS_PAYMENT_STEPS.VALIDATE) {
+      setPaymentStep(POS_PAYMENT_STEPS.SELECT);
+    } else {
+      setTerminalMode(POS_TERMINAL_VIEWS.CATALOG);
+    }
   };
 
   const handleBackToCatalog = () => {
     setTerminalMode(POS_TERMINAL_VIEWS.CATALOG);
+    setPaymentStep(POS_PAYMENT_STEPS.SELECT);
   };
 
-  // Quick cash additions (+10, +20, +50 in Image 3 & 4)
+  // Quick cash additions (+10, +20, +50 in Image 3)
   const handleAddQuickCash = (amount: number) => {
-    setTenderedAmount((prev) => prev + amount);
+    setTenderedAmount((prev) => {
+      const next = prev + amount;
+      setTenderedInput(next.toString());
+      return next;
+    });
+  };
+
+  const handlePaymentDigitPress = (digit: string) => {
+    setTenderedInput((prev) => {
+      let next: string;
+      if (prev === "" || prev === "0") {
+        next = digit;
+      } else {
+        next = prev + digit;
+      }
+      const val = parseFloat(next);
+      if (!isNaN(val)) {
+        setTenderedAmount(val);
+      }
+      return next;
+    });
+  };
+
+  const handlePaymentBackspace = () => {
+    setTenderedInput((prev) => {
+      const next = prev.slice(0, -1);
+      const val = next ? parseFloat(next) : 0;
+      setTenderedAmount(val);
+      return next;
+    });
+  };
+
+  const handlePaymentToggleSign = () => {
+    setTenderedAmount((prev) => {
+      const next = -prev;
+      setTenderedInput(next.toString());
+      return next;
+    });
+  };
+
+  const handleClearMethod = () => {
+    setTenderedAmount(0);
+    setTenderedInput("");
   };
 
   // Validate sale
   const handleValidateSale = () => {
-    // Reset completed order and return to catalog
+    toast.success(`Payment validated! Order #${activeOrder} completed.`);
     updateCurrentOrder(() => ({
       items: [],
       customer: MOCK_CUSTOMERS[0],
       note: "",
     }));
     setTerminalMode(POS_TERMINAL_VIEWS.CATALOG);
+    setPaymentStep(POS_PAYMENT_STEPS.SELECT);
   };
 
   return (
@@ -323,6 +404,7 @@ export const PosTerminalView: React.FC<PosTerminalViewProps> = ({
         onSelectOrder={(num) => {
           setActiveOrder(num);
           setTerminalMode(POS_TERMINAL_VIEWS.CATALOG);
+          setPaymentStep(POS_PAYMENT_STEPS.SELECT);
         }}
         activeTab={activeHeaderTab}
         onTabChange={setActiveHeaderTab}
@@ -343,6 +425,9 @@ export const PosTerminalView: React.FC<PosTerminalViewProps> = ({
           orderNumber={activeOrder}
           cashierName={cashier?.name}
           terminalMode={terminalMode}
+          paymentStep={paymentStep}
+          selectedPaymentMethod={selectedPaymentMethod}
+          onSelectPaymentMethod={handleSelectPaymentMethod}
           onCustomerChange={(cust) =>
             updateCurrentOrder((ord) => ({ ...ord, customer: cust }))
           }
@@ -354,9 +439,14 @@ export const PosTerminalView: React.FC<PosTerminalViewProps> = ({
           onUpdateItemPrice={handleUpdatePrice}
           onClearCart={handleClearCart}
           onOpenPayment={handleOpenPayment}
+          onProceedToStep2={handleProceedToStep2}
+          onBackStep={handleBackStep}
           onBackToCatalog={handleBackToCatalog}
           onValidatePayment={handleValidateSale}
           onAddQuickCash={handleAddQuickCash}
+          onPaymentDigitPress={handlePaymentDigitPress}
+          onPaymentBackspace={handlePaymentBackspace}
+          onPaymentToggleSign={handlePaymentToggleSign}
         />
 
         {/* Right Column: Dynamic Switcher (Product Catalog vs Payment Panel) */}
@@ -372,9 +462,10 @@ export const PosTerminalView: React.FC<PosTerminalViewProps> = ({
           <PosPaymentPanel
             payableAmount={payableAmount}
             selectedMethod={selectedPaymentMethod}
-            onSelectMethod={setSelectedPaymentMethod}
+            onSelectMethod={handleSelectPaymentMethod}
             tenderedAmount={tenderedAmount}
-            onClearMethod={() => setTenderedAmount(0)}
+            onClearMethod={handleClearMethod}
+            paymentStep={paymentStep}
           />
         )}
       </div>
