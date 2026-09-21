@@ -108,8 +108,8 @@ export default function Topbar() {
     });
   }, []);
 
-  // Routes with their own dedicated topbar (e.g. Purchase, Employee, and POS routes)
-  if (pathname.includes('/purchase') || pathname.includes('/pos') || pathname.includes('/employee')) {
+  // Routes with their own dedicated topbar (e.g. Purchase, Employee, POS, and Customer routes)
+  if (pathname.includes('/purchase') || pathname.includes('/pos') || pathname.includes('/employee') || pathname.includes('/customer')) {
     return null;
   }
 
