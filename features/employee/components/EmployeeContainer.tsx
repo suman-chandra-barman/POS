@@ -24,6 +24,7 @@ import { EmployeeSidebarFilter } from "./EmployeeSidebarFilter";
 import { EmployeeCardGrid } from "./EmployeeCardGrid";
 import { EmployeeListView } from "./EmployeeListView";
 import { EmployeeDetailsCard } from "./EmployeeDetailsCard";
+import { EmployeeChatFeed } from "./EmployeeChatFeed";
 
 export const EmployeeContainer: React.FC = () => {
   const router = useRouter();
@@ -214,6 +215,9 @@ export const EmployeeContainer: React.FC = () => {
           onSave={handleSaveEmployee}
           onCancel={handleCancelForm}
           isSaving={isSaving}
+          posOrdersCount={56}
+          invoicedCount={30}
+          dueAmount={17532.0}
         />
       ) : (
         <EmployeeSecondaryHeader
@@ -227,13 +231,25 @@ export const EmployeeContainer: React.FC = () => {
       {/* ── 3. MAIN CONTENT BODY ── */}
       <main className="flex-1 w-full px-4 sm:px-6 py-6 pb-28">
         {activeView === EMPLOYEE_VIEWS.CREATE ? (
-          /* Multi-Tab Employee Form View */
-          <EmployeeDetailsCard
-            formData={formData}
-            onChange={setFormData}
-            activeTab={activeTab}
-            onTabChange={handleTabChange}
-          />
+          /* Multi-Tab Employee Form View + Chat Feed (Matching Image 2) */
+          <div className="flex flex-col lg:flex-row items-start gap-6">
+            {/* Left: Employee Details Form */}
+            <div className="flex-1 w-full min-w-0">
+              <EmployeeDetailsCard
+                formData={formData}
+                onChange={setFormData}
+                activeTab={activeTab}
+                onTabChange={handleTabChange}
+              />
+            </div>
+
+            {/* Right: Integrated Communication / Chat Feed (Matching Image 2) */}
+            <div className="w-full lg:w-95 xl:w-105 shrink-0 sticky top-4">
+              <EmployeeChatFeed
+                employeeName={formData.name || "Henry, Arthur"}
+              />
+            </div>
+          </div>
         ) : (
           /* List / Grid View with Left Sidebar Filter */
           <div className="flex flex-col md:flex-row items-start gap-6">

@@ -48,7 +48,7 @@ export const EmployeeDetailsCard: React.FC<EmployeeDetailsCardProps> = ({
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white rounded-3xl border border-neutral-200/80 p-6 sm:p-8 shadow-xs space-y-6">
+    <div className="w-full bg-white rounded-3xl border border-neutral-200/80 p-6 sm:p-8 shadow-xs space-y-6">
       {/* Title */}
       <h3 className="text-sm font-bold text-neutral-900">Employ Details</h3>
 
@@ -111,7 +111,7 @@ export const EmployeeDetailsCard: React.FC<EmployeeDetailsCardProps> = ({
             onClick={() => fileInputRef.current?.click()}
             className="w-full h-11 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-700 text-xs font-semibold shadow-2xs transition-colors cursor-pointer flex items-center justify-center"
           >
-            Upload Image
+            {formData.avatarUrl ? "Replace Image" : "Upload Image"}
           </button>
         </div>
 
