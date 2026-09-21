@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Search, X } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 interface ConversationItem {
   id: string;

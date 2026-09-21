@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import {
   LayoutGrid,
@@ -16,12 +15,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface CustomerTopbarProps {
-  onBack?: () => void;
-}
-
-export const CustomerTopbar: React.FC<CustomerTopbarProps> = ({ onBack }) => {
-  const router = useRouter();
+export const CustomerTopbar: React.FC = () => {
   const locale = useLocale();
 
   const [activeMenu, setActiveMenu] = useState<string | null>(null);

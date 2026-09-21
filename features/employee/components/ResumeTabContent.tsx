@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-import { UploadCloud, FileText, CheckCircle2 } from "lucide-react";
+import { UploadCloud, CheckCircle2 } from "lucide-react";
 import { ResumeFormData } from "../types/employee.types";
 
 interface ResumeTabContentProps {

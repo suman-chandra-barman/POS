@@ -22,7 +22,6 @@ export const NewPurchaseProductSection: React.FC<
 > = ({ items, onAddProducts, onUpdateQuantity, onRemoveItem }) => {
   const [isSelectorOpen, setIsSelectorOpen] = useState(false);
   const [isCategoryDrawerOpen, setIsCategoryDrawerOpen] = useState(false);
-  const [searchInputValue, setSearchInputValue] = useState("");
 
   const handleOpenSelector = () => {
     setIsSelectorOpen(true);
@@ -45,7 +44,7 @@ export const NewPurchaseProductSection: React.FC<
           >
             <Search className="size-4 text-neutral-400 mr-2.5 shrink-0" />
             <span className="text-xs text-neutral-400">
-              {searchInputValue || "Search or scan product"}
+              Search or scan product
             </span>
           </div>
 

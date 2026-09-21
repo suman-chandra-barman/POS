@@ -25,16 +25,11 @@ export const CustomerPhoneInput: React.FC<CustomerPhoneInputProps> = ({
   onPhoneNumberChange,
   className,
 }) => {
-  const [selectedCountry, setSelectedCountry] = useState<Country>(country);
+  const [internalCountry, setInternalCountry] = useState<Country>(country);
+  const selectedCountry = country ?? internalCountry;
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (country && country !== selectedCountry) {
-      setSelectedCountry(country);
-    }
-  }, [country, selectedCountry]);
 
   const callingCode = useMemo(() => {
     try {
@@ -63,7 +58,7 @@ export const CustomerPhoneInput: React.FC<CustomerPhoneInputProps> = ({
   }, [isOpen]);
 
   const handleCountrySelect = (c: Country) => {
-    setSelectedCountry(c);
+    setInternalCountry(c);
     setIsOpen(false);
     setSearchQuery("");
     let code = "880";

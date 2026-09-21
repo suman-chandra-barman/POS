@@ -6,17 +6,14 @@ import {
   ChevronDown,
   ChevronUp,
   Calendar,
-  Percent,
   Plus,
   Search,
-  Check,
   ImageIcon,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import type { Country } from "react-phone-number-input";
 import {
   CustomerFormData,
   CUSTOMER_TYPES,
-  type CustomerType,
 } from "../types/customer.types";
 import { AVAILABLE_TAGS } from "../data/customerMockData";
 import { CustomerPhoneInput } from "./CustomerPhoneInput";
@@ -182,7 +179,7 @@ export const CustomerFormView: React.FC<CustomerFormViewProps> = ({
                     Phone
                   </label>
                   <CustomerPhoneInput
-                    country={(formData.countryIso as any) || "BD"}
+                    country={(formData.countryIso as Country) || "BD"}
                     phoneNumber={formData.phone}
                     onCountryChange={(c, code) => {
                       onChange((prev) => ({

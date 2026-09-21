@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { X, ArrowLeft, ChevronDown } from "lucide-react";
 import {
   type CatalogProduct,
-  type ProductVariant,
 } from "../types/purchase.types";
 import {
   CATEGORY_DRAWER_PRODUCTS,

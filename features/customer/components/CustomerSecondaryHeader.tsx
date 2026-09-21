@@ -7,7 +7,6 @@ import {
   ShoppingBag,
   FileText,
   CreditCard,
-  Layers,
   Menu,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -116,7 +115,8 @@ export const CustomerSecondaryHeader: React.FC<CustomerSecondaryHeaderProps> = (
         {/* Pagination */}
         <div className="flex items-center gap-2 text-xs font-medium text-neutral-700">
           <span>
-            1-100 <span className="text-neutral-400 font-normal">/</span> 100
+            1-100 <span className="text-neutral-400 font-normal">/</span>{" "}
+            {totalCustomers}
           </span>
           <div className="flex items-center gap-0.5 text-neutral-500">
             <button

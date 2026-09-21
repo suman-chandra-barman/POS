@@ -13,27 +13,25 @@ interface CustomerCountrySelectProps {
   className?: string;
 }
 
+function parseCountryCode(countryStr?: string): Country {
+  if (!countryStr) return "BD";
+  if (countryStr.length === 2) return countryStr.toUpperCase() as Country;
+  if (countryStr.toLowerCase().includes("bangladesh")) return "BD";
+  return "BD";
+}
+
 export const CustomerCountrySelect: React.FC<CustomerCountrySelectProps> = ({
   selectedCountry = "BD",
   onSelect,
   className,
 }) => {
-  const [currentCountry, setCurrentCountry] = useState<Country>(
-    (selectedCountry as Country) || "BD"
-  );
+  const [internalCountry, setInternalCountry] = useState<Country>("BD");
+  const currentCountry = selectedCountry
+    ? parseCountryCode(selectedCountry)
+    : internalCountry;
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (selectedCountry) {
-      if (selectedCountry.length === 2) {
-        setCurrentCountry(selectedCountry.toUpperCase() as Country);
-      } else if (selectedCountry.toLowerCase().includes("bangladesh")) {
-        setCurrentCountry("BD");
-      }
-    }
-  }, [selectedCountry]);
 
   // Click outside to close
   useEffect(() => {
@@ -61,7 +59,7 @@ export const CustomerCountrySelect: React.FC<CustomerCountrySelectProps> = ({
   };
 
   const handleSelect = (code: Country) => {
-    setCurrentCountry(code);
+    setInternalCountry(code);
     setIsOpen(false);
     setSearchQuery("");
     const name = getCountryName(code);

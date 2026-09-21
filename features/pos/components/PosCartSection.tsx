@@ -179,17 +179,6 @@ export const PosCartSection: React.FC<PosCartSectionProps> = ({
     toast.success(`Coupon "${code}" applied: ${discountPercent}% discount`);
   };
 
-  const handleApplyGlobalDiscount = (percent: number) => {
-    if (items.length === 0) {
-      toast.error("Cart is empty.");
-      return;
-    }
-    items.forEach((it) => {
-      onUpdateItemDiscount(it.id, percent);
-    });
-    toast.success(`Applied ${percent}% global discount to all items.`);
-  };
-
   const handleCancelOrder = () => {
     if (items.length === 0) {
       toast.info("Cart is already empty.");

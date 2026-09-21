@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
-import { Search, SlidersHorizontal } from "lucide-react";
+import React from "react";
 import { cn } from "@/lib/utils";
 import {
   PURCHASE_TABS,

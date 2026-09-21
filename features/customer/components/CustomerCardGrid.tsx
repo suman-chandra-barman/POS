@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { Mail, Phone, ShoppingCart, CreditCard } from "lucide-react";
+import { Mail, Phone, ShoppingCart } from "lucide-react";
 import { type Customer } from "../types/customer.types";
 
 interface CustomerCardGridProps {
