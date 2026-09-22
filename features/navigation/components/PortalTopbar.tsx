@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import { useLocale } from "next-intl";
 import {
   LayoutGrid,
-  Sparkles,
   Bell,
   ChevronDown,
   User,
@@ -15,6 +14,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import aiIcon from "@/public/icons/omona-ai.png";
 
 export const PortalTopbar: React.FC = () => {
   const pathname = usePathname();
@@ -55,9 +55,8 @@ export const PortalTopbar: React.FC = () => {
           <span className="italic font-serif text-[11px] sm:text-xs text-neutral-600">
             Ask Ai
           </span>
-          <span className="size-4.5 rounded-full bg-linear-to-tr from-amber-400 via-rose-400 to-indigo-500 flex items-center justify-center text-white shadow-2xs">
-            <Sparkles className="size-2.5" />
-          </span>
+
+          <Image src={aiIcon} alt="AI Icon" width={16} height={16} />
         </button>
 
         {/* Notification Bell */}
@@ -92,7 +91,7 @@ export const PortalTopbar: React.FC = () => {
             <ChevronDown
               className={cn(
                 "size-3.5 text-neutral-500 transition-transform duration-150",
-                profileOpen && "rotate-180"
+                profileOpen && "rotate-180",
               )}
             />
           </button>
