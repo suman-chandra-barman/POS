@@ -33,7 +33,7 @@ export const SignInForm: React.FC = () => {
     },
   });
 
-  const onSubmit = async (data: SignInFormData) => {
+  const onSubmit = async () => {
     setIsLoading(true);
     try {
       // Mock / extensible sign-in action

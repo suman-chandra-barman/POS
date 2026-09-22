@@ -16,7 +16,7 @@ interface EmailVerifyFormProps {
   email?: string;
 }
 
-export const EmailVerifyForm: React.FC<EmailVerifyFormProps> = ({ email }) => {
+export const EmailVerifyForm: React.FC<EmailVerifyFormProps> = () => {
   const t = useTranslations("Auth");
   const router = useRouter();
   const params = useParams();
@@ -43,7 +43,7 @@ export const EmailVerifyForm: React.FC<EmailVerifyFormProps> = ({ email }) => {
     return () => clearInterval(timer);
   }, [resendCooldown]);
 
-  const onSubmit = async (data: VerifyEmailFormData) => {
+  const onSubmit = async () => {
     setIsLoading(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 800));
