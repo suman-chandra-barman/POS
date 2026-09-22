@@ -7,19 +7,26 @@ import { cn } from "@/lib/utils";
 interface AccountSetupLayoutProps {
   children: React.ReactNode;
   className?: string;
+  topNavbar?: React.ReactNode;
 }
 
 export const AccountSetupLayout: React.FC<AccountSetupLayoutProps> = ({
   children,
   className,
+  topNavbar,
 }) => {
   return (
-    <div
-      className={cn(
-        "relative min-h-screen w-full flex items-center justify-center px-4 sm:px-6 md:px-8 bg-[#f2f2f2] overflow-hidden select-none",
-        className
-      )}
-    >
+    <div className="relative min-h-screen w-full flex flex-col bg-[#f2f2f2] overflow-x-hidden select-none">
+      {/* Top Navbar */}
+      {topNavbar}
+
+      {/* Main Container */}
+      <div
+        className={cn(
+          "relative flex-1 w-full flex items-center justify-center p-4 sm:p-6 md:p-8",
+          className
+        )}
+      >
       {/* Left Decorative Ribbon/Chevron Background Image (Top Left, exact scale & position) */}
       <div className="pointer-events-none absolute left-0 -top-6 sm:-top-8 md:-top-9 w-[17vw] min-w-36 max-w-65 h-auto select-none z-0">
         <Image
@@ -46,9 +53,10 @@ export const AccountSetupLayout: React.FC<AccountSetupLayoutProps> = ({
         />
       </div>
 
-      {/* Main Content Card Container */}
-      <div className="relative z-10 w-full flex items-center justify-center">
-        {children}
+        {/* Main Content Card Container */}
+        <div className="relative z-10 w-full flex items-center justify-center">
+          {children}
+        </div>
       </div>
     </div>
   );

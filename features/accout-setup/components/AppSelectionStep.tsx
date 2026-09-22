@@ -48,14 +48,6 @@ export const AppSelectionStep: React.FC<AppSelectionStepProps> = ({
         className
       )}
     >
-      {/* Top Banner Notice */}
-      <div className="mb-5 w-full rounded-2xl border border-neutral-200/80 bg-white/95 px-5 py-3 text-center shadow-xs backdrop-blur-xs">
-        <p className="text-xs text-neutral-600 leading-relaxed">
-          We’ve already selected some essential apps for your business to help you get started quickly. These apps are completely{" "}
-          <span className="font-semibold text-neutral-900">free to use for a lifetime</span> for businesses.
-        </p>
-      </div>
-
       {/* Main Two-Column Layout */}
       <div className="flex w-full flex-col gap-5 lg:flex-row lg:items-start">
         {/* Left Side: Category App Selector Card */}

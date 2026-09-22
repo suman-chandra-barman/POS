@@ -9,7 +9,7 @@ import { BusinessWorkspaceSetupStep1 } from "./BusinessWorkspaceSetupStep1";
 import { BusinessWorkspaceSetupStep2 } from "./BusinessWorkspaceSetupStep2";
 import { AppSelectionStep } from "./AppSelectionStep";
 import { DatabaseCreatingStep } from "./DatabaseCreatingStep";
-import { AccountSetupCompletedStep } from "./AccountSetupCompletedStep";
+import { SetupTopNavbar } from "./SetupTopNavbar";
 import {
   ACCOUNT_SETUP_STEPS,
   type AccountSetupStep,
@@ -119,11 +119,6 @@ export const AccountSetupContainer: React.FC = () => {
   };
 
   const handleDatabaseCreated = () => {
-    toast.success("Workspace setup completed! Welcome to POS.");
-    goToStep(ACCOUNT_SETUP_STEPS.COMPLETED);
-  };
-
-  const handleReset = () => {
     if (typeof window !== "undefined") {
       try {
         sessionStorage.removeItem(STORAGE_KEY_FORM);
@@ -132,21 +127,18 @@ export const AccountSetupContainer: React.FC = () => {
         // Ignore
       }
     }
-    setFormData({
-      ...INITIAL_STEP1_VALUES,
-      ...INITIAL_STEP2_VALUES,
-    });
-    setSelectedApps(
-      BUSINESS_APPS.filter((a) => DEFAULT_SELECTED_APP_IDS.includes(a.id)),
-    );
-    goToStep(ACCOUNT_SETUP_STEPS.STEP1);
+    toast.success("Workspace setup completed! Welcome to POS.");
+    router.push(`/${locale}`);
   };
 
-  const freeApps = selectedApps.filter((a) => a.isDefaultFree);
-  const paidApps = selectedApps.filter((a) => !a.isDefaultFree);
+  const showTopNavbar =
+    currentStep === ACCOUNT_SETUP_STEPS.APP_SELECTION ||
+    currentStep === ACCOUNT_SETUP_STEPS.CREATING;
 
   return (
-    <AccountSetupLayout>
+    <AccountSetupLayout
+      topNavbar={showTopNavbar ? <SetupTopNavbar /> : undefined}
+    >
       <div className="flex flex-col items-center w-full">
         {/* Step 1: Business Info */}
         {currentStep === ACCOUNT_SETUP_STEPS.STEP1 && (
@@ -183,17 +175,6 @@ export const AccountSetupContainer: React.FC = () => {
         {/* Step 5: Database Creating Progress */}
         {currentStep === ACCOUNT_SETUP_STEPS.CREATING && (
           <DatabaseCreatingStep onComplete={handleDatabaseCreated} />
-        )}
-
-        {/* Step 6: Success / Completed Confirmation */}
-        {currentStep === ACCOUNT_SETUP_STEPS.COMPLETED && (
-          <AccountSetupCompletedStep
-            formData={formData}
-            freeAppsCount={freeApps.length}
-            paidAppsCount={paidApps.length}
-            onReset={handleReset}
-            onGoToDashboard={() => router.push(`/${locale}`)}
-          />
         )}
       </div>
     </AccountSetupLayout>
