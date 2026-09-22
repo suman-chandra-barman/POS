@@ -20,6 +20,7 @@ import { InventoryHeaderToolbar } from "./InventoryHeaderToolbar";
 import { InventoryTable } from "./InventoryTable";
 import { InventoryHistoryDialog } from "./InventoryHistoryDialog";
 import { InventoryLocationDialog } from "./InventoryLocationDialog";
+import { InventoryTopbar } from "./InventoryTopbar";
 
 export const InventoryContainer: React.FC = () => {
   const [items, setItems] = useState<InventoryItem[]>(INITIAL_INVENTORY_ITEMS);
@@ -149,8 +150,10 @@ export const InventoryContainer: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-5rem)] px-4 sm:px-6 py-6 pb-28">
-      <div className="flex flex-col lg:flex-row items-start gap-6">
+    <div className="min-h-screen bg-[#fafafa]">
+      <InventoryTopbar />
+      <div className="min-h-[calc(100vh-5rem)] px-4 sm:px-6 py-6 pb-28">
+        <div className="flex flex-col lg:flex-row items-start gap-6">
         {/* Left Filter Sidebar */}
         <InventorySidebar
           locations={INVENTORY_LOCATIONS}
@@ -206,6 +209,7 @@ export const InventoryContainer: React.FC = () => {
         open={Boolean(locationItem)}
         onOpenChange={(open) => !open && setLocationItem(null)}
       />
+      </div>
     </div>
   );
 };

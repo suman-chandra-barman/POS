@@ -5,21 +5,22 @@ import { useLocale } from "next-intl";
 import { Settings } from "lucide-react";
 import { PrimaryNavbar } from "@/features/navigation/components/PrimaryNavbar";
 
-export const CustomerTopbar: React.FC = () => {
+export const ProductTopbar: React.FC = () => {
   const locale = useLocale();
 
   return (
     <PrimaryNavbar
-      title="Contact"
+      title="Product"
       navItems={[
         { label: "Home", href: `/${locale}/apps` },
-        { label: "Category", href: `/${locale}/customer` },
+        { label: "Category's", href: `/${locale}/product` },
+        { label: "Vendor", href: `/${locale}/product` },
         {
           label: "Setup",
           dropdownItems: [
             {
-              label: "Customer Settings",
-              href: `/${locale}/customer`,
+              label: "Product Settings",
+              href: `/${locale}/product`,
               icon: Settings,
             },
           ],

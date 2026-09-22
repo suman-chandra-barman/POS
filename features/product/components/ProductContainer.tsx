@@ -20,6 +20,7 @@ import { ProductHeaderTabs } from "./ProductHeaderTabs";
 import { ProductTable } from "./ProductTable";
 import { ProductHistoryView } from "./ProductHistoryView";
 import { ProductLocationView } from "./ProductLocationView";
+import { ProductTopbar } from "./ProductTopbar";
 
 export const ProductContainer: React.FC = () => {
   const router = useRouter();
@@ -111,8 +112,10 @@ export const ProductContainer: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-h-[calc(100vh-5rem)] px-4 sm:px-6 py-6 pb-36">
-      <div className="w-full max-w-7xl mx-auto">
+    <div className="w-full min-h-screen bg-[#f8f9fb]">
+      <ProductTopbar />
+      <div className="w-full min-h-[calc(100vh-5rem)] px-4 sm:px-6 py-6 pb-36">
+        <div className="w-full max-w-7xl mx-auto">
         {/* Main List View */}
         {activeView === "list" && (
           <div className="relative">
@@ -159,6 +162,7 @@ export const ProductContainer: React.FC = () => {
         )}
       </div>
     </div>
+  </div>
   );
 };
 
