@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { AccountSetupContainer } from "@/features/accout-setup";
 
 export const metadata = {
@@ -6,7 +7,11 @@ export const metadata = {
 };
 
 const AccountSetupPage = () => {
-  return <AccountSetupContainer />;
+  return (
+    <Suspense fallback={null}>
+      <AccountSetupContainer />
+    </Suspense>
+  );
 };
 
 export default AccountSetupPage;

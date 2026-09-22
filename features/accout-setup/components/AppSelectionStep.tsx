@@ -44,12 +44,12 @@ export const AppSelectionStep: React.FC<AppSelectionStepProps> = ({
   return (
     <div
       className={cn(
-        "flex w-full max-w-5xl flex-col items-center animate-in fade-in-0 zoom-in-95 duration-200",
+        "flex w-full flex-col items-center animate-in fade-in-0 zoom-in-95 duration-200",
         className
       )}
     >
       {/* Top Banner Notice */}
-      <div className="mb-5 w-full max-w-xl rounded-2xl border border-neutral-200/80 bg-white/95 px-5 py-3 text-center shadow-xs backdrop-blur-xs">
+      <div className="mb-5 w-full rounded-2xl border border-neutral-200/80 bg-white/95 px-5 py-3 text-center shadow-xs backdrop-blur-xs">
         <p className="text-xs text-neutral-600 leading-relaxed">
           We’ve already selected some essential apps for your business to help you get started quickly. These apps are completely{" "}
           <span className="font-semibold text-neutral-900">free to use for a lifetime</span> for businesses.
@@ -74,7 +74,7 @@ export const AppSelectionStep: React.FC<AppSelectionStepProps> = ({
               </h4>
 
               {/* Category Apps Grid */}
-              <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 md:grid-cols-3">
+              <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-6">
                 {cat.apps.map((app) => (
                   <AppCard
                     key={app.id}

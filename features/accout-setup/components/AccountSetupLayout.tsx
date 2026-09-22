@@ -16,7 +16,7 @@ export const AccountSetupLayout: React.FC<AccountSetupLayoutProps> = ({
   return (
     <div
       className={cn(
-        "relative min-h-screen w-full flex items-center justify-center p-4 sm:p-6 md:p-8 bg-[#f2f2f2] overflow-hidden select-none",
+        "relative min-h-screen w-full flex items-center justify-center px-4 sm:px-6 md:px-8 bg-[#f2f2f2] overflow-hidden select-none",
         className
       )}
     >

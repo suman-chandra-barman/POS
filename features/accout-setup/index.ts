@@ -13,6 +13,7 @@ export * from "./components/PhoneInputCustom";
 export * from "./components/SetupHeaderBox";
 export * from "./components/LogoUpload";
 export * from "./components/FormSelect";
+export * from "./components/AccountSetupCompletedStep";
 export * from "./types/accountSetup.types";
 export * from "./data/demoData";
 export * from "./data/appsData";
