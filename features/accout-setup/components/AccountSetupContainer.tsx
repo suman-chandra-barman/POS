@@ -30,7 +30,7 @@ export const AccountSetupContainer: React.FC = () => {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
   const [currentStep, setCurrentStep] = useState<AccountSetupStep>(
-    ACCOUNT_SETUP_STEPS.EMPTY
+    ACCOUNT_SETUP_STEPS.STEP1
   );
   const [formData, setFormData] = useState<AccountSetupFormData>({
     ...INITIAL_STEP1_VALUES,
@@ -41,7 +41,7 @@ export const AccountSetupContainer: React.FC = () => {
   );
 
   const handleCreateCompany = () => {
-    setCurrentStep(ACCOUNT_SETUP_STEPS.STEP1);
+    setCurrentStep(ACCOUNT_SETUP_STEPS.APP_SELECTION);
   };
 
   const handleStep1Next = (step1Data: Step1FormData) => {
@@ -53,7 +53,7 @@ export const AccountSetupContainer: React.FC = () => {
   const handleStep2Submit = (step2Data: Step2FormData) => {
     setFormData((prev) => ({ ...prev, ...step2Data }));
     toast.success("Contact details confirmed");
-    setCurrentStep(ACCOUNT_SETUP_STEPS.APP_SELECTION);
+    setCurrentStep(ACCOUNT_SETUP_STEPS.EMPTY);
   };
 
   const handleAppsConfirm = (apps: BusinessApp[]) => {
@@ -68,7 +68,7 @@ export const AccountSetupContainer: React.FC = () => {
   };
 
   const handleReset = () => {
-    setCurrentStep(ACCOUNT_SETUP_STEPS.EMPTY);
+    setCurrentStep(ACCOUNT_SETUP_STEPS.STEP1);
     setFormData({
       ...INITIAL_STEP1_VALUES,
       ...INITIAL_STEP2_VALUES,
@@ -84,21 +84,16 @@ export const AccountSetupContainer: React.FC = () => {
   return (
     <AccountSetupLayout>
       <div className="flex flex-col items-center w-full">
-        {/* Step 1: Empty State */}
-        {currentStep === ACCOUNT_SETUP_STEPS.EMPTY && (
-          <NoWorkspaceConnected onCreateCompany={handleCreateCompany} />
-        )}
-
-        {/* Step 2: Setup Step 1 (Business Info) */}
+        {/* Step 1: Setup Step 1 (Business Info) */}
         {currentStep === ACCOUNT_SETUP_STEPS.STEP1 && (
           <BusinessWorkspaceSetupStep1
             initialValues={formData}
             onNext={handleStep1Next}
-            onBack={() => setCurrentStep(ACCOUNT_SETUP_STEPS.EMPTY)}
+            onBack={() => router.back()}
           />
         )}
 
-        {/* Step 3: Setup Step 2 (Contact & Localization) */}
+        {/* Step 2: Setup Step 2 (Contact & Localization) */}
         {currentStep === ACCOUNT_SETUP_STEPS.STEP2 && (
           <BusinessWorkspaceSetupStep2
             initialValues={formData}
@@ -107,12 +102,17 @@ export const AccountSetupContainer: React.FC = () => {
           />
         )}
 
+        {/* Step 3: Empty State (No Workspace Connected) */}
+        {currentStep === ACCOUNT_SETUP_STEPS.EMPTY && (
+          <NoWorkspaceConnected onCreateCompany={handleCreateCompany} />
+        )}
+
         {/* Step 4: App Selection */}
         {currentStep === ACCOUNT_SETUP_STEPS.APP_SELECTION && (
           <AppSelectionStep
             initialSelectedIds={selectedApps.map((a) => a.id)}
             onConfirm={handleAppsConfirm}
-            onBack={() => setCurrentStep(ACCOUNT_SETUP_STEPS.STEP2)}
+            onBack={() => setCurrentStep(ACCOUNT_SETUP_STEPS.EMPTY)}
           />
         )}
 
@@ -198,6 +198,7 @@ export const AccountSetupContainer: React.FC = () => {
             </div>
           </div>
         )}
+        
       </div>
     </AccountSetupLayout>
   );
