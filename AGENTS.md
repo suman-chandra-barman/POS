@@ -1,125 +1,128 @@
 # Project Coding Standards & Guidelines (AGENTS.md)
 
-> **[PROJECT CONFIGURATION - POS]**
+> **[PROJECT CONFIGURATION - PHOTOGRAPHY PORTAL]**
 > - **Framework:** Next.js 16 (App Router) with React 19 & TypeScript
-> - **State Management & API:** Redux Toolkit & RTK Query (`@reduxjs/toolkit`) + Redux Persist (Encrypted)
-> - **Styling:** Tailwind CSS v4 (`@tailwindcss/postcss`) + Shadcn UI / Base UI + Lucide Icons
-> - **Form & Validation:** React Hook Form (`react-hook-form`) + Zod
+> - **Styling:** Tailwind CSS v4 (`@tailwindcss/postcss`) + Shadcn UI / Base UI (`@base-ui/react`) + Lucide Icons + `tw-animate-css`
+> - **Form & Validation:** React Hook Form (`react-hook-form`) + Zod (`@hookform/resolvers/zod`)
 > - **Internationalization:** next-intl (Localized routing: `app/[locale]/...`)
-> - **Rich Text & Utilities:** React Quill New, Sanitize-HTML, Dnd-Kit, Sonner (Toast)
+> - **Date & Utilities:** date-fns, react-day-picker, react-phone-number-input, countries-list, country-flag-icons, sonner (Toast)
 
-This document outlines the strict engineering standards, architectural patterns, and coding rules for this Next.js frontend application. All AI agents and developers must adhere to these guidelines to ensure production-grade quality.
+This document outlines the strict engineering standards, architectural patterns, and coding rules for this Next.js frontend application. All AI agents and developers must strictly adhere to these guidelines to ensure production-grade scalability and code quality.
 
 ---
 
-## 1. Architecture & General Principles
+## 1. Core Software Engineering Principles
 - **Senior Persona:** Write clean, modular, self-documenting, type-safe, and production-ready code.
-- **Single Responsibility Principle (SRP):** Every file MUST have exactly ONE distinct responsibility and reason to change. Separate presentation, business logic, state management, and data definitions.
-- **One Component Per File:** Every component file MUST export exactly ONE React component. Never declare multiple sub-components, helper UI components, dialogs, or multi-role layouts in the same `.tsx` file. Always extract child elements (sidebars, dialogs, headers, items, cards) into dedicated component files.
-- **No Quick Hacks:** Avoid inline mock data, hardcoded fallbacks, or superficial patches. Always connect to real APIs.
-- **Clean Syntax:** Keep comments and code strings strictly ASCII (avoid non-standard Unicode characters like `───` or `—` that cause `□` rendering boxes in editors).
-- **Component Reusability:** Extract reusable UI elements into `@/components/common/` or `@/components/ui/` rather than duplicating markup.
+- **Single Responsibility Principle (SRP):** Every file, hook, and component MUST have exactly ONE distinct responsibility and reason to change. Separate presentation, business logic, state mutations, and data definitions.
+- **Open/Closed Principle (OCP):** Components should be open for extension but closed for modification. Favor component composition (`children`, slots, compound component patterns) over endlessly chaining conditional props.
+- **Interface Segregation (ISP):** Keep component props minimal and focused. Do not pass large objects down when a component only needs two primitive values.
+- **DRY (Don't Repeat Yourself):** Extract repeated UI patterns into reusable common components (`@/components/common/`) and abstract shared logic into custom hooks or pure utility functions (`@/lib/` or `@/utils/`).
+- **KISS & YAGNI:** Keep implementations straightforward and readable. Avoid premature abstraction, speculative features, or over-engineering patterns not currently required.
+- **One Component Per File:** Every component file MUST export exactly ONE React component. Never declare multiple sub-components, helper UI components, dialogs, or layouts in the same `.tsx` file.
+- **No Quick Hacks:** Avoid inline mock data, hardcoded fallbacks, or superficial patches. Always connect to real APIs, type contracts, and actual error states.
+- **Clean Syntax:** Keep comments and code strings strictly ASCII (avoid non-standard Unicode characters like `───` or `—` that cause rendering boxes in editors).
 
 ---
 
-## 2. UI, Shadcn & Component Standards
-- **Shadcn Primitives:** Always prefer Shadcn UI primitives (`@/components/ui/*`) for UI elements, overlays, dialogs, dropdowns, and inputs.
-- **Modals & Dialogs:** MUST use Shadcn UI Dialog (`@/components/ui/dialog`). Never use raw inline modals.
+## 2. Next.js App Router & Component Boundaries
+- **Server-First Strategy:** By default, all components must remain Server Components. Do not add `"use client"` unless interactive state (`useState`, `useReducer`), browser event listeners, or client-only hooks are strictly required.
+- **Leaf-Level Interactivity:** Push `"use client"` down to the furthest leaves of the component tree to maximize server-side rendering and minimize client bundle size.
+- **Passing Server Content to Client Components:** When a Client Component needs to wrap or contain Server Components, always pass them as `children` or explicit JSX slots.
+- **Parallel Data Fetching:** Fetch server-side data in parallel using `Promise.all` where applicable to avoid sequential request waterfalls.
+
+---
+
+## 3. UI, Shadcn & Base UI Standards
+- **Shadcn & Base UI Primitives:** Always prefer Shadcn UI and Base UI (`@base-ui/react`) primitives (`@/components/ui/*`) for overlays, inputs, pickers, and dialogs.
+- **Modals & Dialogs:** MUST use Shadcn UI Dialog (`@/components/ui/dialog`). Never create raw inline modals or window overlays.
 - **Delete Operations:** MUST use the shared deletion modal (`@/components/common/DeleteModal`). Never use native `window.confirm()`.
-- **Loading States:** Never use plain text "Loading..." placeholders. Always use visual skeleton indicators (e.g., `TableSkeleton`, `CardSkeleton`).
-- **Navigation:** Always use `@/components/common/BackNavigation` for back buttons.
+- **Loading & Skeleton States:** NEVER use plain text "Loading..." placeholders. Always render visual skeleton loaders (`TableSkeleton`, `CardSkeleton`).
+- **Navigation:** Always use `@/components/common/BackNavigation` for back navigation actions.
 - **Image Optimization:** 
-  - ALWAYS use Next.js `Image` (`next/image`). Never use standard HTML `<img>` tags.
-  - Provide explicit `width` and `height` or `fill` with `sizes` for static/remote images.
+  - ALWAYS use Next.js `Image` (`next/image`). NEVER use standard HTML `<img>` tags.
+  - Provide explicit `width` and `height` or `fill` with an accurate `sizes` attribute for remote/static images.
 
 ---
 
-## 3. API, State Management & Environment Config
-- **RTK Query Only:** All HTTP requests MUST be declared as RTK Query endpoints (`features/<feature>/api/<name>Api.ts`). No raw `fetch()` or `axios` inside UI components.
-- **Centralized Environment:** ALWAYS import `env` from `@/config/env`. Never read `process.env.NEXT_PUBLIC_*` directly in components.
-- **Cache Tags:** Always define clear `providesTags` and `invalidatesTags` for automatic cache invalidation.
+## 4. Architectural Patterns: Container & Presentational
+- **Smart / Dumb Split:**
+  - **Presentational (Dumb) Components:** Focus purely on how things look. Receive data and handlers via props and render UI. Kept pure and reusable.
+  - **Container (Smart) Components:** Handle side-effects, state synchronization, form bindings, and data orchestration.
+- **Custom Hooks for Logic:** Complex UI interactions (e.g., date-range picking with `react-day-picker`, phone formatting with `react-phone-number-input`) MUST be encapsulated inside dedicated custom hooks (`use<Feature>.ts`).
 
 ---
 
-## 4. Form Handling & Zod Validation
-- **React Hook Form:** Manage form state using `react-hook-form` (`useForm`).
-- **Zod Validation:** Resolve validation schemas via `@hookform/resolvers/zod`. Keep schemas type-safe and stored in dedicated feature-level modules.
+## 5. Form Handling & Zod Validation
+- **React Hook Form Standard:** All form state and lifecycles must be managed via `react-hook-form` (`useForm`).
+- **Strict Zod Resolvers:** Form schemas MUST use Zod and resolve via `@hookform/resolvers/zod`.
+- **Single Source of Truth:** Never write separate TypeScript interfaces for forms. Always infer form types directly from the Zod schema:
+  ```typescript
+  export const profileSchema = z.object({
+    fullName: z.string().min(2),
+    phoneNumber: z.string().min(8),
+  });
+  export type ProfileFormValues = z.infer<typeof profileSchema>;
+  ```
 
 ---
 
-## 5. Routing & URL State
-- **URL-Driven State:** Store active tabs, filters, and detail view IDs in URL search parameters.
-- **Modal State:** Modals/Dialogs MUST use React local state (`useState`). Never set URL search parameters for opening modals.
-- **Localization:** Maintain Next.js App Router localized routing structure (`app/[locale]/...`).
+## 6. Routing, URL State & Localization
+- **URL as State Holder:** Store active tab identifiers, filter parameters, search queries, and page pagination in URL search parameters to ensure link shareability and refresh persistence.
+- **Modals Isolated from URL:** Modals and temporary confirmation dialogs MUST use local React state (`useState`). Never inject transient modal toggles into URL query strings.
+- **Localization via `next-intl`:** 
+  - Never hardcode user-facing strings in JSX. Always use `useTranslations()` from `next-intl`.
+  - Maintain localized route segments (`app/[locale]/...`) and preserve the locale parameter across internal redirects and routing helpers.
 
 ---
 
-## 6. React Hooks, Performance & Memory Safety
-- **No Sync State Updates in Effects:** Never call `setState` synchronously inside `useEffect` bodies to prevent cascading re-renders.
-- **Memory Cleanup:** Always clean up Blob URLs (`URL.revokeObjectURL`) when handling transient media.
-- **Toasts:** Use `sonner` (`toast.success()`, `toast.error()`) for API feedback.
+## 7. Performance, Hooks & Memory Safety
+- **No Sync State Updates in Effects:** Never invoke `setState` synchronously inside the body of a `useEffect` to prevent cascading render loops.
+- **Memory Cleanup:** Always clean up Object URLs (`URL.revokeObjectURL`) and window event listeners when handling transient images, previews, or file uploads.
+- **Date Handling with `date-fns`:** Use immutable functions from `date-fns` for date formatting and manipulations instead of native `Date` mutations.
+- **Toasts & Feedback:** Use `sonner` (`toast.success()`, `toast.error()`) for user-facing asynchronous feedback.
 
 ---
 
-## 7. Feature-Driven Architecture
-Organize code by feature under `@/features/<feature-name>/`:
-- `api/` (RTK Query endpoints)
-- `components/` (Feature-specific UI elements)
-- `hooks/` (Custom feature hooks)
-- `types/` (Zod schemas & TypeScript interfaces)
-- `utils/` (Feature helper functions)
+## 8. Feature-Driven Architecture
+Structure codebase domain-by-domain under `@/features/<feature-name>/`:
+- `components/` (Feature-specific presentation & container components)
+- `hooks/` (Custom hooks specific to the domain workflow)
+- `types/` (TypeScript interfaces and Zod schemas)
+- `utils/` (Domain-specific calculations and helpers)
+- `services/` (HTTP data fetchers or Server Actions)
 
 ---
 
-## 8. Internationalization (`next-intl`)
-- **No Hardcoded Text:** Never hardcode user-facing strings. Always fetch text using `useTranslations()` from `next-intl`.
-- **Route Integrity:** Preserve the current locale parameter (`app/[locale]/...`) across all sub-routes and navigation links.
-
----
-
-## 9. Styling & Dynamic Classes
-- **`cn()` Utility:** Always merge dynamic classes using the `cn()` helper (`clsx` + `tailwind-merge`). Never concatenate class strings manually.
-- **Standard Classes Only:** Use standard Tailwind classes. Avoid deprecated or non-standard experimental CSS selectors.
-
----
-
-## 10. Tailwind Sizing, Tokens & Canonical Classes
-- **Use Canonical Tailwind Classes:** Always use standard, canonical Tailwind CSS utility classes instead of arbitrary bracket values whenever a canonical class exists (e.g., `rounded-xs` instead of `rounded-[2px]`, `shadow-xs`, `text-xs`).
-- **Avoid Arbitrary Value Warnings (`suggestCanonicalClasses`):** Never write arbitrary pixel bracket values like `max-w-[430px]`, `rounded-[2px]`, `p-[4px]`, or `w-[16px]` when Tailwind CSS v4 supports canonical dynamic scale utilities (e.g., `max-w-[430px]` MUST be written as `max-w-107.5`).
-- **Tailwind v4 Scale Calculation (`px / 4 = scale`):**
-  - Standard spacing/sizing in Tailwind is based on units of `0.25rem` (4px).
-  - Convert arbitrary pixel values to canonical classes by dividing by 4:
-    - `430px` -> `max-w-107.5` (or `w-107.5`)
-    - `480px` -> `max-w-120`
-    - `200px` -> `max-w-50`
-    - `130px` -> `max-w-32.5`
-- **Standard Scale & Design Tokens:** Adhere strictly to the theme variables, standard spacing, typography, and border radius scales configured in the design system.
+## 9. Styling, Dynamic Classes & Tailwind CSS v4
+- **`cn()` Utility:** Always combine conditional classes using the `cn()` helper (`clsx` + `tailwind-merge`). Never concatenate class strings using template literals.
+- **Use Canonical Tailwind Classes:** Always use standard Tailwind CSS classes instead of arbitrary bracket values (e.g., `rounded-xs` instead of `rounded-[2px]`, `shadow-xs`, `text-xs`).
+- **Avoid Arbitrary Value Warnings (`suggestCanonicalClasses`):** Convert arbitrary pixel values to canonical classes using the v4 scale calculation (`px / 4 = scale`):
+  - `430px` -> `max-w-107.5`
+  - `480px` -> `max-w-120`
+  - `200px` -> `max-w-50`
 - **`size-*` Shorthand:** Prefer `size-N` for square dimensions (e.g., `size-5` instead of `h-5 w-5`).
 
 ---
 
-## 11. Error Handling & Resilience
-- **Error Boundaries:** Implement `error.tsx` and `not-found.tsx` at route segment levels.
-- **Normalized Errors:** Extract and display API error messages standardly through RTK Query error payload helpers before displaying with `sonner`.
-
----
-
-## 12. TypeScript & Constant Object Standards (No Enums)
-- **No TypeScript `enum`s:** NEVER use native TypeScript `enum` keywords. Enums add unnecessary runtime artifacts and lack flexibility.
-- **Use `as const` Objects:** Always define enum-like sets, tabs, action keys, and status values as frozen constant objects using `as const`.
-- **Derive Types Dynamically:** Always derive TypeScript union types using `(typeof OBJ)[keyof typeof OBJ]`:
+## 10. TypeScript Standards & Zero 'any' Tolerance
+- **No TypeScript Enums:** NEVER use native TypeScript `enum` keywords. Always use frozen `as const` objects:
   ```typescript
-  export const INVENTORY_TABS = {
-    ALL: "all",
-    INACTIVE: "inactive",
-    ARCHIVED: "archived",
+  export const USER_STATUS = {
+    ACTIVE: "active",
+    SUSPENDED: "suspended",
   } as const;
-
-  export type InventoryTab = (typeof INVENTORY_TABS)[keyof typeof INVENTORY_TABS];
+  export type UserStatus = (typeof USER_STATUS)[keyof typeof USER_STATUS];
   ```
-- **Consistent Consumption:** Reference object properties (e.g. `INVENTORY_TABS.ALL`, `INVENTORY_STATUS.ACTIVE`) across components, filters, and state logic rather than using raw string literals.
+- **Zero 'any' Tolerance:** Strictly prohibit `any`. Use `unknown` with runtime type predicates or Zod validation when receiving unbounded input.
+- **Explicit Return Types:** Declare explicit return types on utility functions and hooks to prevent unintended type inference leaks.
 
 ---
 
-## 13. Mandatory Git Commit Message on Every Response
-- **Always Provide Git Commit Command:** At the end of every response where code, configurations, or documents are created/modified, the AI assistant MUST always provide a clean, conventional, copy-pasteable Git commit snippet (e.g., `feat(...)`, `refactor(...)`, `fix(...)`, `docs(...)`).
+## 11. Error Handling & App Resilience
+- **Error Boundaries:** Provide route-level and segment-level `error.tsx` and `not-found.tsx` boundaries to isolate failures.
+- **Safe Async Handlers:** Always wrap network calls or Server Actions in standard try/catch wrappers or unified action handlers, exposing user-friendly error messages through `sonner`.
+
+---
+
+## 12. Mandatory Git Commit Message on Every Response
+- **Always Provide Git Commit Command:** At the end of every response where code, configurations, or documents are created or modified, the AI assistant MUST provide a clean, conventional, copy-pasteable Git commit snippet (e.g., `feat(...)`, `refactor(...)`, `fix(...)`, `docs(...)`).
