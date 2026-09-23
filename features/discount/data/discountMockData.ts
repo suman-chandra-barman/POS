@@ -1,0 +1,81 @@
+import {
+  DISCOUNT_ELIGIBILITY,
+  DISCOUNT_STATUS,
+  DISCOUNT_VALUE_TYPES,
+  type DiscountItem,
+  type SelectedTagItem,
+} from "../types/discount.types";
+
+export const INITIAL_DISCOUNTS: DiscountItem[] = [
+  {
+    id: "disc-1",
+    title: "20% Loyalty",
+    coupons: "---",
+    eligibility: DISCOUNT_ELIGIBILITY.SPECIFIC_CUSTOMER,
+    eligibilityLabel: "Specific Customer",
+    typeTime: "22 hours ago",
+    status: DISCOUNT_STATUS.ACTIVE,
+    usedCount: 310,
+    valueType: DISCOUNT_VALUE_TYPES.PERCENTAGE,
+    value: 20,
+  },
+  {
+    id: "disc-2",
+    title: "50% Summer Offer",
+    coupons: "212ds-64dgh-54",
+    eligibility: DISCOUNT_ELIGIBILITY.ALL_CUSTOMERS,
+    eligibilityLabel: "All customers",
+    typeTime: "3 days ago",
+    status: DISCOUNT_STATUS.ACTIVE,
+    usedCount: 20,
+    valueType: DISCOUNT_VALUE_TYPES.PERCENTAGE,
+    value: 50,
+  },
+  {
+    id: "disc-3",
+    title: "Opening Offer",
+    coupons: "212ds-64dgh-54",
+    eligibility: DISCOUNT_ELIGIBILITY.ALL_CUSTOMERS,
+    eligibilityLabel: "All customers",
+    typeTime: "2 minutes ago",
+    status: DISCOUNT_STATUS.INACTIVE,
+    usedCount: 675,
+    valueType: DISCOUNT_VALUE_TYPES.PERCENTAGE,
+    value: 15,
+  },
+  {
+    id: "disc-4",
+    title: "Eid offer",
+    coupons: "212ds-64dgh-54",
+    eligibility: DISCOUNT_ELIGIBILITY.ALL_CUSTOMERS,
+    eligibilityLabel: "All customers",
+    typeTime: "2 hours ago",
+    status: DISCOUNT_STATUS.ACTIVE,
+    usedCount: 17,
+    valueType: DISCOUNT_VALUE_TYPES.PERCENTAGE,
+    value: 25,
+  },
+];
+
+export const SAMPLE_PRODUCTS: SelectedTagItem[] = [
+  { id: "p-1", name: "Kid's black T-shirt" },
+  { id: "p-2", name: "H&M Jeans Pant" },
+  { id: "p-3", name: "Tangtop" },
+  { id: "p-4", name: "Kid's High nick" },
+  { id: "p-5", name: "Formal Oxford Shirt" },
+  { id: "p-6", name: "Cotton Slim Chino" },
+  { id: "p-7", name: "Graphic Hooded Sweatshirt" },
+  { id: "p-8", name: "Denim Trucker Jacket" },
+  { id: "p-9", name: "Casual Polo Shirt" },
+];
+
+export const SAMPLE_CUSTOMERS: SelectedTagItem[] = [
+  { id: "c-1", name: "Md: Ali" },
+  { id: "c-2", name: "Sarif" },
+  { id: "c-3", name: "Sohan Ali" },
+  { id: "c-4", name: "Sadikul" },
+  { id: "c-5", name: "Rahim Chowdhury" },
+  { id: "c-6", name: "Karim Hassan" },
+  { id: "c-7", name: "Tanvir Ahmed" },
+  { id: "c-8", name: "Farhan Kabir" },
+];
