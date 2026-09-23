@@ -17,10 +17,7 @@ export const HomePageView: React.FC = () => {
 
   const handleAppClick = (app: HomeAppItem) => {
     if (app.href) {
-      toast.info(`Opening ${app.name}...`);
       router.push(`/${locale}${app.href}`);
-    } else {
-      toast.info(`Launching ${app.name}...`);
     }
   };
 

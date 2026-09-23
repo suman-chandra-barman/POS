@@ -26,8 +26,8 @@ export default function RootLayout({
       className={cn("h-full antialiased font-sans", inter.variable)}
     >
       <body className="min-h-full flex flex-col">
+        <Toaster richColors position="top-center"  closeButton/>
         {children}
-        <Toaster position="top-right" richColors />
       </body>
     </html>
   );
