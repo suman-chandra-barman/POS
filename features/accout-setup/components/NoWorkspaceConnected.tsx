@@ -12,7 +12,7 @@ export const NoWorkspaceConnected: React.FC<NoWorkspaceConnectedProps> = ({
   onCreateCompany,
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center text-center px-4 py-16 sm:py-24 max-w-xl mx-auto animate-in fade-in zoom-in-95 duration-200">
+    <div className="flex flex-col items-center justify-center text-center px-4 py-6 sm:py-8 max-w-xl mx-auto animate-in fade-in zoom-in-95 duration-200">
       {/* Title */}
       <h1 className="text-xl sm:text-[22px] font-bold tracking-tight text-neutral-900">
         No Business Workspace Connected Yet

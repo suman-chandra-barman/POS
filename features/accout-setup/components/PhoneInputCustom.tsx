@@ -113,7 +113,7 @@ export const PhoneInputCustom: React.FC<PhoneInputCustomProps> = ({
       {/* Phone Field Container */}
       <div
         className={cn(
-          "flex h-10 w-full items-center rounded-xl border border-neutral-200 bg-white px-2.5 transition-all focus-within:border-neutral-400 focus-within:ring-2 focus-within:ring-neutral-200/70",
+          "flex h-9.5 w-full items-center rounded-xl border border-neutral-200 bg-white px-2.5 transition-all focus-within:border-neutral-400 focus-within:ring-2 focus-within:ring-neutral-200/70",
           error &&
             "border-destructive focus-within:border-destructive focus-within:ring-destructive/20"
         )}

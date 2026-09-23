@@ -44,7 +44,7 @@ export const DatabaseCreatingStep: React.FC<DatabaseCreatingStepProps> = ({
   return (
     <div
       className={cn(
-        "w-full max-w-107.5 rounded-2xl sm:rounded-3xl border border-neutral-100/90 bg-white p-8 sm:p-10 text-center shadow-[0_10px_35px_-5px_rgba(0,0,0,0.06)] animate-in fade-in-0 zoom-in-95 duration-200",
+        "w-full max-w-105 rounded-2xl sm:rounded-3xl border border-neutral-100/90 bg-white p-6 sm:p-8 text-center shadow-[0_10px_35px_-5px_rgba(0,0,0,0.06)] animate-in fade-in-0 zoom-in-95 duration-200",
         className
       )}
     >

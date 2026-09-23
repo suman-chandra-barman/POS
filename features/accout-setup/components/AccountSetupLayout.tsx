@@ -16,14 +16,14 @@ export const AccountSetupLayout: React.FC<AccountSetupLayoutProps> = ({
   topNavbar,
 }) => {
   return (
-    <div className="relative min-h-screen w-full flex flex-col bg-[#f2f2f2] overflow-x-hidden select-none">
+    <div className="relative h-screen max-h-screen w-full flex flex-col bg-[#f2f2f2] overflow-hidden select-none">
       {/* Top Navbar */}
-      {topNavbar}
+      {topNavbar && <div className="shrink-0">{topNavbar}</div>}
 
       {/* Main Container */}
       <div
         className={cn(
-          "relative flex-1 w-full flex items-center justify-center p-4 sm:p-6 md:p-8",
+          "relative flex-1 w-full min-h-0 flex items-center justify-center p-3 sm:p-4 md:p-5 overflow-hidden",
           className
         )}
       >
@@ -54,7 +54,7 @@ export const AccountSetupLayout: React.FC<AccountSetupLayoutProps> = ({
       </div>
 
         {/* Main Content Card Container */}
-        <div className="relative z-10 w-full flex items-center justify-center">
+        <div className="relative z-10 w-full h-full min-h-0 flex items-center justify-center">
           {children}
         </div>
       </div>

@@ -82,19 +82,19 @@ export const FormSelect: React.FC<FormSelectProps> = ({
           }
         }}
         className={cn(
-          "flex h-10 w-full items-center justify-between rounded-xl border border-neutral-200 bg-white px-3.5 text-sm transition-all focus:border-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-200/70 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer",
+          "flex h-9.5 w-full items-center justify-between rounded-xl border border-neutral-200 bg-white px-3.5 text-xs transition-all focus:border-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-200/70 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer",
           error && "border-destructive focus:border-destructive focus:ring-destructive/20"
         )}
       >
         <span
           className={cn(
-            "truncate text-sm",
+            "truncate text-xs",
             selectedOption ? "text-neutral-900" : "text-neutral-400"
           )}
         >
           {selectedOption ? selectedOption.label : placeholder}
         </span>
-        <ChevronsUpDown className="size-4 text-neutral-400 shrink-0 ml-2" />
+        <ChevronsUpDown className="size-3.5 text-neutral-400 shrink-0 ml-2" />
       </button>
 
       {/* Dropdown Menu */}

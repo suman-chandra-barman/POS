@@ -77,7 +77,7 @@ export const BusinessWorkspaceSetupStep1: React.FC<BusinessWorkspaceSetupStep1Pr
   return (
     <div
       className={cn(
-        "w-full max-w-107.5 rounded-2xl sm:rounded-3xl border border-neutral-100/80 bg-white p-5 sm:p-6 shadow-[0_10px_35px_-5px_rgba(0,0,0,0.06)] animate-in fade-in-0 zoom-in-95 duration-200",
+        "w-full max-w-105 rounded-2xl sm:rounded-3xl border border-neutral-100/80 bg-white p-4 sm:p-5 sm:py-4.5 shadow-[0_10px_35px_-5px_rgba(0,0,0,0.06)] animate-in fade-in-0 zoom-in-95 duration-200",
         className
       )}
     >
@@ -88,7 +88,7 @@ export const BusinessWorkspaceSetupStep1: React.FC<BusinessWorkspaceSetupStep1Pr
       />
 
       {/* Form Fields */}
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-5 space-y-3.5">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-3.5 space-y-2.5">
         {/* Logo Field */}
         <Controller
           name="logo"
@@ -102,7 +102,7 @@ export const BusinessWorkspaceSetupStep1: React.FC<BusinessWorkspaceSetupStep1Pr
         />
 
         {/* Business Name Field */}
-        <div className="space-y-1.5">
+        <div className="space-y-1">
           <label className="block text-xs font-semibold text-neutral-800">
             Business Name
           </label>
@@ -110,7 +110,7 @@ export const BusinessWorkspaceSetupStep1: React.FC<BusinessWorkspaceSetupStep1Pr
             {...register("businessName")}
             placeholder="Enter business name"
             className={cn(
-              "h-10 rounded-xl border-neutral-200 px-3.5 text-sm placeholder:text-neutral-400 focus-visible:border-neutral-400 focus-visible:ring-neutral-200/70",
+              "h-9.5 rounded-xl border-neutral-200 px-3.5 text-xs placeholder:text-neutral-400 focus-visible:border-neutral-400 focus-visible:ring-neutral-200/70",
               errors.businessName && "border-destructive focus-visible:border-destructive focus-visible:ring-destructive/20"
             )}
           />

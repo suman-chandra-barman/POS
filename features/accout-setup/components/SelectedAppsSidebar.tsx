@@ -24,16 +24,16 @@ export const SelectedAppsSidebar: React.FC<SelectedAppsSidebarProps> = ({
   return (
     <div
       className={cn(
-        "flex w-full flex-col rounded-2xl sm:rounded-3xl border border-neutral-100/90 bg-white p-4 sm:p-5 shadow-[0_10px_35px_-5px_rgba(0,0,0,0.05)]",
+        "flex w-full flex-col h-full max-h-full rounded-2xl sm:rounded-3xl border border-neutral-100/90 bg-white p-4 sm:p-5 shadow-[0_10px_35px_-5px_rgba(0,0,0,0.05)]",
         className
       )}
     >
       {/* Sidebar Header */}
-      <h3 className="text-sm font-bold tracking-tight text-neutral-900">
+      <h3 className="text-sm font-bold tracking-tight text-neutral-900 shrink-0">
         Selected Apps
       </h3>
 
-      <div className="mt-3.5 space-y-4">
+      <div className="mt-3 flex-1 min-h-0 overflow-y-auto pr-1 space-y-3.5">
         {/* Free Apps Section */}
         <div>
           <span className="block text-xs font-medium text-neutral-500 mb-2">
@@ -104,9 +104,11 @@ export const SelectedAppsSidebar: React.FC<SelectedAppsSidebarProps> = ({
       </div>
 
       {/* Confirm Button */}
-      <SetupSubmitButton onClick={onConfirm} type="button">
-        CONFIRM
-      </SetupSubmitButton>
+      <div className="shrink-0 pt-2">
+        <SetupSubmitButton onClick={onConfirm} type="button" className="mt-0">
+          CONFIRM
+        </SetupSubmitButton>
+      </div>
     </div>
   );
 };

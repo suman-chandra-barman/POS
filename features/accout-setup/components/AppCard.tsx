@@ -24,7 +24,7 @@ export const AppCard: React.FC<AppCardProps> = ({
       type="button"
       onClick={() => onToggle(app.id)}
       className={cn(
-        "group relative flex h-12 w-full items-center gap-2.5 rounded-2xl border px-2.5 py-1.5 text-left transition-all cursor-pointer select-none active:scale-[0.98]",
+        "group relative flex h-11 w-full items-center gap-2 rounded-xl sm:rounded-2xl border px-2.5 py-1 text-left transition-all cursor-pointer select-none active:scale-[0.98]",
         isSelected
           ? "border-sky-500 bg-white shadow-xs ring-1 ring-sky-500/20"
           : "border-neutral-200/80 bg-neutral-50/60 hover:bg-neutral-100/60 hover:border-neutral-300",

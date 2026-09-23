@@ -14,7 +14,7 @@ export const SetupTopNavbar: React.FC<SetupTopNavbarProps> = ({
   return (
     <header
       className={cn(
-        "w-full bg-[#1c78b4] py-2 sm:py-2.5 px-4 sm:px-6 text-white text-xs sm:text-[13px] font-normal flex items-center justify-center gap-2 shadow-xs select-none z-30 transition-all",
+        "w-full bg-[#1c78b4] py-1.5 sm:py-2 px-4 sm:px-6 text-white text-xs sm:text-[13px] font-normal flex items-center justify-center gap-2 shadow-xs select-none z-30 transition-all",
         className
       )}
     >

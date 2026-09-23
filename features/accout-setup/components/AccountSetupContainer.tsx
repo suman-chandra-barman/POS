@@ -139,7 +139,7 @@ export const AccountSetupContainer: React.FC = () => {
     <AccountSetupLayout
       topNavbar={showTopNavbar ? <SetupTopNavbar /> : undefined}
     >
-      <div className="flex flex-col items-center w-full">
+      <div className="flex flex-col items-center justify-center w-full h-full min-h-0">
         {/* Step 1: Business Info */}
         {currentStep === ACCOUNT_SETUP_STEPS.STEP1 && (
           <BusinessWorkspaceSetupStep1
