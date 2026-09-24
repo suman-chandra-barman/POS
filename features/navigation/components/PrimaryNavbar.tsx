@@ -66,22 +66,33 @@ export const PrimaryNavbar: React.FC<PrimaryNavbarProps> = ({
       {/* ── Left Section: Icon + Title + Nav Items / Links ── */}
       <div className="flex items-center gap-4 sm:gap-6 min-w-0">
         <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-          <div className="flex items-center justify-center text-neutral-800">
-            {icon !== undefined ? (
-              icon
-            ) : (
+          {icon !== undefined ? (
+            <>
+              <div className="flex items-center justify-center text-neutral-800">
+                {icon}
+              </div>
               <Link
-                href={`/${locale}/apps`}
-                aria-label="Apps Launcher"
-                className="hover:opacity-75 transition-opacity flex items-center justify-center cursor-pointer"
+                href={`/${locale}`}
+                className="hover:opacity-75 transition-opacity cursor-pointer"
               >
-                <LayoutGrid className="size-4.5 sm:size-5" />
+                <span className="text-base sm:text-[17px] font-bold tracking-tight text-neutral-900">
+                  {title}
+                </span>
               </Link>
-            )}
-          </div>
-          <h1 className="text-base sm:text-[17px] font-bold tracking-tight text-neutral-900">
-            {title}
-          </h1>
+            </>
+          ) : (
+            <Link
+              href={`/${locale}`}
+              className="flex items-center gap-2 sm:gap-2.5 hover:opacity-75 transition-opacity cursor-pointer"
+            >
+              <div className="flex items-center justify-center text-neutral-800">
+                <LayoutGrid className="size-4.5 sm:size-5" />
+              </div>
+              <span className="text-base sm:text-[17px] font-bold tracking-tight text-neutral-900">
+                {title}
+              </span>
+            </Link>
+          )}
         </div>
 
         {/* Custom Left Content (if provided) */}
