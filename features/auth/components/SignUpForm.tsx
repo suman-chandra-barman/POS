@@ -107,7 +107,7 @@ export const SignUpForm: React.FC = () => {
           {t("alreadyHaveAccount")}{" "}
           <Link
             href={`/${locale}/signin`}
-            className="text-[#7C3AED] hover:underline font-semibold"
+            className="hover:underline font-semibold"
           >
             {t("signInLink")}
           </Link>

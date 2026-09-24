@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { signInSchema, } from "../types/auth.schemas";
+import { signInSchema } from "../types/auth.schemas";
 import type { SignInFormData } from "../types/auth.types";
 import { GoogleAuthButton } from "./GoogleAuthButton";
 
@@ -128,9 +128,7 @@ export const SignInForm: React.FC = () => {
 
       {/* "or" separator */}
       <div className="text-center py-0.5">
-        <span className="text-xs text-neutral-400 font-normal">
-          {t("or")}
-        </span>
+        <span className="text-xs text-neutral-400 font-normal">{t("or")}</span>
       </div>
 
       {/* Google Login Button */}
@@ -145,7 +143,7 @@ export const SignInForm: React.FC = () => {
           {t("dontHaveAccount")}{" "}
           <Link
             href={`/${locale}/signup`}
-            className="text-[#7C3AED] hover:underline font-semibold"
+            className="hover:underline font-semibold"
           >
             {t("signUpLink")}
           </Link>
