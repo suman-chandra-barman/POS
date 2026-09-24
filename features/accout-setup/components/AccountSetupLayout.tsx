@@ -16,7 +16,7 @@ export const AccountSetupLayout: React.FC<AccountSetupLayoutProps> = ({
   topNavbar,
 }) => {
   return (
-    <div className="relative h-screen max-h-screen w-full flex flex-col bg-[#f2f2f2] overflow-hidden select-none">
+    <div className="theme-auth relative h-screen max-h-screen w-full flex flex-col bg-[#f2f2f2] overflow-hidden select-none">
       {/* Top Navbar */}
       {topNavbar && <div className="shrink-0">{topNavbar}</div>}
 

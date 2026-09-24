@@ -28,7 +28,7 @@ export const NoWorkspaceConnected: React.FC<NoWorkspaceConnectedProps> = ({
       <Button
         onClick={onCreateCompany}
         type="button"
-        className="mt-6 sm:mt-7 h-9 px-4 rounded-lg bg-[#232323] hover:bg-neutral-800 text-white text-xs font-medium gap-1.5 shadow-sm transition-transform active:scale-[0.98] cursor-pointer"
+        className="mt-6 sm:mt-7 h-9 px-4 rounded-lg text-xs font-medium gap-1.5 shadow-sm transition-transform active:scale-[0.98] cursor-pointer"
       >
         <Plus className="size-3.5" />
         <span>Create Company</span>

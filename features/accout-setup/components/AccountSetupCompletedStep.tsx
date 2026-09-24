@@ -90,7 +90,7 @@ export const AccountSetupCompletedStep: React.FC<
         <Button
           type="button"
           onClick={onGoToDashboard}
-          className="flex-1 h-10 rounded-xl bg-[#232323] hover:bg-neutral-800 text-white text-xs gap-1.5 cursor-pointer"
+          className="flex-1 h-10 rounded-xl text-xs gap-1.5 cursor-pointer"
         >
           <Building2 className="size-3.5" />
           <span>Go to Dashboard</span>

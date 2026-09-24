@@ -10,6 +10,7 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { verifyEmailSchema } from "../types/auth.schemas";
 import type { VerifyEmailFormData } from "../types/auth.types";
+import { Button } from "@/components/ui/button";
 import { OtpInputGroup } from "./OtpInputGroup";
 
 interface EmailVerifyFormProps {
@@ -85,17 +86,17 @@ export const EmailVerifyForm: React.FC<EmailVerifyFormProps> = () => {
       )}
 
       {/* Verify Button */}
-      <button
+      <Button
         type="submit"
         disabled={isLoading}
-        className="w-full h-10 rounded-lg bg-[#222222] hover:bg-neutral-800 active:bg-black text-white text-xs font-semibold flex items-center justify-center transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full h-10 rounded-lg text-xs font-semibold uppercase tracking-wider cursor-pointer"
       >
         {isLoading ? (
           <Loader2 className="size-4 animate-spin" />
         ) : (
           t("verifyButton")
         )}
-      </button>
+      </Button>
 
       {/* Resend Code Footer */}
       <div className="text-center pt-4">

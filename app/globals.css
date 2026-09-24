@@ -118,6 +118,20 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* --- Auth Group Scoped Theme (#262626) --- */
+.theme-auth {
+  --primary: #262626;
+  --primary-foreground: #ffffff;
+  --ring: #262626;
+}
+
+.dark .theme-auth,
+.theme-auth.dark {
+  --primary: #262626;
+  --primary-foreground: #ffffff;
+  --ring: #262626;
+}
+
 .dark {
   /* --- Dark Theme Base --- */
   --background: oklch(0.145 0 0);

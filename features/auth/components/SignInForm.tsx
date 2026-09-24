@@ -11,6 +11,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { signInSchema } from "../types/auth.schemas";
 import type { SignInFormData } from "../types/auth.types";
+import { Button } from "@/components/ui/button";
 import { GoogleAuthButton } from "./GoogleAuthButton";
 
 export const SignInForm: React.FC = () => {
@@ -114,17 +115,17 @@ export const SignInForm: React.FC = () => {
       </div>
 
       {/* Sign In Button */}
-      <button
+      <Button
         type="submit"
         disabled={isLoading}
-        className="w-full h-10 rounded-lg bg-[#222222] hover:bg-neutral-800 active:bg-black text-white text-xs font-semibold uppercase tracking-wider flex items-center justify-center transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+        className="w-full h-10 rounded-lg text-xs font-semibold uppercase tracking-wider cursor-pointer mt-2"
       >
         {isLoading ? (
           <Loader2 className="size-4 animate-spin" />
         ) : (
           t("signInButton")
         )}
-      </button>
+      </Button>
 
       {/* "or" separator */}
       <div className="text-center py-0.5">

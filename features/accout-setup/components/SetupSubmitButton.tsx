@@ -22,7 +22,7 @@ export const SetupSubmitButton: React.FC<SetupSubmitButtonProps> = ({
       type={type}
       disabled={disabled}
       className={cn(
-        "mt-4 h-9.5 sm:h-10 w-full rounded-xl bg-[#232323] hover:bg-neutral-800 text-white text-xs font-semibold tracking-wider uppercase shadow-sm transition-all active:scale-[0.99] cursor-pointer disabled:opacity-50",
+        "mt-4 h-9.5 sm:h-10 w-full rounded-xl text-xs font-semibold tracking-wider uppercase shadow-sm transition-all active:scale-[0.99] cursor-pointer disabled:opacity-50",
         className
       )}
       {...props}
