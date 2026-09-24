@@ -77,8 +77,8 @@
   --popover-foreground: oklch(0.145 0 0);
 
   /* --- Brand & Theme Colors --- */
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  --primary: #262626;
+  --primary-foreground: #ffffff;
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -88,11 +88,11 @@
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
 
-  /* --- Brand Custom Accent (Vibrant Blue) --- */
-  --brand: oklch(0.54 0.14 245);
-  --brand-foreground: oklch(1 0 0);
-  --brand-start: oklch(0.42 0.15 250);
-  --brand-end: oklch(0.62 0.16 240);
+  /* --- Brand Custom Accent (#007FE8) --- */
+  --brand: #007FE8;
+  --brand-foreground: #ffffff;
+  --brand-start: #0066c0;
+  --brand-end: #1ea0ff;
 
   /* --- Form & Utility Tokens --- */
   --border: oklch(0.922 0 0);
@@ -156,10 +156,10 @@
   --destructive-foreground: oklch(0.985 0 0);
 
   /* --- Brand Custom Accent (Dark Mode) --- */
-  --brand: oklch(0.68 0.14 245);
-  --brand-foreground: oklch(1 0 0);
-  --brand-start: oklch(0.55 0.15 250);
-  --brand-end: oklch(0.72 0.14 240);
+  --brand: #007FE8;
+  --brand-foreground: #ffffff;
+  --brand-start: #0066c0;
+  --brand-end: #1ea0ff;
 
   /* --- Form & Utility Tokens --- */
   --border: oklch(1 0 0 / 10%);
