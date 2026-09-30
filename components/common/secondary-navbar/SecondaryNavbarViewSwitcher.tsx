@@ -2,7 +2,7 @@
 
 import React from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { KanbanIcon, ListViewIcon } from "@hugeicons/core-free-icons";
+import { AlignStartHorizontalIcon, ListViewIcon } from "@hugeicons/core-free-icons";
 import { cn } from "@/lib/utils";
 
 export type ViewSwitcherMode = "card" | "table" | "list";
@@ -23,7 +23,7 @@ export const SecondaryNavbarViewSwitcher: React.FC<SecondaryNavbarViewSwitcherPr
 
   return (
     <div className={cn("flex items-center gap-1 select-none", className)}>
-      {/* ── Card / Kanban View Button ── */}
+      {/* ── Card / Column View Button ── */}
       <button
         type="button"
         id="btn-view-card"
@@ -38,9 +38,9 @@ export const SecondaryNavbarViewSwitcher: React.FC<SecondaryNavbarViewSwitcherPr
         )}
       >
         <HugeiconsIcon
-          icon={KanbanIcon}
+          icon={AlignStartHorizontalIcon}
           size={16}
-          strokeWidth={1.8}
+          strokeWidth={1.5}
           className="shrink-0"
         />
       </button>
@@ -62,7 +62,7 @@ export const SecondaryNavbarViewSwitcher: React.FC<SecondaryNavbarViewSwitcherPr
         <HugeiconsIcon
           icon={ListViewIcon}
           size={16}
-          strokeWidth={1.8}
+          strokeWidth={1.5}
           className="shrink-0"
         />
       </button>
