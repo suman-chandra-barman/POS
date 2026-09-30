@@ -127,7 +127,7 @@ export const ProductContainer: React.FC = () => {
       </div>
       
       <div className="w-full min-h-[calc(100vh-5rem)] px-4 sm:px-6 py-6 pb-36">
-        <div className="w-full max-w-7xl mx-auto">
+        <div className="w-full">
         {/* Main List View */}
         {activeView === "list" && (
           <div className="relative">
