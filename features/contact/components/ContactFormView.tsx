@@ -12,19 +12,19 @@ import {
 } from "lucide-react";
 import type { Country } from "react-phone-number-input";
 import {
-  CustomerFormData,
-  CUSTOMER_TYPES,
-} from "../types/customer.types";
-import { AVAILABLE_TAGS } from "../data/customerMockData";
-import { CustomerPhoneInput } from "./CustomerPhoneInput";
-import { CustomerCountrySelect } from "./CustomerCountrySelect";
+  ContactFormData,
+  CONTACT_TYPES,
+} from "../types/contact.types";
+import { AVAILABLE_TAGS } from "../data/contactMockData";
+import { ContactPhoneInput } from "./ContactPhoneInput";
+import { ContactCountrySelect } from "./ContactCountrySelect";
 
-interface CustomerFormViewProps {
-  formData: CustomerFormData;
-  onChange: React.Dispatch<React.SetStateAction<CustomerFormData>>;
+interface ContactFormViewProps {
+  formData: ContactFormData;
+  onChange: React.Dispatch<React.SetStateAction<ContactFormData>>;
 }
 
-export const CustomerFormView: React.FC<CustomerFormViewProps> = ({
+export const ContactFormView: React.FC<ContactFormViewProps> = ({
   formData,
   onChange,
 }) => {
@@ -61,25 +61,25 @@ export const CustomerFormView: React.FC<CustomerFormViewProps> = ({
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
       {/* ── LEFT COLUMN: 2 COLS WIDE (~68%) ── */}
       <div className="lg:col-span-2 space-y-5">
-        {/* 1. Customer Overview Card */}
+        {/* 1. Contact Overview Card */}
         <div className="bg-white rounded-2xl border border-neutral-200/80 p-5 sm:p-6 shadow-xs space-y-6">
           {/* Header row with Person / Company radio buttons */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <h2 className="text-sm font-bold text-neutral-900">
-              Customer overview
+              Contact overview
             </h2>
 
             <div className="flex items-center gap-4 text-xs">
               <label className="flex items-center gap-1.5 cursor-pointer text-neutral-800 font-medium">
                 <input
                   type="radio"
-                  name="customerType"
-                  value={CUSTOMER_TYPES.PERSON}
-                  checked={formData.type === CUSTOMER_TYPES.PERSON}
+                  name="contactType"
+                  value={CONTACT_TYPES.PERSON}
+                  checked={formData.type === CONTACT_TYPES.PERSON}
                   onChange={() =>
                     onChange((prev) => ({
                       ...prev,
-                      type: CUSTOMER_TYPES.PERSON,
+                      type: CONTACT_TYPES.PERSON,
                     }))
                   }
                   className="size-3.5 text-neutral-900 focus:ring-neutral-800"
@@ -90,13 +90,13 @@ export const CustomerFormView: React.FC<CustomerFormViewProps> = ({
               <label className="flex items-center gap-1.5 cursor-pointer text-neutral-500 hover:text-neutral-800">
                 <input
                   type="radio"
-                  name="customerType"
-                  value={CUSTOMER_TYPES.COMPANY}
-                  checked={formData.type === CUSTOMER_TYPES.COMPANY}
+                  name="contactType"
+                  value={CONTACT_TYPES.COMPANY}
+                  checked={formData.type === CONTACT_TYPES.COMPANY}
                   onChange={() =>
                     onChange((prev) => ({
                       ...prev,
-                      type: CUSTOMER_TYPES.COMPANY,
+                      type: CONTACT_TYPES.COMPANY,
                     }))
                   }
                   className="size-3.5 text-neutral-900 focus:ring-neutral-800"
@@ -114,7 +114,7 @@ export const CustomerFormView: React.FC<CustomerFormViewProps> = ({
                 {formData.avatarUrl ? (
                   <Image
                     src={formData.avatarUrl}
-                    alt="Customer"
+                    alt="Contact"
                     fill
                     sizes="96px"
                     className="object-cover"
@@ -178,7 +178,7 @@ export const CustomerFormView: React.FC<CustomerFormViewProps> = ({
                   <label className="block text-xs font-medium text-neutral-700 mb-1">
                     Phone
                   </label>
-                  <CustomerPhoneInput
+                  <ContactPhoneInput
                     country={(formData.countryIso as Country) || "BD"}
                     phoneNumber={formData.phone}
                     onCountryChange={(c, code) => {
@@ -250,7 +250,7 @@ export const CustomerFormView: React.FC<CustomerFormViewProps> = ({
             </div>
 
             <div>
-              <CustomerCountrySelect
+              <ContactCountrySelect
                 selectedCountry={formData.address.countryIso || "BD"}
                 onSelect={(countryName, countryCode) => {
                   onChange((prev) => ({
@@ -454,7 +454,7 @@ export const CustomerFormView: React.FC<CustomerFormViewProps> = ({
           />
         </div>
 
-        {/* 2. Tags Card with Interactive Popover (media_1790000711697.png) */}
+        {/* 2. Tags Card with Interactive Popover */}
         <div className="bg-white rounded-2xl border border-neutral-200/80 p-5 shadow-xs space-y-3 relative">
           <h3 className="text-xs font-bold text-neutral-800">Tags</h3>
 
@@ -482,7 +482,7 @@ export const CustomerFormView: React.FC<CustomerFormViewProps> = ({
               ))}
             </div>
 
-            {/* Tag Dropdown matching image media_1790000711697.png */}
+            {/* Tag Dropdown */}
             {tagDropdownOpen && (
               <>
                 <div
@@ -539,4 +539,4 @@ export const CustomerFormView: React.FC<CustomerFormViewProps> = ({
   );
 };
 
-export default CustomerFormView;
+export default ContactFormView;

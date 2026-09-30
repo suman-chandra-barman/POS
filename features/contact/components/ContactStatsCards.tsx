@@ -3,13 +3,13 @@
 import React from "react";
 import { Users } from "lucide-react";
 
-interface CustomerStatsCardsProps {
-  totalCustomers?: number;
+interface ContactStatsCardsProps {
+  totalContacts?: number;
   dueAmount?: number;
 }
 
-export const CustomerStatsCards: React.FC<CustomerStatsCardsProps> = ({
-  totalCustomers = 592,
+export const ContactStatsCards: React.FC<ContactStatsCardsProps> = ({
+  totalContacts = 592,
   dueAmount = 26658,
 }) => {
   // Mini chart bar heights matching the visual design
@@ -18,11 +18,11 @@ export const CustomerStatsCards: React.FC<CustomerStatsCardsProps> = ({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6">
-      {/* Card 1: All Customer */}
+      {/* Card 1: All Contacts */}
       <div className="bg-white rounded-2xl border border-neutral-200/80 p-5 sm:p-6 shadow-xs flex flex-col justify-between">
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-neutral-600">
-            All Customer
+            All Contacts
           </span>
           <div className="size-8 rounded-full flex items-center justify-center text-neutral-400">
             <Users className="size-5 stroke-[1.8]" />
@@ -32,7 +32,7 @@ export const CustomerStatsCards: React.FC<CustomerStatsCardsProps> = ({
         <div className="flex items-end justify-between mt-4">
           <div>
             <div className="text-3xl sm:text-4xl font-bold text-neutral-900 tracking-tight">
-              {totalCustomers}
+              {totalContacts}
             </div>
             <p className="text-xs text-neutral-400 mt-1.5 font-normal">
               You have increased contact by 20% compared to last month
@@ -89,4 +89,4 @@ export const CustomerStatsCards: React.FC<CustomerStatsCardsProps> = ({
   );
 };
 
-export default CustomerStatsCards;
+export default ContactStatsCards;

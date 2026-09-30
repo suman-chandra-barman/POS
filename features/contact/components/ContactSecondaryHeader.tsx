@@ -10,31 +10,31 @@ import {
   Menu,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CUSTOMER_VIEWS, type CustomerView } from "../types/customer.types";
+import { CONTACT_VIEWS, type ContactView } from "../types/contact.types";
 
-interface CustomerSecondaryHeaderProps {
-  onNewCustomer: () => void;
-  onSaveCustomer?: () => void;
+interface ContactSecondaryHeaderProps {
+  onNewContact: () => void;
+  onSaveContact?: () => void;
   onCancel?: () => void;
-  activeView: CustomerView;
-  onViewChange: (view: CustomerView) => void;
+  activeView: ContactView;
+  onViewChange: (view: ContactView) => void;
   currentPage?: number;
-  totalCustomers?: number;
+  totalContacts?: number;
   isSaving?: boolean;
 }
 
-export const CustomerSecondaryHeader: React.FC<CustomerSecondaryHeaderProps> = ({
-  onNewCustomer,
-  onSaveCustomer,
+export const ContactSecondaryHeader: React.FC<ContactSecondaryHeaderProps> = ({
+  onNewContact,
+  onSaveContact,
   onCancel,
   activeView,
   onViewChange,
   currentPage = 1,
-  totalCustomers = 100,
+  totalContacts = 100,
   isSaving = false,
 }) => {
   const isFormMode =
-    activeView === CUSTOMER_VIEWS.CREATE || activeView === CUSTOMER_VIEWS.EDIT;
+    activeView === CONTACT_VIEWS.CREATE || activeView === CONTACT_VIEWS.EDIT;
 
   return (
     <div className="w-full bg-white border-b border-neutral-200/80 px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
@@ -44,16 +44,16 @@ export const CustomerSecondaryHeader: React.FC<CustomerSecondaryHeaderProps> = (
           <>
             <button
               type="button"
-              id="btn-save-customer"
-              onClick={onSaveCustomer}
+              id="btn-save-contact"
+              onClick={onSaveContact}
               disabled={isSaving}
               className="px-4 py-2 bg-[#0095FF] hover:bg-sky-600 disabled:opacity-60 text-white rounded-lg text-xs font-semibold shadow-xs transition-all cursor-pointer active:scale-98"
             >
-              {isSaving ? "Saving..." : "Save Customer"}
+              {isSaving ? "Saving..." : "Save Contact"}
             </button>
             <button
               type="button"
-              id="btn-cancel-customer"
+              id="btn-cancel-contact"
               onClick={onCancel}
               className="px-4 py-2 bg-white hover:bg-neutral-50 text-neutral-700 border border-neutral-200/90 rounded-lg text-xs font-medium transition-colors cursor-pointer"
             >
@@ -63,11 +63,11 @@ export const CustomerSecondaryHeader: React.FC<CustomerSecondaryHeaderProps> = (
         ) : (
           <button
             type="button"
-            id="btn-new-customer"
-            onClick={onNewCustomer}
+            id="btn-new-contact"
+            onClick={onNewContact}
             className="px-4 py-2 bg-[#0095FF] hover:bg-sky-600 text-white rounded-lg text-xs font-semibold shadow-xs transition-all cursor-pointer active:scale-98"
           >
-            New Customer
+            New Contact
           </button>
         )}
       </div>
@@ -116,7 +116,7 @@ export const CustomerSecondaryHeader: React.FC<CustomerSecondaryHeaderProps> = (
         <div className="flex items-center gap-2 text-xs font-medium text-neutral-700">
           <span>
             1-100 <span className="text-neutral-400 font-normal">/</span>{" "}
-            {totalCustomers}
+            {totalContacts}
           </span>
           <div className="flex items-center gap-0.5 text-neutral-500">
             <button
@@ -142,17 +142,16 @@ export const CustomerSecondaryHeader: React.FC<CustomerSecondaryHeaderProps> = (
           {/* Card View Toggle Icon */}
           <button
             type="button"
-            id="btn-customer-card-view"
-            onClick={() => onViewChange(CUSTOMER_VIEWS.CARD)}
+            id="btn-contact-card-view"
+            onClick={() => onViewChange(CONTACT_VIEWS.CARD)}
             aria-label="Card View"
             className={cn(
               "p-1.5 rounded-lg transition-colors cursor-pointer",
-              activeView === CUSTOMER_VIEWS.CARD
+              activeView === CONTACT_VIEWS.CARD
                 ? "text-neutral-900 bg-neutral-100 font-semibold"
                 : "text-neutral-400 hover:text-neutral-700 hover:bg-neutral-50"
             )}
           >
-            {/* Custom Card/Badge SVG icon matching user image */}
             <div className="size-4 border-1.5 border-current rounded-xs flex flex-col justify-center items-center p-0.5">
               <div className="w-full h-0.5 bg-current rounded-xs" />
             </div>
@@ -161,12 +160,12 @@ export const CustomerSecondaryHeader: React.FC<CustomerSecondaryHeaderProps> = (
           {/* Table View Toggle Icon */}
           <button
             type="button"
-            id="btn-customer-table-view"
-            onClick={() => onViewChange(CUSTOMER_VIEWS.TABLE)}
+            id="btn-contact-table-view"
+            onClick={() => onViewChange(CONTACT_VIEWS.TABLE)}
             aria-label="Table View"
             className={cn(
               "p-1.5 rounded-lg transition-colors cursor-pointer",
-              activeView === CUSTOMER_VIEWS.TABLE
+              activeView === CONTACT_VIEWS.TABLE
                 ? "text-neutral-900 bg-neutral-100 font-semibold"
                 : "text-neutral-400 hover:text-neutral-700 hover:bg-neutral-50"
             )}
@@ -179,4 +178,4 @@ export const CustomerSecondaryHeader: React.FC<CustomerSecondaryHeaderProps> = (
   );
 };
 
-export default CustomerSecondaryHeader;
+export default ContactSecondaryHeader;

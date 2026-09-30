@@ -2,11 +2,11 @@
 
 import React, { useState } from "react";
 import { ShoppingCart } from "lucide-react";
-import { type Customer } from "../types/customer.types";
+import { type Contact } from "../types/contact.types";
 
-interface CustomerTableProps {
-  customers: Customer[];
-  onSelectCustomer?: (customer: Customer) => void;
+interface ContactTableProps {
+  contacts: Contact[];
+  onSelectContact?: (contact: Contact) => void;
 }
 
 function formatCurrency(amount: number) {
@@ -16,15 +16,15 @@ function formatCurrency(amount: number) {
   }).format(amount);
 }
 
-export const CustomerTable: React.FC<CustomerTableProps> = ({
-  customers,
-  onSelectCustomer,
+export const ContactTable: React.FC<ContactTableProps> = ({
+  contacts,
+  onSelectContact,
 }) => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      setSelectedIds(customers.map((c) => c.id));
+      setSelectedIds(contacts.map((c) => c.id));
     } else {
       setSelectedIds([]);
     }
@@ -38,7 +38,7 @@ export const CustomerTable: React.FC<CustomerTableProps> = ({
   };
 
   const isAllSelected =
-    customers.length > 0 && selectedIds.length === customers.length;
+    contacts.length > 0 && selectedIds.length === contacts.length;
 
   return (
     <div className="w-full bg-white rounded-2xl border border-neutral-200/80 shadow-xs overflow-hidden">
@@ -49,7 +49,7 @@ export const CustomerTable: React.FC<CustomerTableProps> = ({
               <th className="py-3 px-4 sm:px-6 w-10">
                 <input
                   type="checkbox"
-                  id="customer-select-all"
+                  id="contact-select-all"
                   checked={isAllSelected}
                   onChange={(e) => handleSelectAll(e.target.checked)}
                   className="rounded-md border-neutral-300 text-sky-500 focus:ring-sky-400 size-4 cursor-pointer"
@@ -76,21 +76,21 @@ export const CustomerTable: React.FC<CustomerTableProps> = ({
             </tr>
           </thead>
           <tbody className="divide-y divide-neutral-100 text-xs sm:text-sm">
-            {customers.map((customer) => {
-              const isChecked = selectedIds.includes(customer.id);
+            {contacts.map((contact) => {
+              const isChecked = selectedIds.includes(contact.id);
               return (
                 <tr
-                  key={customer.id}
-                  onClick={() => onSelectCustomer?.(customer)}
+                  key={contact.id}
+                  onClick={() => onSelectContact?.(contact)}
                   className="hover:bg-neutral-50/70 transition-colors cursor-pointer group"
                 >
                   {/* Checkbox */}
                   <td className="py-3.5 px-4 sm:px-6">
                     <input
                       type="checkbox"
-                      id={`customer-select-${customer.id}`}
+                      id={`contact-select-${contact.id}`}
                       checked={isChecked}
-                      onClick={(e) => handleToggleRow(customer.id, e)}
+                      onClick={(e) => handleToggleRow(contact.id, e)}
                       onChange={() => {}}
                       className="rounded-md border-neutral-300 text-sky-500 focus:ring-sky-400 size-4 cursor-pointer"
                     />
@@ -98,32 +98,32 @@ export const CustomerTable: React.FC<CustomerTableProps> = ({
 
                   {/* Name */}
                   <td className="py-3.5 px-4 font-medium text-neutral-800 whitespace-nowrap">
-                    {customer.name}
+                    {contact.name}
                   </td>
 
                   {/* Email */}
                   <td className="py-3.5 px-4 text-neutral-500 whitespace-nowrap">
-                    {customer.email}
+                    {contact.email}
                   </td>
 
                   {/* Phone */}
                   <td className="py-3.5 px-4 text-neutral-600 whitespace-nowrap">
-                    {customer.phone}
+                    {contact.phone}
                   </td>
 
                   {/* Order with shopping cart icon */}
                   <td className="py-3.5 px-4 text-neutral-700 whitespace-nowrap">
                     <div className="flex items-center gap-1.5">
                       <ShoppingCart className="size-3.5 text-neutral-400 shrink-0" />
-                      <span>{customer.orderCount}</span>
+                      <span>{contact.orderCount}</span>
                     </div>
                   </td>
 
                   {/* Due amount in reddish color or blank */}
                   <td className="py-3.5 px-4 text-right whitespace-nowrap">
-                    {customer.dueAmount > 0 ? (
+                    {contact.dueAmount > 0 ? (
                       <span className="font-normal text-rose-500">
-                        ৳ {formatCurrency(customer.dueAmount)}
+                        ৳ {formatCurrency(contact.dueAmount)}
                       </span>
                     ) : (
                       <span className="text-neutral-300">—</span>
@@ -132,7 +132,7 @@ export const CustomerTable: React.FC<CustomerTableProps> = ({
 
                   {/* Amount spent */}
                   <td className="py-3.5 px-4 sm:px-6 text-right font-medium text-neutral-800 whitespace-nowrap">
-                    ৳ {formatCurrency(customer.amountSpent)}
+                    ৳ {formatCurrency(contact.amountSpent)}
                   </td>
                 </tr>
               );
@@ -144,4 +144,4 @@ export const CustomerTable: React.FC<CustomerTableProps> = ({
   );
 };
 
-export default CustomerTable;
+export default ContactTable;
