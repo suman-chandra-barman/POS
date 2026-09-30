@@ -1,7 +1,15 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useLocale } from "next-intl";
+import {
+  SecondaryNavbar,
+  SecondaryNavbarSearch,
+  SecondaryNavbarPagination,
+  SecondaryNavbarViewSwitcher,
+} from "@/components/common";
 import {
   PRODUCT_TABS,
   PRODUCT_VIEW_MODES,
@@ -23,6 +31,7 @@ import { ProductLocationView } from "./ProductLocationView";
 import { ProductTopbar } from "./ProductTopbar";
 
 export const ProductContainer: React.FC = () => {
+  const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -114,6 +123,49 @@ export const ProductContainer: React.FC = () => {
   return (
     <div className="w-full min-h-screen bg-[#f8f9fb]">
       <ProductTopbar />
+
+      {/* ── Reusable Secondary Navbar matching Image 1 ── */}
+      <SecondaryNavbar
+        leftSlot={
+          <div className="flex items-center gap-3">
+            <Link
+              href={`/${locale}/product/add-product`}
+              id="btn-new-product"
+              className="px-4 py-2 bg-[#0095FF] hover:bg-sky-600 text-white rounded-lg text-xs font-semibold shadow-xs transition-all cursor-pointer select-none active:scale-98"
+            >
+              New Product
+            </Link>
+            <span className="text-[#0095FF] text-xs font-medium select-none">
+              Product
+            </span>
+          </div>
+        }
+        centerSlot={
+          <SecondaryNavbarSearch
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Placeholder text..."
+          />
+        }
+        rightSlot={
+          <>
+            <SecondaryNavbarPagination
+              currentRangeText="1-100"
+              total={filteredProducts.length || 100}
+            />
+            <SecondaryNavbarViewSwitcher
+              activeView={activeView === PRODUCT_VIEW_MODES.LIST ? "table" : "card"}
+              onViewChange={(mode) =>
+                setActiveView(
+                  mode === "table"
+                    ? PRODUCT_VIEW_MODES.LIST
+                    : PRODUCT_VIEW_MODES.LIST
+                )
+              }
+            />
+          </>
+        }
+      />
       <div className="w-full min-h-[calc(100vh-5rem)] px-4 sm:px-6 py-6 pb-36">
         <div className="w-full max-w-7xl mx-auto">
         {/* Main List View */}

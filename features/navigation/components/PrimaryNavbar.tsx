@@ -59,7 +59,7 @@ export const PrimaryNavbar: React.FC<PrimaryNavbarProps> = ({
   return (
     <header
       className={cn(
-        "h-14 sm:h-15 w-full border-b border-neutral-200/80 bg-white px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 shrink-0 select-none",
+        "h-14 sm:h-15 w-full bg-white px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 shrink-0 select-none",
         className
       )}
     >
