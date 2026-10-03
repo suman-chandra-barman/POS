@@ -18,6 +18,8 @@ import { AddProductTabsHeader } from "./AddProductTabsHeader";
 import { ProductInfoTab } from "./ProductInfoTab";
 import { PriceTaxTab } from "./PriceTaxTab";
 import { VariantsTab } from "./VariantsTab";
+import { ProductTopbar } from "../ProductTopbar";
+import { AddProductSecondaryNavbar } from "./AddProductSecondaryNavbar";
 
 const INITIAL_VARIANT_DATA = [
   {
@@ -82,51 +84,67 @@ export const AddProductContainer: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-h-[calc(100vh-5rem)] px-4 sm:px-6 py-6 pb-36">
-      <div className="w-full max-w-4xl mx-auto space-y-4">
-        {/* Back Link */}
-        <div className="flex items-center justify-between">
-          <button
-            type="button"
-            onClick={() => router.push(`/${locale}/product`)}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-600 hover:text-neutral-900 transition-colors cursor-pointer select-none"
-          >
-            <ArrowLeft className="size-3.5" />
-            <span>Back to Products</span>
-          </button>
-        </div>
-
-        {/* Tab Selector Card */}
-        <AddProductTabsHeader
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
+    <div className="w-full min-h-screen bg-[#f8f9fb]">
+      {/* ── Fixed Sticky Topbars (Primary & Secondary Navbars remain fixed on scroll) ── */}
+      <div className="sticky top-0 z-30 w-full bg-white">
+        <ProductTopbar />
+        <AddProductSecondaryNavbar
+          formId="add-product-form"
+          onCancel={() => router.push(`/${locale}/product`)}
+          isSubmitting={form.formState.isSubmitting}
         />
+      </div>
 
-        {/* Form Form Body */}
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-          {activeTab === ADD_PRODUCT_TABS.PRODUCT && <ProductInfoTab form={form} />}
-          {activeTab === ADD_PRODUCT_TABS.PRICE_TAX && <PriceTaxTab form={form} />}
-          {activeTab === ADD_PRODUCT_TABS.VARIANTS && <VariantsTab form={form} />}
-
-          {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-3 pt-4">
-            <Button
+      <div className="w-full min-h-[calc(100vh-5rem)] px-4 sm:px-6 py-6 pb-36">
+        <div className="w-full max-w-4xl mx-auto space-y-4">
+          {/* Back Link */}
+          <div className="flex items-center justify-between">
+            <button
               type="button"
-              variant="outline"
               onClick={() => router.push(`/${locale}/product`)}
-              className="rounded-xl h-10 px-5 text-xs font-semibold cursor-pointer"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-600 hover:text-neutral-900 transition-colors cursor-pointer select-none"
             >
-              Discard
-            </Button>
-            <Button
-              type="submit"
-              className="rounded-xl h-10 px-6 text-xs font-semibold bg-[#232323] hover:bg-neutral-800 text-white gap-2 cursor-pointer shadow-xs"
-            >
-              <Save className="size-3.5" />
-              <span>Save Product</span>
-            </Button>
+              <ArrowLeft className="size-3.5" />
+              <span>Back to Products</span>
+            </button>
           </div>
-        </form>
+
+          {/* Tab Selector Card */}
+          <AddProductTabsHeader
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+          />
+
+          {/* Form Body */}
+          <form
+            id="add-product-form"
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-5"
+          >
+            {activeTab === ADD_PRODUCT_TABS.PRODUCT && <ProductInfoTab form={form} />}
+            {activeTab === ADD_PRODUCT_TABS.PRICE_TAX && <PriceTaxTab form={form} />}
+            {activeTab === ADD_PRODUCT_TABS.VARIANTS && <VariantsTab form={form} />}
+
+            {/* Action Buttons */}
+            <div className="flex items-center justify-end gap-3 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.push(`/${locale}/product`)}
+                className="rounded-xl h-10 px-5 text-xs font-semibold cursor-pointer"
+              >
+                Discard
+              </Button>
+              <Button
+                type="submit"
+                className="rounded-xl h-10 px-6 text-xs font-semibold bg-[#232323] hover:bg-neutral-800 text-white gap-2 cursor-pointer shadow-xs"
+              >
+                <Save className="size-3.5" />
+                <span>Save Product</span>
+              </Button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
