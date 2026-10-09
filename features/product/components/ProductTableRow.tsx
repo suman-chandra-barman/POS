@@ -109,14 +109,6 @@ export const ProductTableRow: React.FC<ProductTableRowProps> = ({
               Location
             </button>
           )}
-
-          <button
-            type="button"
-            className="text-neutral-400 hover:text-neutral-700 transition-colors p-1 rounded-md hover:bg-neutral-100 cursor-pointer"
-            title="More actions"
-          >
-            <MoreVertical className="size-3.5" />
-          </button>
         </div>
       </TableCell>
     </TableRow>
