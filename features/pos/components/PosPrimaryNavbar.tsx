@@ -47,7 +47,7 @@ export const PosPrimaryNavbar: React.FC<PosPrimaryNavbarProps> = ({
     <PrimaryNavbar
       title={title}
       icon={resolvedIcon}
-      className={cn("border-b border-neutral-200/80", className)}
+      className={className}
       navItems={[
         { label: "Home", href: `/${locale}/pos` },
         {

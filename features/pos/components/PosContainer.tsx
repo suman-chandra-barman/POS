@@ -34,6 +34,7 @@ export const PosContainer: React.FC = () => {
   );
   const [isPinModalOpen, setIsPinModalOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [branchViewMode, setBranchViewMode] = useState<"card" | "table">("card");
 
   // Synchronize URL
   const updateUrl = (view: PosView, branchId?: string) => {
@@ -81,16 +82,23 @@ export const PosContainer: React.FC = () => {
       {/* 1. View: Branches Selection (Image 1) */}
       {activeView === POS_VIEWS.BRANCHES && (
         <>
-          <PosPrimaryNavbar />
-          <PosSecondaryToolbar
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-          />
+          {/* ── Fixed Sticky Topbars (Primary & Secondary Navbars remain fixed on scroll) ── */}
+          <div className="sticky top-0 z-30 w-full bg-white">
+            <PosPrimaryNavbar />
+            <PosSecondaryToolbar
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              totalBranches={MOCK_BRANCHES.length}
+              activeView={branchViewMode}
+              onViewChange={setBranchViewMode}
+            />
+          </div>
           <main className="flex-1 w-full">
             <PosBranchesView
               branches={MOCK_BRANCHES}
               searchQuery={searchQuery}
               onSelectBranch={handleSelectBranch}
+              viewMode={branchViewMode}
             />
           </main>
         </>
